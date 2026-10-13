@@ -179,10 +179,10 @@ export default async function HomePage() {
 /** The featured story as a typographic slab that continues the hero. */
 function FeaturedStory({ story }: { story: StorySummary }) {
   return (
-    <section aria-labelledby="featured-heading" className="on-dark bg-ink text-paper">
+    <section aria-labelledby="featured-heading" className="bg-paper-deep text-ink">
       <div className="mx-auto grid max-w-[88rem] gap-10 px-5 py-20 sm:px-8 sm:py-28 lg:grid-cols-12 lg:items-end">
         <div className="lg:col-span-8">
-          <p className="eyebrow eyebrow-slash text-paper/70">
+          <p className="eyebrow eyebrow-slash text-stone">
             Featured story{story.category ? ` · ${story.category.name}` : ""}
           </p>
           <h2 id="featured-heading" className="font-condensed mt-6 text-[clamp(2.8rem,7vw,6.5rem)]">
@@ -193,13 +193,13 @@ function FeaturedStory({ story }: { story: StorySummary }) {
         </div>
         <div className="space-y-6 lg:col-span-4">
           {story.subtitle || story.summary ? (
-            <p className="text-[1.1rem] leading-relaxed text-paper/80">{story.subtitle ?? story.summary}</p>
+            <p className="text-[1.1rem] leading-relaxed text-charcoal">{story.subtitle ?? story.summary}</p>
           ) : null}
-          <p className="eyebrow text-paper/70">
+          <p className="eyebrow text-stone">
             {story.contributor ? `${story.contributor.name} / ` : ""}
             <time dateTime={story.publishedAt}>{formatDate(story.publishedAt)}</time> / {story.readingMinutes} min read
           </p>
-          <Pill href={paths.story(story.slug)} variant="inverse">
+          <Pill href={paths.story(story.slug)} variant="solid">
             Read the story
           </Pill>
         </div>
