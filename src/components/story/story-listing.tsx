@@ -57,6 +57,7 @@ export function StoryListing({
         <StoryCard story={lead} variant="lead" priority headingLevel={2} />
       ) : null}
       <StoryGrid
+        key={`${hrefFor(result.page)}|${grid.map((story) => story.id).join(",")}`}
         initialItems={grid}
         page={result.page}
         totalPages={result.totalPages}
