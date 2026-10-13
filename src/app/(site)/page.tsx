@@ -125,9 +125,9 @@ export default async function HomePage() {
       </section>
 
       {home.categories.length > 0 ? (
-        <section aria-labelledby="explore-heading">
-          <ZoomInOnView>
-            <PageContainer className="zoom-item py-20 sm:py-28">
+        <ZoomInOnView>
+          <section aria-labelledby="explore-heading" className="zoom-item bg-paper-deep">
+            <PageContainer className="py-20 sm:py-28">
               <SectionHeader id="explore-heading" title="Explore" eyebrow="Categories" href={paths.stories()} hrefLabel="All stories" />
               <ol className="mt-4">
                 {home.categories.map((category, index) => (
@@ -149,8 +149,8 @@ export default async function HomePage() {
                 ))}
               </ol>
             </PageContainer>
-          </ZoomInOnView>
-        </section>
+          </section>
+        </ZoomInOnView>
       ) : null}
 
       {spotlight ? <ContributorSpotlight contributor={spotlight} others={home.contributors.filter((c) => c.id !== spotlight.id)} /> : null}
@@ -219,7 +219,7 @@ async function ContributorSpotlight({
   const bio = profile?.bio?.split("\n").find((line) => line.trim()) ?? null;
 
   return (
-    <section aria-labelledby="spotlight-heading" className="bg-paper-deep">
+    <section aria-labelledby="spotlight-heading">
       <PageContainer className="grid gap-12 py-20 sm:py-28 md:grid-cols-12 md:items-center md:gap-16">
         <div className="md:col-span-5">
           {contributor.avatar ? (
@@ -231,7 +231,7 @@ async function ContributorSpotlight({
               className="rounded-[2px]"
             />
           ) : (
-            <div aria-hidden className="font-display flex aspect-[4/5] items-center justify-center rounded-[2px] bg-paper text-[8rem] italic text-stone">
+            <div aria-hidden className="font-display flex aspect-[4/5] items-center justify-center rounded-[2px] bg-paper-deep text-[8rem] italic text-stone">
               {contributor.name.charAt(0)}
             </div>
           )}
