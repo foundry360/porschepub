@@ -70,7 +70,9 @@
  * editorial console. The theme is resolved before first paint by ThemeScript;
  * the media query covers visitors without JavaScript.
  */
-:root[data-theme="dark"] {
+/* `.on-black`: elements that are black in both themes (the site header) use the dark tokens. */
+:root[data-theme="dark"],
+.on-black {
   color-scheme: dark;
   --color-paper: #151311;
   --color-paper-deep: #1d1a17;
