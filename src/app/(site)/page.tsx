@@ -23,12 +23,12 @@ export const metadata: Metadata = {
 /** Licensed under the Unsplash License (free commercial use, no permission needed). */
 const HERO_IMAGE: MediaImage = {
   id: "home-hero",
-  url: "/images/hero-porsche-pit-lane.jpg",
+  url: "/images/hero-porsche-911-targa-sunset.jpg",
   width: 1024,
-  height: 564,
+  height: 682,
   alt: "",
   caption: null,
-  credit: "Carl Gelin / Unsplash",
+  credit: "Jonathan Rathgeb / Unsplash",
 };
 
 export default async function HomePage() {
@@ -55,7 +55,7 @@ export default async function HomePage() {
               priority
               decorative
               className="!absolute inset-0 !aspect-auto h-full w-full"
-              imageClassName="object-[40%_center]"
+              imageClassName="object-[55%_center]"
             />
             <div
               aria-hidden
