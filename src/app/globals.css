@@ -392,8 +392,8 @@ main:has(.submit-cta) + .site-footer {
 }
 [data-zoom="in"] .zoom-item {
   transition:
-    opacity 800ms var(--ease-editorial),
-    transform 1100ms var(--ease-editorial);
+    opacity 1400ms var(--ease-editorial),
+    transform 2000ms var(--ease-editorial);
 }
 [data-zoom="ready"] .zoom-item {
   opacity: 0;
