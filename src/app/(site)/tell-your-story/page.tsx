@@ -71,7 +71,7 @@ export default async function TellYourStoryPage() {
 }
 
 const STEPS = [
-  "An editor reads your pitch.",
+  "An editor reads your story.",
   "If it’s a fit, we’ll email you to talk it through.",
   "Nothing is published without your agreement.",
 ];
