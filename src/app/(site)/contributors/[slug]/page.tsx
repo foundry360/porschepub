@@ -76,14 +76,14 @@ export default async function ContributorPage(props: PageProps<"/contributors/[s
       <header className="grid gap-10 pb-16 pt-14 sm:pt-20 md:grid-cols-12 md:gap-14">
         {contributor.avatar ? (
           <div className="animate-fade-in md:col-span-4 lg:col-span-3">
-            <EditorialImage image={contributor.avatar} aspect="4/5" sizes="(min-width: 1024px) 25vw, (min-width: 768px) 33vw, 100vw" priority />
+            <EditorialImage image={contributor.avatar} aspect="4/5" sizes="(min-width: 1024px) 25vw, (min-width: 768px) 33vw, 100vw" priority className="rounded-[2px]" />
           </div>
         ) : null}
         <div className={`animate-fade-up ${contributor.avatar ? "md:col-span-8 lg:col-span-9" : "md:col-span-12"}`}>
-          <p className="eyebrow mb-4 text-accent">Contributor</p>
-          <h1 className="font-display text-[2.8rem] leading-[1.02] sm:text-[4.4rem]">{contributor.name}</h1>
+          <p className="eyebrow eyebrow-slash mb-5 text-stone">Contributor</p>
+          <h1 className="font-headline text-[clamp(2.8rem,7vw,6rem)]">{contributor.name}</h1>
           {contributor.descriptor ? (
-            <p className="mt-3 font-display text-[1.4rem] text-stone">{contributor.descriptor}</p>
+            <p className="font-display mt-4 text-[1.7rem] italic text-stone">{contributor.descriptor}</p>
           ) : null}
           <div className="mt-8 max-w-2xl space-y-4 text-[1.05rem] leading-relaxed text-charcoal">
             {paragraphs.map((paragraph, index) => (
@@ -95,7 +95,7 @@ export default async function ContributorPage(props: PageProps<"/contributors/[s
           {contributor.expertise.length > 0 ? (
             <ul aria-label="Areas of interest" className="mt-8 flex flex-wrap gap-2">
               {contributor.expertise.map((item) => (
-                <li key={item} className="border border-line px-3 py-1.5 text-[0.8rem] text-stone">
+                <li key={item} className="rounded-full border border-line px-4 py-2 text-[0.8rem] text-stone">
                   {item}
                 </li>
               ))}
@@ -122,9 +122,9 @@ export default async function ContributorPage(props: PageProps<"/contributors/[s
         </div>
       </header>
 
-      <section aria-labelledby="stories-by" className="border-t border-ink pt-10">
-        <h2 id="stories-by" className="font-display mb-10 text-[1.9rem] sm:text-[2.4rem]">
-          Stories by {contributor.name}
+      <section aria-labelledby="stories-by" className="border-t border-line pt-6">
+        <h2 id="stories-by" className="font-headline mb-10 text-[clamp(2rem,4vw,3.25rem)]">
+          Stories by <em>{contributor.name}</em>
         </h2>
         <Suspense fallback={<StoryListingSkeleton />}>
           <ContributorStories

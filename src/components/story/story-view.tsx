@@ -25,6 +25,51 @@ export function storyDescription(story: StoryDetail): string {
   return candidate.length > 300 ? `${candidate.slice(0, 297).trimEnd()}…` : candidate;
 }
 
+function StoryHeading({ story, onImage = false }: { story: StoryDetail; onImage?: boolean }) {
+  const muted = onImage ? "text-paper/80" : "text-stone";
+  const hover = onImage ? "hover:text-[#f4c9c5]" : "hover:text-accent";
+  return (
+    <div className="max-w-5xl">
+      <p className={`eyebrow eyebrow-slash animate-fade-in ${muted}`}>
+        {story.category ? (
+          <Link href={paths.category(story.category.slug)} className={`transition-colors ${hover}`}>
+            {story.category.name}
+          </Link>
+        ) : (
+          "A first-person story"
+        )}
+      </p>
+      <h1 className="font-headline animate-fade-up mt-6 text-[clamp(2.6rem,7vw,6.5rem)]">{story.headline}</h1>
+      {story.subtitle ? (
+        <p className={`font-display animate-fade-up mt-6 max-w-3xl text-[clamp(1.4rem,2.4vw,2rem)] italic leading-snug [animation-delay:120ms] ${muted}`}>
+          {story.subtitle}
+        </p>
+      ) : null}
+      <p className={`eyebrow animate-fade-up mt-8 [animation-delay:200ms] ${muted}`}>
+        {story.contributor ? (
+          <>
+            By{" "}
+            {story.contributor.hasProfile ? (
+              <Link
+                href={paths.contributor(story.contributor.slug)}
+                className={`border-b pb-0.5 transition-colors ${hover} ${onImage ? "border-paper/50 text-paper" : "border-line text-ink"}`}
+              >
+                {story.contributor.name}
+              </Link>
+            ) : (
+              <span className={onImage ? "text-paper" : "text-ink"}>{story.contributor.name}</span>
+            )}
+            <span aria-hidden className="text-accent"> / </span>
+          </>
+        ) : null}
+        <time dateTime={story.publishedAt}>{formatDate(story.publishedAt)}</time>
+        <span aria-hidden className="text-accent"> / </span>
+        {story.readingMinutes} min read
+      </p>
+    </div>
+  );
+}
+
 /**
  * The article experience. Shared by the public route and the editorial preview
  * so editors see exactly what readers will see.
@@ -75,62 +120,35 @@ export function StoryView({
         </>
       ) : null}
 
-      <header className="mx-auto max-w-5xl px-5 pb-10 pt-12 text-center sm:px-8 sm:pb-14 sm:pt-20">
-        {story.category ? (
-          <p className="animate-fade-in">
-            <Link href={paths.category(story.category.slug)} className="eyebrow link-underline text-accent">
-              {story.category.name}
-            </Link>
-          </p>
-        ) : null}
-        <h1 className="font-display animate-fade-up mx-auto mt-5 max-w-4xl text-[2.6rem] leading-[1.03] sm:text-[4.4rem]">
-          {story.headline}
-        </h1>
-        {story.subtitle ? (
-          <p className="animate-fade-up mx-auto mt-6 max-w-2xl font-display text-[1.35rem] leading-snug text-stone [animation-delay:120ms] sm:text-[1.6rem]">
-            {story.subtitle}
-          </p>
-        ) : null}
-        <div className="animate-fade-up mt-8 flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-[0.85rem] text-stone [animation-delay:200ms]">
-          {story.contributor ? (
-            <span>
-              By{" "}
-              {story.contributor.hasProfile ? (
-                <Link href={paths.contributor(story.contributor.slug)} className="link-underline text-ink">
-                  {story.contributor.name}
-                </Link>
-              ) : (
-                <span className="text-ink">{story.contributor.name}</span>
-              )}
-            </span>
-          ) : null}
-          <span aria-hidden>·</span>
-          <time dateTime={story.publishedAt}>{formatDate(story.publishedAt)}</time>
-          <span aria-hidden>·</span>
-          <span>{story.readingMinutes} min read</span>
-        </div>
-      </header>
-
       {lead ? (
-        <figure className="mx-auto max-w-[88rem] px-0 sm:px-8">
+        <header className="on-dark relative isolate flex min-h-[80svh] items-end overflow-hidden bg-charcoal text-paper">
           <EditorialImage
             image={lead}
             priority
-            sizes="(min-width: 1408px) 1328px, 100vw"
-            aspect="16/9"
+            sizes="100vw"
+            className="!absolute inset-0 -z-10 !aspect-auto h-full w-full"
           />
-          {lead.caption || lead.credit ? (
-            <figcaption className="mx-auto mt-3 max-w-[44rem] px-5 text-[0.85rem] leading-snug text-stone sm:px-0">
-              {lead.caption ? <span>{lead.caption}</span> : null}
-              {lead.credit ? (
-                <span className="block text-[0.75rem] uppercase tracking-[0.08em] text-stone">{lead.credit}</span>
-              ) : null}
-            </figcaption>
-          ) : null}
-        </figure>
+          <div aria-hidden className="absolute inset-0 -z-10 bg-gradient-to-t from-black/90 via-black/45 to-black/10" />
+          <div className="mx-auto w-full max-w-[88rem] px-5 pb-12 pt-32 sm:px-8 sm:pb-16">
+            <StoryHeading story={story} onImage />
+            {lead.credit ? (
+              <p className="mt-10 text-right text-[0.7rem] uppercase tracking-[0.12em] text-paper/65">
+                Photograph: {lead.credit}
+              </p>
+            ) : null}
+          </div>
+        </header>
+      ) : (
+        <header className="mx-auto max-w-[88rem] px-5 pb-6 pt-16 sm:px-8 sm:pt-24">
+          <StoryHeading story={story} />
+        </header>
+      )}
+
+      {lead?.caption ? (
+        <p className="mx-auto mt-4 max-w-[88rem] px-5 text-[0.85rem] leading-snug text-stone sm:px-8">{lead.caption}</p>
       ) : null}
 
-      <div className="mx-auto mt-12 max-w-[44rem] px-5 sm:mt-16 sm:px-0" id="story-body">
+      <div className="mx-auto mt-14 max-w-[44rem] px-5 sm:mt-20 sm:px-0" id="story-body">
         <BlockRenderer blocks={story.blocks} images={story.images} />
 
         {story.tags.length > 0 ? (
@@ -139,7 +157,7 @@ export function StoryView({
               <li key={tag.id}>
                 <Link
                   href={paths.tag(tag.slug)}
-                  className="inline-block border border-line px-3 py-1.5 text-[0.8rem] text-stone transition-colors hover:border-ink hover:text-ink"
+                  className="inline-block rounded-full border border-line px-4 py-2 text-[0.8rem] text-stone transition-colors hover:border-accent hover:text-ink"
                 >
                   {tag.name}
                 </Link>
@@ -153,38 +171,50 @@ export function StoryView({
         </div>
 
         {story.contributor ? (
-          <aside aria-label="About the contributor" className="mt-14 flex gap-5 border-t border-ink pt-8">
-            {story.contributor.avatar ? (
-              <div className="w-20 shrink-0 sm:w-24">
-                <EditorialImage image={story.contributor.avatar} aspect="1/1" sizes="96px" decorative reveal={false} />
+          <aside aria-label="About the contributor" className="mt-16 rounded-[20px] border border-line p-6 sm:p-8">
+            <p className="eyebrow eyebrow-slash text-stone">About the contributor</p>
+            <div className="mt-5 flex gap-5">
+              {story.contributor.avatar ? (
+                <div className="w-20 shrink-0 sm:w-24">
+                  <EditorialImage
+                    image={story.contributor.avatar}
+                    aspect="1/1"
+                    sizes="96px"
+                    decorative
+                    reveal={false}
+                    className="rounded-full"
+                  />
+                </div>
+              ) : null}
+              <div>
+                <p className="font-headline text-[1.75rem]">{story.contributor.name}</p>
+                {story.contributor.descriptor ? (
+                  <p className="font-display mt-1 text-[1.2rem] italic text-stone">{story.contributor.descriptor}</p>
+                ) : null}
+                {contributor?.bio ? (
+                  <p className="mt-3 line-clamp-4 text-[0.95rem] leading-relaxed text-charcoal">
+                    <InlineText text={contributor.bio.split("\n")[0]} />
+                  </p>
+                ) : null}
+                {story.contributor.hasProfile ? (
+                  <Link
+                    href={paths.contributor(story.contributor.slug)}
+                    className="eyebrow mt-5 inline-block text-ink transition-colors hover:text-accent"
+                  >
+                    Profile and stories <span aria-hidden>→</span>
+                  </Link>
+                ) : null}
               </div>
-            ) : null}
-            <div>
-              <p className="eyebrow text-stone">Written by</p>
-              <p className="font-display mt-1 text-2xl">{story.contributor.name}</p>
-              {story.contributor.descriptor ? (
-                <p className="text-[0.9rem] text-stone">{story.contributor.descriptor}</p>
-              ) : null}
-              {contributor?.bio ? (
-                <p className="mt-3 line-clamp-4 text-[0.95rem] leading-relaxed text-charcoal">
-                  <InlineText text={contributor.bio.split("\n")[0]} />
-                </p>
-              ) : null}
-              {story.contributor.hasProfile ? (
-                <Link href={paths.contributor(story.contributor.slug)} className="eyebrow link-underline mt-4 inline-block">
-                  Profile and stories
-                </Link>
-              ) : null}
             </div>
           </aside>
         ) : null}
       </div>
 
       {related.length > 0 ? (
-        <section aria-labelledby="related-heading" className="mx-auto mt-24 max-w-[88rem] px-5 sm:px-8">
-          <div className="border-b border-ink pb-4">
-            <h2 id="related-heading" className="font-display text-[1.9rem] leading-none sm:text-[2.4rem]">
-              Keep reading
+        <section aria-labelledby="related-heading" className="mx-auto mt-28 max-w-[88rem] px-5 sm:px-8">
+          <div className="border-t border-line pt-6">
+            <h2 id="related-heading" className="font-headline text-[clamp(2.2rem,4.5vw,3.75rem)]">
+              Keep <em>reading</em>
             </h2>
           </div>
           <div className="mt-10 grid gap-x-8 gap-y-12 md:grid-cols-3">
@@ -195,8 +225,8 @@ export function StoryView({
         </section>
       ) : null}
 
-      <div className="mt-24">
-        <SubmitCta variant="light" />
+      <div className="mt-28">
+        <SubmitCta />
       </div>
     </article>
   );

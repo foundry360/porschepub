@@ -3,6 +3,7 @@ import type { ReactNode } from "react";
 import { serializeJsonLd } from "@/lib/seo/jsonld";
 import type { CategorySummary } from "@/lib/types";
 import { paths } from "@/lib/urls";
+import { Pill } from "./pill";
 
 export function JsonLd({ data }: { data: Record<string, unknown> | Array<Record<string, unknown>> }) {
   return (
@@ -31,16 +32,16 @@ export function SectionHeader({
 }) {
   const Heading = level === 1 ? "h1" : "h2";
   return (
-    <div className="flex items-end justify-between gap-6 border-b border-ink pb-4">
+    <div className="flex items-end justify-between gap-6 border-t border-line pt-6">
       <div>
-        {eyebrow ? <p className="eyebrow mb-2 text-accent">{eyebrow}</p> : null}
-        <Heading id={id} className="font-display text-[1.9rem] leading-none sm:text-[2.4rem]">
+        {eyebrow ? <p className="eyebrow eyebrow-slash mb-3 text-stone">{eyebrow}</p> : null}
+        <Heading id={id} className="font-condensed text-[2rem] sm:text-[2.75rem]">
           {title}
         </Heading>
       </div>
       {href ? (
-        <Link href={href} className="eyebrow link-underline shrink-0 pb-1">
-          {hrefLabel ?? "View all"}
+        <Link href={href} className="eyebrow shrink-0 pb-1 text-stone transition-colors hover:text-accent">
+          {hrefLabel ?? "View all"} <span aria-hidden>→</span>
         </Link>
       ) : null}
     </div>
@@ -66,21 +67,38 @@ export function PageContainer({
 export function PageIntro({
   eyebrow,
   title,
+  emphasis,
   description,
 }: {
   eyebrow?: string;
   title: string;
+  /** Trailing words set in italic serif, e.g. title "Tell your" + emphasis "story." */
+  emphasis?: string;
   description?: string | null;
 }) {
   return (
-    <div className="animate-fade-up pb-10 pt-14 sm:pb-14 sm:pt-20">
-      {eyebrow ? <p className="eyebrow mb-4 text-accent">{eyebrow}</p> : null}
-      <h1 className="font-display max-w-4xl text-[2.6rem] leading-[1.02] sm:text-[4.2rem]">{title}</h1>
+    <div className="animate-fade-up pb-12 pt-16 sm:pb-16 sm:pt-24">
+      {eyebrow ? <p className="eyebrow eyebrow-slash mb-6 text-stone">{eyebrow}</p> : null}
+      <h1 className="font-headline max-w-5xl text-[clamp(2.9rem,8.5vw,8rem)]">
+        {title}
+        {emphasis ? (
+          <>
+            {" "}
+            <em>{emphasis}</em>
+          </>
+        ) : null}
+      </h1>
       {description ? (
-        <p className="mt-6 max-w-2xl text-[1.15rem] leading-relaxed text-stone">{description}</p>
+        <p className="mt-8 max-w-2xl text-[clamp(1.1rem,1.6vw,1.45rem)] leading-snug text-stone">{description}</p>
       ) : null}
     </div>
   );
+}
+
+function chipClass(active: boolean): string {
+  return `inline-block whitespace-nowrap rounded-full border px-4 py-2 text-[0.8125rem] transition-colors ${
+    active ? "border-ink bg-ink text-paper" : "border-line text-stone hover:border-accent hover:text-ink"
+  }`;
 }
 
 export function CategoryNav({
@@ -91,13 +109,13 @@ export function CategoryNav({
   activeSlug?: string;
 }) {
   return (
-    <nav aria-label="Categories" className="border-y border-line">
-      <ul className="-mx-5 flex gap-x-7 overflow-x-auto px-5 py-3.5 sm:mx-0 sm:flex-wrap sm:px-0 [&::-webkit-scrollbar]:hidden">
+    <nav aria-label="Categories">
+      <ul className="-mx-5 flex gap-2 overflow-x-auto px-5 pb-1 sm:mx-0 sm:flex-wrap sm:px-0 [&::-webkit-scrollbar]:hidden">
         <li className="shrink-0">
           <Link
             href={paths.stories()}
             aria-current={!activeSlug ? "page" : undefined}
-            className={`eyebrow whitespace-nowrap pb-1 ${!activeSlug ? "border-b border-ink text-ink" : "text-stone hover:text-ink"}`}
+            className={chipClass(!activeSlug)}
           >
             All stories
           </Link>
@@ -107,7 +125,7 @@ export function CategoryNav({
             <Link
               href={paths.category(category.slug)}
               aria-current={activeSlug === category.slug ? "page" : undefined}
-              className={`eyebrow whitespace-nowrap pb-1 ${activeSlug === category.slug ? "border-b border-ink text-ink" : "text-stone hover:text-ink"}`}
+              className={chipClass(activeSlug === category.slug)}
             >
               {category.name}
             </Link>
@@ -128,49 +146,37 @@ export function EmptyState({
   action?: { href: string; label: string };
 }) {
   return (
-    <div className="border border-dashed border-line px-6 py-16 text-center">
-      <h2 className="font-display text-2xl">{title}</h2>
+    <div className="rounded-[20px] border border-dashed border-line px-6 py-16 text-center">
+      <h2 className="font-headline text-[1.75rem]">{title}</h2>
       {children ? <div className="mx-auto mt-3 max-w-md text-stone">{children}</div> : null}
       {action ? (
-        <Link href={action.href} className="eyebrow link-underline mt-6 inline-block">
+        <Pill href={action.href} variant="outline" className="mt-7">
           {action.label}
-        </Link>
+        </Pill>
       ) : null}
     </div>
   );
 }
 
-export function SubmitCta({ variant = "dark" }: { variant?: "dark" | "light" }) {
-  const dark = variant === "dark";
+/** Closing call to action: always dark, with the red glow. */
+export function SubmitCta() {
   return (
-    <section
-      aria-labelledby="submit-cta-heading"
-      className={`${dark ? "on-dark bg-ink text-paper" : "bg-paper-deep text-ink"}`}
-    >
-      <div className="mx-auto grid max-w-[88rem] gap-8 px-5 py-16 sm:px-8 sm:py-24 md:grid-cols-12 md:items-end">
-        <div className="md:col-span-8">
-          <p className={`eyebrow mb-4 ${dark ? "text-[#f4c9c5]" : "text-accent"}`}>Tell your story</p>
-          <h2
-            id="submit-cta-heading"
-            className="font-display max-w-3xl text-[2.3rem] leading-[1.05] sm:text-[3.4rem]"
-          >
-            Every Porsche has a story. What&rsquo;s yours?
-          </h2>
-          <p className={`mt-5 max-w-xl text-[1.05rem] ${dark ? "text-paper/75" : "text-stone"}`}>
-            Owners, racers, restorers, designers and enthusiasts: tell us about the car, the road, or
-            the people who made it matter.
-          </p>
-        </div>
-        <div className="md:col-span-4 md:text-right">
-          <Link
-            href={paths.tellYourStory()}
-            className={`inline-block px-7 py-4 text-sm tracking-wide transition-colors ${
-              dark ? "bg-paper text-ink hover:bg-[#f4c9c5]" : "bg-ink text-paper hover:bg-charcoal"
-            }`}
-          >
-            Pitch a story
-          </Link>
-        </div>
+    <section aria-labelledby="submit-cta-heading" className="submit-cta on-dark glow-accent bg-ink text-paper">
+      <div className="mx-auto max-w-[88rem] px-5 py-24 text-center sm:px-8 sm:py-36">
+        <p className="eyebrow eyebrow-slash text-paper/70">Tell your story</p>
+        <h2
+          id="submit-cta-heading"
+          className="font-headline mx-auto mt-6 max-w-5xl text-[clamp(2.8rem,8vw,7.5rem)]"
+        >
+          Your Porsche story <em>belongs here.</em>
+        </h2>
+        <p className="mx-auto mt-7 max-w-xl text-[1.1rem] leading-relaxed text-paper/75">
+          Owners, racers, restorers, designers and enthusiasts: tell us about the car, the road, or the
+          people who made it matter. You don&rsquo;t need to be a writer.
+        </p>
+        <Pill href={paths.tellYourStory()} variant="inverse" className="mt-10">
+          Pitch a story
+        </Pill>
       </div>
     </section>
   );

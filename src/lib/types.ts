@@ -91,7 +91,6 @@ export type HomepageData = {
   featured: StorySummary | null;
   editorsPicks: StorySummary[];
   latest: StorySummary[];
-  categoryRails: Array<{ category: CategorySummary; stories: StorySummary[] }>;
   contributors: ContributorSummary[];
   categories: CategorySummary[];
 };

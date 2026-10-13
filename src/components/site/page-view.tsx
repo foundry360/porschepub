@@ -37,7 +37,7 @@ export async function SitePage({ slug, withCta = false }: { slug: string; withCt
       </PageContainer>
       {withCta ? (
         <div className="mt-20">
-          <SubmitCta variant="dark" />
+          <SubmitCta />
         </div>
       ) : null}
     </>

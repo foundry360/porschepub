@@ -17,8 +17,9 @@ export default function ContributorsPage(props: PageProps<"/contributors">) {
   return (
     <PageContainer>
       <PageIntro
-        eyebrow="Voices"
-        title="Contributors"
+        eyebrow="Contributors"
+        title="The people"
+        emphasis="who write here."
         description="The owners, racers, restorers, designers and enthusiasts who write for us."
       />
       <Suspense fallback={<div className="h-96" aria-busy="true" />}>
@@ -43,7 +44,7 @@ async function ContributorList({ searchParams }: Pick<PageProps<"/contributors">
 
   return (
     <div className="pb-8">
-      <ul className="grid grid-cols-2 gap-x-6 gap-y-12 md:grid-cols-4 lg:grid-cols-5">
+      <ul className="grid grid-cols-1 gap-5 min-[480px]:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
         {result.items.map((contributor) => (
           <li key={contributor.id}>
             <ContributorCard contributor={contributor} />

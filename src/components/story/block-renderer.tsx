@@ -94,9 +94,9 @@ export function BlockRenderer({ blocks, images, variant = "story" }: Props) {
               <aside
                 key={index}
                 aria-label="Pull quote"
-                className="my-14 border-y border-ink py-9 text-center lg:-mx-[6vw]"
+                className="my-14 border-l-2 border-accent py-1 pl-6 sm:pl-8 lg:-ml-[4vw]"
               >
-                <p className="font-display text-[1.9rem] leading-[1.25] text-ink sm:text-[2.35rem]">
+                <p className="font-display text-[2rem] italic leading-[1.15] text-ink sm:text-[2.75rem]">
                   “<InlineText text={block.text} />”
                 </p>
                 {block.attribution ? (

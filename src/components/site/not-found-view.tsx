@@ -6,7 +6,7 @@ export function NotFoundView() {
   return (
     <PageContainer narrow className="py-28 text-center sm:py-40">
       <p className="eyebrow text-accent">404</p>
-      <h1 className="font-display mt-5 text-[2.8rem] leading-[1.05] sm:text-[4.2rem]">
+      <h1 className="font-headline mt-5 text-[2.8rem] sm:text-[4.2rem]">
         This page has taken a different road
       </h1>
       <p className="mx-auto mt-6 max-w-lg text-[1.05rem] text-stone">

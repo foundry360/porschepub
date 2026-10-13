@@ -1,23 +1,31 @@
 import { Suspense } from "react";
 import type { Metadata, Viewport } from "next";
-import { Hanken_Grotesk, Newsreader } from "next/font/google";
+import { Barlow_Condensed, Instrument_Serif, Inter_Tight } from "next/font/google";
 import { brand } from "@/config/brand";
 import { getSiteUrl } from "@/config/site";
 import { Analytics } from "@/components/analytics/analytics";
 import { themeScript } from "@/lib/theme";
 import "./globals.css";
 
-const serif = Newsreader({
-  variable: "--font-newsreader",
+const serif = Instrument_Serif({
+  variable: "--font-instrument",
   subsets: ["latin"],
   display: "swap",
+  weight: "400",
   style: ["normal", "italic"],
 });
 
-const sans = Hanken_Grotesk({
-  variable: "--font-hanken",
+const sans = Inter_Tight({
+  variable: "--font-inter-tight",
   subsets: ["latin"],
   display: "swap",
+});
+
+const condensed = Barlow_Condensed({
+  variable: "--font-barlow",
+  subsets: ["latin"],
+  display: "swap",
+  weight: ["600", "700"],
 });
 
 export const metadata: Metadata = {
@@ -53,7 +61,7 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     // The theme script sets data-theme before hydration, so the attribute differs from the server HTML.
-    <html lang="en" className={`${serif.variable} ${sans.variable}`} suppressHydrationWarning>
+    <html lang="en" className={`${serif.variable} ${sans.variable} ${condensed.variable}`} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>

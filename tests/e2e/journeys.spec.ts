@@ -1,4 +1,5 @@
 import { expect, test, type Browser, type Page } from "@playwright/test";
+import { submissionPolicy } from "../../src/config/site";
 import { ADMIN_AUTH, EDITOR_AUTH, LEAD_IMAGE, loadState } from "./state";
 
 /**
@@ -190,7 +191,7 @@ test("4. a visitor submits a story proposal", async ({ page }) => {
   submissionTitle = `${state.run} A pitch about a 944 in the rain`;
   await page.goto("/tell-your-story");
   // The anti-bot timer needs a human-ish interval before submitting.
-  await page.waitForTimeout(3500);
+  await page.waitForTimeout(submissionPolicy.minFillSeconds * 1000 + 500);
   await page.getByLabel(/Your name/).fill("Test Submitter");
   await page.getByLabel(/Email address/).fill(`${state.run}-submitter@example.test`);
   await page.getByLabel(/Working title/).fill(submissionTitle);
@@ -205,21 +206,21 @@ test("4. a visitor submits a story proposal", async ({ page }) => {
 test("10. invalid and abusive submissions are rejected safely", async ({ page, request }) => {
   // Client + server validation: empty form shows specific errors and stores nothing.
   await page.goto("/tell-your-story");
-  await page.waitForTimeout(3500);
+  await page.waitForTimeout(submissionPolicy.minFillSeconds * 1000 + 500);
   await page.getByRole("button", { name: "Send pitch" }).click();
-  await expect(page.getByRole("alert")).toBeVisible();
+  await expect(page.getByRole("alert").filter({ hasText: /\S/ })).toBeVisible();
   await expect(page.getByRole("link", { name: /name/i }).first()).toBeVisible();
 
   // Hostile text is accepted as inert text only when otherwise valid; never executed.
   await page.getByLabel(/Your name/).fill("<script>window.__pwned=1</script>");
   await page.getByLabel(/Email address/).fill("not-an-email");
   await page.getByRole("button", { name: "Send pitch" }).click();
-  await expect(page.getByRole("alert")).toBeVisible();
+  await expect(page.getByRole("alert").filter({ hasText: /\S/ })).toBeVisible();
   expect(await page.evaluate(() => (window as unknown as { __pwned?: number }).__pwned)).toBeUndefined();
 
   // A bot that fills the honeypot is told "thanks" but nothing is stored.
   await page.reload();
-  await page.waitForTimeout(3500);
+  await page.waitForTimeout(submissionPolicy.minFillSeconds * 1000 + 500);
   await page.locator("#field-website").evaluate((el: HTMLInputElement) => {
     el.value = "http://spam.example";
   });

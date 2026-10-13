@@ -9,7 +9,7 @@ export function StoryListingSkeleton() {
       <span className="sr-only">Loading stories…</span>
       {Array.from({ length: 6 }).map((_, index) => (
         <div key={index} className="space-y-4" aria-hidden>
-          <div className="aspect-[4/3] animate-pulse bg-paper-deep" />
+          <div className="aspect-video animate-pulse rounded-[2px] bg-paper-deep" />
           <div className="h-3 w-24 animate-pulse bg-paper-deep" />
           <div className="h-6 w-5/6 animate-pulse bg-paper-deep" />
           <div className="h-4 w-2/3 animate-pulse bg-paper-deep" />

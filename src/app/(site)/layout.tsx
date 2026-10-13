@@ -20,7 +20,7 @@ export default function SiteLayout({ children }: LayoutProps<"/">) {
       <main id="main" tabIndex={-1} className="outline-none">
         {children}
       </main>
-      <Suspense fallback={<div className="mt-24 h-72 bg-ink" />}>
+      <Suspense fallback={<div className="site-footer h-72 bg-ink" />}>
         <SiteFooter />
       </Suspense>
     </>

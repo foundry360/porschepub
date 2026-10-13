@@ -41,7 +41,6 @@ export const pagination = {
 export const homepage = {
   editorsPicksCount: 3,
   latestCount: 6,
-  categoryRails: 2,
   contributorHighlights: 4,
 } as const;
 

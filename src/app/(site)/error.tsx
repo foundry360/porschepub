@@ -12,7 +12,7 @@ export default function SiteError({ error, reset }: { error: Error & { digest?: 
   return (
     <div className="mx-auto max-w-3xl px-5 py-28 text-center sm:py-40">
       <p className="eyebrow text-accent">Something went wrong</p>
-      <h1 className="font-display mt-5 text-[2.6rem] leading-[1.05] sm:text-[3.6rem]">
+      <h1 className="font-headline mt-5 text-[2.6rem] sm:text-[3.6rem]">
         We couldn&rsquo;t load this page
       </h1>
       <p className="mx-auto mt-6 max-w-lg text-stone">

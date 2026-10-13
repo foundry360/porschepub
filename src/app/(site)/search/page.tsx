@@ -35,7 +35,7 @@ export default function SearchPage(props: PageProps<"/search">) {
 function SearchShell({ query }: { query: string }) {
   return (
     <>
-      <PageIntro eyebrow="Search" title="Find a story" />
+      <PageIntro eyebrow="Search" title="Find a" emphasis="story." />
       <form action="/search" method="get" role="search" className="mb-12 flex max-w-2xl gap-3">
         <label htmlFor="search-q" className="sr-only">
           Search stories

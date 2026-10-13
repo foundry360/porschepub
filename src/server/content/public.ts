@@ -418,7 +418,6 @@ async function readHeroSetting(): Promise<Partial<HomepageData["hero"]>> {
  *   featured  -> editor-selected story, else the newest live story
  *   picks     -> editor-selected stories (ordered), else next newest stories
  *   latest    -> newest stories not already shown above
- *   rails     -> categories that actually have live stories
  */
 export async function getHomepage(): Promise<HomepageData> {
   "use cache";
@@ -479,20 +478,6 @@ export async function getHomepage(): Promise<HomepageData> {
   if (categoryError) fail("getHomepage.categories", categoryError);
   const categories = (categoryRows ?? []).map((row) => toCategory(row) as CategorySummary);
 
-  const categoryRails: HomepageData["categoryRails"] = [];
-  for (const category of categories) {
-    if (categoryRails.length >= homepage.categoryRails) break;
-    const { data: railRows, error: railError } = await db
-      .from("stories")
-      .select(STORY_SUMMARY_SELECT)
-      .eq("category_id", category.id)
-      .order("published_at", { ascending: false })
-      .limit(3);
-    if (railError) fail("getHomepage.rail", railError);
-    const stories = ((railRows ?? []) as unknown as StoryRow[]).map(toStorySummary);
-    if (stories.length > 0) categoryRails.push({ category, stories });
-  }
-
   const { data: contributorRows, error: contributorError } = await db
     .from("contributors")
     .select(CONTRIBUTOR_SELECT)
@@ -514,7 +499,6 @@ export async function getHomepage(): Promise<HomepageData> {
     featured,
     editorsPicks: picks,
     latest,
-    categoryRails,
     contributors,
     categories,
   };

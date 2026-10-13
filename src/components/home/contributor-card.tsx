@@ -9,30 +9,36 @@ export function ContributorCard({ contributor }: { contributor: ContributorSumma
       {contributor.avatar ? (
         <EditorialImage
           image={contributor.avatar}
-          aspect="1/1"
-          sizes="(min-width: 1024px) 220px, 45vw"
+          aspect="4/5"
+          sizes="(min-width: 1024px) 300px, 45vw"
           decorative
+          className="rounded-[12px]"
           imageClassName="grayscale transition duration-700 group-hover:grayscale-0"
         />
       ) : (
         <div
           aria-hidden
-          className="font-display flex aspect-square items-center justify-center bg-paper-deep text-6xl text-stone"
+          className="font-display flex aspect-[4/5] items-center justify-center rounded-[12px] bg-paper-deep text-7xl italic text-stone"
         >
           {contributor.name.charAt(0)}
         </div>
       )}
-      <div className="mt-4">
-        <h3 className="font-display text-xl leading-tight">{contributor.name}</h3>
+      <div className="px-1 pb-1 pt-5">
+        <h3 className="font-headline text-[1.5rem] transition-colors group-hover:text-accent">{contributor.name}</h3>
         {contributor.descriptor ? (
-          <p className="mt-1 text-[0.85rem] text-stone">{contributor.descriptor}</p>
+          <p className="font-display mt-1.5 text-[1.1rem] italic leading-snug text-stone">{contributor.descriptor}</p>
+        ) : null}
+        {contributor.hasProfile ? (
+          <p aria-hidden className="eyebrow mt-5 text-stone">
+            Read profile <span className="text-accent">→</span>
+          </p>
         ) : null}
       </div>
     </>
   );
 
   return (
-    <article className="group relative">
+    <article className="group relative h-full rounded-[20px] border border-line p-3 transition-colors hover:border-stone">
       {contributor.hasProfile ? (
         <Link
           href={paths.contributor(contributor.slug)}

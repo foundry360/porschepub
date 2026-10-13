@@ -17,7 +17,7 @@ type CategoryOption = { id: string; name: string };
 const initialState: SubmissionFormState = { status: "idle" };
 
 const inputClass =
-  "mt-2 block w-full border border-line bg-surface/60 px-4 py-3 text-base text-ink placeholder:text-mist focus:border-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-accent aria-[invalid=true]:border-accent";
+  "mt-2 block w-full rounded-none border-0 border-b border-line bg-transparent px-0 py-3 text-[1.05rem] text-ink placeholder:text-mist focus:border-accent focus:shadow-[0_1px_0_0_var(--color-accent)] focus:outline-none aria-[invalid=true]:border-accent";
 
 function Field({
   id,
@@ -37,7 +37,7 @@ function Field({
   const describedBy = [hint ? `${id}-hint` : null, error ? `${id}-error` : null].filter(Boolean).join(" ") || undefined;
   return (
     <div>
-      <label htmlFor={id} className="block text-[0.95rem] font-medium">
+      <label htmlFor={id} className="eyebrow block text-stone">
         {label}
         {required ? (
           <span aria-hidden className="text-accent">
@@ -45,7 +45,7 @@ function Field({
             *
           </span>
         ) : (
-          <span className="font-normal text-stone"> (optional)</span>
+          <span className="normal-case tracking-normal text-mist"> (optional)</span>
         )}
       </label>
       {hint ? (
@@ -129,9 +129,9 @@ export function SubmissionForm({
         ref={summaryRef}
         tabIndex={-1}
         role="status"
-        className="animate-fade-up border border-ink bg-paper-deep px-6 py-10 outline-none sm:px-10"
+        className="animate-fade-up rounded-[20px] border border-line bg-paper-deep px-6 py-10 outline-none sm:px-10"
       >
-        <h2 className="font-display text-3xl">Pitch received</h2>
+        <h2 className="font-headline text-[2.25rem]">Pitch received</h2>
         <p className="mt-4 max-w-xl text-[1.05rem] leading-relaxed text-charcoal">{state.message}</p>
         <Link href="/stories" className="eyebrow link-underline mt-8 inline-block">
           Read the stories
@@ -370,7 +370,7 @@ export function SubmissionForm({
         <button
           type="submit"
           disabled={pending}
-          className="bg-ink px-8 py-4 text-sm tracking-wide text-paper transition-colors hover:bg-charcoal disabled:cursor-not-allowed disabled:opacity-60"
+          className="inline-flex items-center gap-2.5 rounded-full border border-ink bg-ink px-8 py-4 text-[0.8125rem] font-medium tracking-[0.02em] text-paper transition-colors hover:border-accent hover:bg-accent disabled:cursor-not-allowed disabled:opacity-60"
         >
           {pending ? "Sending…" : "Send pitch"}
         </button>

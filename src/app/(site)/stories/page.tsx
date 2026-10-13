@@ -20,7 +20,8 @@ export default function StoriesPage(props: PageProps<"/stories">) {
     <PageContainer>
       <PageIntro
         eyebrow="Archive"
-        title="Stories"
+        title="Every"
+        emphasis="story."
         description="First-person accounts from the people behind Porsche."
       />
       <Suspense fallback={<StoryListingSkeleton />}>

@@ -1,13 +1,16 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { brand } from "@/config/brand";
-import { ContributorCard } from "@/components/home/contributor-card";
 import { StoryCard } from "@/components/story/story-card";
 import { EditorialImage } from "@/components/ui/editorial-image";
+import { InlineText } from "@/components/ui/inline-text";
 import { EmptyState, JsonLd, PageContainer, SectionHeader, SubmitCta } from "@/components/ui/misc";
+import { Pill } from "@/components/ui/pill";
+import { formatDate } from "@/lib/dates";
 import { organizationJsonLd, websiteJsonLd } from "@/lib/seo/jsonld";
+import type { ContributorSummary, StorySummary } from "@/lib/types";
 import { paths } from "@/lib/urls";
-import { getHomepage } from "@/server/content/public";
+import { getContributorBySlug, getHomepage } from "@/server/content/public";
 
 export const metadata: Metadata = {
   title: { absolute: `${brand.name}: ${brand.tagline}` },
@@ -20,7 +23,8 @@ export default async function HomePage() {
   const home = await getHomepage();
   const { featured, hero } = home;
   const heroImage = featured?.leadImage ?? null;
-  const hasStories = Boolean(featured);
+  const recent = home.latest.length > 3 ? home.latest.slice(0, home.latest.length - (home.latest.length % 3)) : home.latest;
+  const spotlight = home.contributors.find((contributor) => contributor.hasProfile) ?? null;
 
   return (
     <>
@@ -76,124 +80,195 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <PageContainer>
-        {!hasStories ? (
-          <div className="py-24">
-            <EmptyState title="Stories are on their way" action={{ href: paths.tellYourStory(), label: "Pitch the first story" }}>
-              <p>We haven&rsquo;t published anything yet. Check back soon, or tell us your story.</p>
-            </EmptyState>
-          </div>
-        ) : (
-          <>
-            {/* Featured story ---------------------------------------------- */}
-            <section aria-labelledby="featured-heading" className="py-16 sm:py-24">
-              <h2 id="featured-heading" className="eyebrow mb-8 text-accent">
-                Featured story
-              </h2>
-              {featured ? <StoryCard story={featured} variant="lead" headingLevel={3} /> : null}
-            </section>
+      {!featured ? (
+        <PageContainer className="py-24">
+          <EmptyState title="Stories are on their way" action={{ href: paths.tellYourStory(), label: "Pitch the first story" }}>
+            <p>We haven&rsquo;t published anything yet. Check back soon, or tell us your story.</p>
+          </EmptyState>
+        </PageContainer>
+      ) : (
+        <>
+          <FeaturedStory story={featured} />
 
-            {/* Editors' picks ------------------------------------------------ */}
-            {home.editorsPicks.length > 0 ? (
-              <section aria-labelledby="picks-heading" className="pb-16 sm:pb-24">
-                <SectionHeader id="picks-heading" eyebrow="Selected by the editors" title="Editors’ picks" />
-                <div className="mt-10 grid gap-x-8 gap-y-14 md:grid-cols-3">
-                  {home.editorsPicks.map((story, index) => (
-                    <div key={story.id} className={index === 1 ? "md:mt-16" : undefined}>
-                      <StoryCard story={story} variant="tall" />
-                    </div>
+          {recent.length > 0 ? (
+            <section aria-labelledby="latest-heading">
+              <PageContainer className="py-20 sm:py-28">
+                <SectionHeader id="latest-heading" title="Most recent" href={paths.stories()} hrefLabel="All stories" />
+                <div className="mt-10 grid gap-x-8 gap-y-14 sm:grid-cols-2 lg:grid-cols-3">
+                  {recent.map((story) => (
+                    <StoryCard key={story.id} story={story} className="reveal-on-scroll" />
                   ))}
                 </div>
-              </section>
-            ) : null}
+              </PageContainer>
+            </section>
+          ) : null}
 
-            {/* Latest + explore --------------------------------------------- */}
-            {home.latest.length > 0 ? (
-              <section aria-labelledby="latest-heading" className="pb-16 sm:pb-24">
-                <div className="grid gap-12 lg:grid-cols-12 lg:gap-16">
-                  <div className="lg:col-span-8">
-                    <SectionHeader id="latest-heading" title="Latest stories" href={paths.stories()} hrefLabel="All stories" />
-                    <div className="mt-2">
-                      {home.latest.map((story) => (
-                        <StoryCard key={story.id} story={story} variant="compact" />
-                      ))}
-                    </div>
-                  </div>
-                  <aside aria-label="Browse by category" className="lg:col-span-4">
-                    <div className="border-b border-ink pb-4">
-                      <h2 className="font-display text-[1.6rem] leading-none">Explore</h2>
-                    </div>
-                    <ul className="mt-2">
-                      {home.categories.map((category) => (
-                        <li key={category.id} className="border-b border-line">
-                          <Link
-                            href={paths.category(category.slug)}
-                            className="group flex items-baseline justify-between py-4"
-                          >
-                            <span className="font-display text-[1.35rem]">{category.name}</span>
-                            <span aria-hidden className="text-stone transition-transform group-hover:translate-x-1">
-                              →
-                            </span>
-                          </Link>
-                        </li>
-                      ))}
-                    </ul>
-                  </aside>
-                </div>
-              </section>
-            ) : null}
-          </>
-        )}
-      </PageContainer>
+          {home.editorsPicks.length > 0 ? (
+            <section aria-labelledby="picks-heading">
+              <PageContainer className="pb-20 sm:pb-28">
+                <SectionHeader id="picks-heading" eyebrow="Selected by the editors" title="Editors’ picks" />
+                <PicksMosaic stories={home.editorsPicks} />
+              </PageContainer>
+            </section>
+          ) : null}
+        </>
+      )}
 
-      {/* Category rails --------------------------------------------------------- */}
-      {home.categoryRails.map((rail, railIndex) => (
-        <section
-          key={rail.category.id}
-          aria-labelledby={`rail-${rail.category.slug}`}
-          className={railIndex % 2 === 0 ? "bg-paper-deep" : ""}
-        >
-          <PageContainer className="py-16 sm:py-24">
-            <div className="flex items-end justify-between gap-6 border-b border-ink pb-4">
-              <div>
-                <p className="eyebrow mb-2 text-accent">Category</p>
-                <h2 id={`rail-${rail.category.slug}`} className="font-display text-[1.9rem] leading-none sm:text-[2.4rem]">
-                  {rail.category.name}
-                </h2>
-              </div>
-              <Link href={paths.category(rail.category.slug)} className="eyebrow link-underline shrink-0 pb-1">
-                View all
-              </Link>
-            </div>
-            {rail.category.description ? (
-              <p className="mt-5 max-w-2xl text-stone">{rail.category.description}</p>
-            ) : null}
-            <div className="mt-10 grid gap-x-8 gap-y-12 md:grid-cols-3">
-              {rail.stories.map((story) => (
-                <StoryCard key={story.id} story={story} />
+      <section aria-labelledby="pause-heading" className="bg-ink text-paper">
+        <div className="mx-auto max-w-[88rem] px-5 py-28 text-center sm:px-8 sm:py-40">
+          <p className="eyebrow eyebrow-slash opacity-75">Why we publish</p>
+          <h2 id="pause-heading" className="font-headline mx-auto mt-6 max-w-5xl text-[clamp(2.4rem,6.5vw,6rem)]">
+            Behind every car is a person. <em>Behind every person, a story.</em>
+          </h2>
+        </div>
+      </section>
+
+      {home.categories.length > 0 ? (
+        <section aria-labelledby="explore-heading">
+          <PageContainer className="py-20 sm:py-28">
+            <SectionHeader id="explore-heading" title="Explore" eyebrow="Categories" href={paths.stories()} hrefLabel="All stories" />
+            <ol className="mt-4">
+              {home.categories.map((category, index) => (
+                <li key={category.id} className="border-b border-line">
+                  <Link
+                    href={paths.category(category.slug)}
+                    className="group grid grid-cols-[2.5rem_1fr_auto] items-baseline gap-4 py-6 sm:grid-cols-[4rem_minmax(0,1fr)_minmax(0,1.2fr)_auto] sm:gap-8"
+                  >
+                    <span className="eyebrow text-stone">{String(index + 1).padStart(2, "0")}</span>
+                    <span className="font-condensed text-[1.8rem] transition-colors group-hover:text-accent sm:text-[2.6rem]">
+                      {category.name}
+                    </span>
+                    <span className="hidden text-[0.95rem] leading-snug text-stone sm:block">{category.description}</span>
+                    <span aria-hidden className="text-stone transition-transform group-hover:translate-x-1 group-hover:text-accent">
+                      →
+                    </span>
+                  </Link>
+                </li>
               ))}
-            </div>
-          </PageContainer>
-        </section>
-      ))}
-
-      {/* Contributors --------------------------------------------------------------- */}
-      {home.contributors.length > 0 ? (
-        <section aria-labelledby="contributors-heading">
-          <PageContainer className="py-16 sm:py-24">
-            <SectionHeader id="contributors-heading" title="Voices" eyebrow="Contributors" href={paths.contributors()} hrefLabel="All contributors" />
-            <div className="mt-10 grid grid-cols-2 gap-x-6 gap-y-10 md:grid-cols-4">
-              {home.contributors.map((contributor) => (
-                <ContributorCard key={contributor.id} contributor={contributor} />
-              ))}
-            </div>
+            </ol>
           </PageContainer>
         </section>
       ) : null}
 
-      <div className="mt-8">
-        <SubmitCta />
-      </div>
+      {spotlight ? <ContributorSpotlight contributor={spotlight} others={home.contributors.filter((c) => c.id !== spotlight.id)} /> : null}
+
+      <SubmitCta />
     </>
+  );
+}
+
+/** The featured story as a typographic slab that continues the hero. */
+function FeaturedStory({ story }: { story: StorySummary }) {
+  return (
+    <section aria-labelledby="featured-heading" className="on-dark bg-ink text-paper">
+      <div className="mx-auto grid max-w-[88rem] gap-10 px-5 py-20 sm:px-8 sm:py-28 lg:grid-cols-12 lg:items-end">
+        <div className="lg:col-span-8">
+          <p className="eyebrow eyebrow-slash text-paper/70">
+            Featured story{story.category ? ` · ${story.category.name}` : ""}
+          </p>
+          <h2 id="featured-heading" className="font-condensed mt-6 text-[clamp(2.8rem,7vw,6.5rem)]">
+            <Link href={paths.story(story.slug)} className="transition-colors hover:text-[#f4c9c5]">
+              {story.headline}
+            </Link>
+          </h2>
+        </div>
+        <div className="space-y-6 lg:col-span-4">
+          {story.subtitle || story.summary ? (
+            <p className="text-[1.1rem] leading-relaxed text-paper/80">{story.subtitle ?? story.summary}</p>
+          ) : null}
+          <p className="eyebrow text-paper/70">
+            {story.contributor ? `${story.contributor.name} / ` : ""}
+            <time dateTime={story.publishedAt}>{formatDate(story.publishedAt)}</time> / {story.readingMinutes} min read
+          </p>
+          <Pill href={paths.story(story.slug)} variant="inverse">
+            Read the story
+          </Pill>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/** One large tile and up to two stacked beside it; collapses gracefully with fewer picks. */
+function PicksMosaic({ stories }: { stories: StorySummary[] }) {
+  const [first, ...rest] = stories.slice(0, 3);
+  if (rest.length === 0) {
+    return <StoryCard story={first} variant="tile" className="mt-10 min-h-[32rem]" />;
+  }
+  return (
+    <div className="mt-10 grid gap-4 lg:grid-cols-[2fr_1fr] lg:grid-rows-2">
+      <StoryCard story={first} variant="tile" className="min-h-[28rem] lg:row-span-2 lg:min-h-[44rem]" />
+      {rest.map((story) => (
+        <StoryCard key={story.id} story={story} variant="tile" className={rest.length === 1 ? "lg:row-span-2" : ""} />
+      ))}
+    </div>
+  );
+}
+
+async function ContributorSpotlight({
+  contributor,
+  others,
+}: {
+  contributor: ContributorSummary;
+  others: ContributorSummary[];
+}) {
+  const profile = await getContributorBySlug(contributor.slug);
+  const bio = profile?.bio?.split("\n").find((line) => line.trim()) ?? null;
+
+  return (
+    <section aria-labelledby="spotlight-heading" className="bg-paper-deep">
+      <PageContainer className="grid gap-12 py-20 sm:py-28 md:grid-cols-12 md:items-center md:gap-16">
+        <div className="md:col-span-5">
+          {contributor.avatar ? (
+            <EditorialImage
+              image={contributor.avatar}
+              aspect="4/5"
+              sizes="(min-width: 768px) 40vw, 100vw"
+              decorative
+              className="rounded-[2px]"
+            />
+          ) : (
+            <div aria-hidden className="font-display flex aspect-[4/5] items-center justify-center rounded-[2px] bg-paper text-[8rem] italic text-stone">
+              {contributor.name.charAt(0)}
+            </div>
+          )}
+        </div>
+        <div className="md:col-span-7">
+          <p className="eyebrow eyebrow-slash text-stone">Contributor</p>
+          <h2 id="spotlight-heading" className="font-headline mt-5 text-[clamp(2.6rem,6vw,5.5rem)]">
+            {contributor.name}
+          </h2>
+          {contributor.descriptor ? (
+            <p className="font-display mt-3 text-[1.6rem] italic text-stone">{contributor.descriptor}</p>
+          ) : null}
+          {bio ? (
+            <p className="mt-7 max-w-xl text-[1.1rem] leading-relaxed text-charcoal">
+              <InlineText text={bio} />
+            </p>
+          ) : null}
+          <div className="mt-9 flex flex-wrap items-center gap-x-8 gap-y-4">
+            <Pill href={paths.contributor(contributor.slug)}>Read their stories</Pill>
+            <Link href={paths.contributors()} className="eyebrow text-stone transition-colors hover:text-accent">
+              All contributors <span aria-hidden>→</span>
+            </Link>
+          </div>
+          {others.length > 0 ? (
+            <ul aria-label="More contributors" className="mt-10 flex flex-wrap gap-x-6 gap-y-2 border-t border-line pt-6">
+              {others.map((other) => (
+                <li key={other.id}>
+                  {other.hasProfile ? (
+                    <Link href={paths.contributor(other.slug)} className="text-[0.95rem] text-charcoal hover:text-accent">
+                      {other.name}
+                    </Link>
+                  ) : (
+                    <span className="text-[0.95rem] text-stone">{other.name}</span>
+                  )}
+                </li>
+              ))}
+            </ul>
+          ) : null}
+        </div>
+      </PageContainer>
+    </section>
   );
 }
