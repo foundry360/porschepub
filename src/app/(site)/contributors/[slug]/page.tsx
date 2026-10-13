@@ -9,6 +9,7 @@ import { JsonLd, PageContainer } from "@/components/ui/misc";
 import { breadcrumbJsonLd, personJsonLd } from "@/lib/seo/jsonld";
 import { parsePageParam, paths } from "@/lib/urls";
 import { getContributorBySlug, listProfileContributorSlugs, listStories } from "@/server/content/public";
+import { slugParamsOrPlaceholder } from "@/lib/static-params";
 
 /**
  * Resolve the entity before streaming starts so unknown/unpublished URLs get a
@@ -19,7 +20,7 @@ export const instant = false;
 
 export async function generateStaticParams() {
   const slugs = await listProfileContributorSlugs(100);
-  return slugs.map((entry) => ({ slug: entry.slug }));
+  return slugParamsOrPlaceholder(slugs.map((entry) => entry.slug));
 }
 
 export async function generateMetadata({ params, searchParams }: PageProps<"/contributors/[slug]">): Promise<Metadata> {

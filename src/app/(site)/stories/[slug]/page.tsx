@@ -9,6 +9,7 @@ import {
   getStoryBySlug,
   listLiveStoryIndex,
 } from "@/server/content/public";
+import { slugParamsOrPlaceholder } from "@/lib/static-params";
 
 /**
  * Resolve the entity before streaming starts so unknown/unpublished URLs get a
@@ -19,7 +20,7 @@ export const instant = false;
 
 export async function generateStaticParams() {
   const index = await listLiveStoryIndex(100);
-  return index.map((entry) => ({ slug: entry.slug }));
+  return slugParamsOrPlaceholder(index.map((entry) => entry.slug));
 }
 
 export async function generateMetadata({ params }: PageProps<"/stories/[slug]">): Promise<Metadata> {

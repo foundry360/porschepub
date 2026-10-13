@@ -7,6 +7,7 @@ import { CategoryNav, JsonLd, PageContainer, PageIntro } from "@/components/ui/m
 import { breadcrumbJsonLd } from "@/lib/seo/jsonld";
 import { parsePageParam, paths } from "@/lib/urls";
 import { getCategoryBySlug, listCategories, listStories } from "@/server/content/public";
+import { slugParamsOrPlaceholder } from "@/lib/static-params";
 
 /**
  * Resolve the entity before streaming starts so unknown/unpublished URLs get a
@@ -17,7 +18,7 @@ export const instant = false;
 
 export async function generateStaticParams() {
   const categories = await listCategories();
-  return categories.map((category) => ({ slug: category.slug }));
+  return slugParamsOrPlaceholder(categories.map((category) => category.slug));
 }
 
 export async function generateMetadata({ params, searchParams }: PageProps<"/categories/[slug]">): Promise<Metadata> {
