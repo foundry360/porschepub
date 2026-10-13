@@ -35,7 +35,8 @@ export default async function HomePage() {
   const home = await getHomepage();
   const { featured, hero } = home;
   const heroImage = HERO_IMAGE;
-  const recent = home.latest.length > 3 ? home.latest.slice(0, home.latest.length - (home.latest.length % 3)) : home.latest;
+  const [recentLead, ...recentRest] = home.latest;
+  const recent = recentRest.length > 3 ? recentRest.slice(0, recentRest.length - (recentRest.length % 3)) : recentRest;
   const spotlight = home.contributors.find((contributor) => contributor.hasProfile) ?? null;
 
   return (
@@ -101,16 +102,19 @@ export default async function HomePage() {
         </PageContainer>
       ) : (
         <>
-          {recent.length > 0 ? (
+          {recentLead ? (
             <RevealOnView effect="from-left">
               <section aria-labelledby="latest-heading">
                 <PageContainer className="py-20 sm:py-28">
                   <SectionHeader id="latest-heading" title="Most recent" href={paths.stories()} hrefLabel="All stories" />
-                  <div className="mt-10 grid gap-x-8 gap-y-14 sm:grid-cols-2 lg:grid-cols-3">
-                    {recent.map((story) => (
-                      <StoryCard key={story.id} story={story} />
-                    ))}
-                  </div>
+                  <StoryCard story={recentLead} variant="wide" className="mt-10" />
+                  {recent.length > 0 ? (
+                    <div className="mt-14 grid gap-x-8 gap-y-14 sm:grid-cols-2 lg:grid-cols-3">
+                      {recent.map((story) => (
+                        <StoryCard key={story.id} story={story} />
+                      ))}
+                    </div>
+                  ) : null}
                 </PageContainer>
               </section>
             </RevealOnView>

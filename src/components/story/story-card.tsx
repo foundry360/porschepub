@@ -4,7 +4,7 @@ import { formatDate } from "@/lib/dates";
 import type { StorySummary } from "@/lib/types";
 import { paths } from "@/lib/urls";
 
-export type CardVariant = "standard" | "lead" | "compact" | "tile";
+export type CardVariant = "standard" | "lead" | "compact" | "tile" | "wide";
 
 function Meta({ story, className = "text-stone" }: { story: StorySummary; className?: string }) {
   return (
@@ -65,6 +65,38 @@ export function StoryCard({
             </Link>
           </Heading>
           <Meta story={story} className="text-paper/75" />
+        </div>
+      </article>
+    );
+  }
+
+  if (variant === "wide") {
+    return (
+      <article
+        className={`group relative grid overflow-hidden rounded-[2px] border border-line bg-paper md:grid-cols-[minmax(0,1fr)_minmax(0,2fr)] ${className}`}
+      >
+        {story.leadImage ? (
+          <EditorialImage
+            image={story.leadImage}
+            aspect="16/9"
+            sizes="(min-width: 1280px) 900px, (min-width: 768px) 66vw, 100vw"
+            priority={priority}
+            decorative
+            className="md:order-2 md:!aspect-auto md:h-full md:min-h-[26rem]"
+            imageClassName="transition-transform duration-700 group-hover:scale-[1.025]"
+          />
+        ) : null}
+        <div className="flex flex-col gap-4 p-6 sm:p-8 md:order-1">
+          <Category story={story} />
+          <Heading className="font-condensed text-[2.2rem] text-ink transition-colors group-hover:text-accent sm:text-[2.8rem]">
+            <Link href={href} className="after:absolute after:inset-0">
+              {story.headline}
+            </Link>
+          </Heading>
+          {story.subtitle || story.summary ? (
+            <p className="text-[1rem] leading-relaxed text-stone">{story.subtitle ?? story.summary}</p>
+          ) : null}
+          <Meta story={story} className="mt-auto pt-6 text-stone" />
         </div>
       </article>
     );
