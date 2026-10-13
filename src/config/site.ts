@@ -45,7 +45,7 @@ export const homepage = {
 } as const;
 
 /** Bump when the submission terms change materially. Stored with each consent. */
-export const SUBMISSION_TERMS_VERSION = "2026-10-draft-1";
+export const SUBMISSION_TERMS_VERSION = "2026-10-draft-2";
 
 export const submissionPolicy = {
   /** Max accepted submissions per hashed IP per window. */
