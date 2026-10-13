@@ -1,0 +1,41 @@
+import { brand } from "@/config/brand";
+import { navigation } from "@/config/site";
+import { paths } from "@/lib/urls";
+import { listCategories } from "@/server/content/public";
+import { logger } from "@/server/logger";
+import { MenuDialog } from "./menu-dialog";
+import { ThemeToggle } from "./theme";
+import { Wordmark } from "./wordmark";
+
+export async function loadNavCategories() {
+  try {
+    return await listCategories();
+  } catch (error) {
+    // Navigation must never take the whole site down.
+    logger.error("nav.categories_failed", undefined, error);
+    return [];
+  }
+}
+
+export async function SiteHeader() {
+  const categories = await loadNavCategories();
+
+  return (
+    <header className="relative z-30 border-b border-line bg-paper">
+      <div className="mx-auto flex h-16 max-w-[88rem] items-center justify-between px-5 sm:h-20 sm:px-8">
+        <Wordmark />
+        <div className="flex items-center gap-1 sm:gap-3">
+          <ThemeToggle />
+          <MenuDialog
+          items={navigation.primary}
+          categories={categories.map((category) => ({
+            label: category.name,
+            href: paths.category(category.slug),
+          }))}
+          social={brand.social}
+          />
+        </div>
+      </div>
+    </header>
+  );
+}
