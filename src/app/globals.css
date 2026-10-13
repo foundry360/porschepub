@@ -404,6 +404,9 @@ main:has(.submit-cta) + .site-footer {
 [data-reveal="ready"][data-effect="from-left"] > * {
   transform: translateX(-12vw);
 }
+[data-reveal="ready"][data-effect="from-right"] > * {
+  transform: translateX(12vw);
+}
 [data-reveal="in"] > * {
   opacity: 1;
   transform: none;

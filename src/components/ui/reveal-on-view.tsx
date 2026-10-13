@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, type ReactNode } from "react";
 
-export type RevealEffect = "zoom" | "from-left";
+export type RevealEffect = "zoom" | "from-left" | "from-right";
 
 /**
  * Animates its children in every time it scrolls into view, and resets them
@@ -36,7 +36,7 @@ export function RevealOnView({
   }, []);
 
   return (
-    <div ref={ref} data-effect={effect} className={className}>
+    <div ref={ref} data-effect={effect} className={`overflow-x-clip ${className}`}>
       {children}
     </div>
   );

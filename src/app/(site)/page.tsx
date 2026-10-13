@@ -119,12 +119,14 @@ export default async function HomePage() {
           ) : null}
 
           {home.editorsPicks.length > 0 ? (
-            <section aria-labelledby="picks-heading">
-              <PageContainer className="pb-20 sm:pb-28">
-                <SectionHeader id="picks-heading" eyebrow="Selected by the editors" title="Editors’ picks" />
-                <PicksMosaic stories={home.editorsPicks} />
-              </PageContainer>
-            </section>
+            <RevealOnView effect="from-right">
+              <section aria-labelledby="picks-heading">
+                <PageContainer className="pb-20 sm:pb-28">
+                  <SectionHeader id="picks-heading" eyebrow="Selected by the editors" title="Editors’ picks" />
+                  <PicksMosaic stories={home.editorsPicks} />
+                </PageContainer>
+              </section>
+            </RevealOnView>
           ) : null}
         </>
       )}
