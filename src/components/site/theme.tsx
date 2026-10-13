@@ -3,35 +3,26 @@
 import { useSyncExternalStore } from "react";
 import { THEME_CHANGE_EVENT, THEME_STORAGE_KEY, type ThemePreference } from "@/lib/theme";
 
-const ORDER: ThemePreference[] = ["system", "light", "dark"];
-const LABEL: Record<ThemePreference, string> = { system: "Auto", light: "Light", dark: "Dark" };
+const LABEL: Record<ThemePreference, string> = { light: "Light", dark: "Dark" };
 
-function readPreference(): ThemePreference {
-  try {
-    const value = localStorage.getItem(THEME_STORAGE_KEY);
-    return value === "light" || value === "dark" ? value : "system";
-  } catch {
-    return "system";
-  }
+/** The theme in effect, as resolved by the head script (stored choice, else the OS on first visit). */
+function readTheme(): ThemePreference {
+  return document.documentElement.dataset.theme === "dark" ? "dark" : "light";
 }
 
 function subscribe(onChange: () => void) {
-  window.addEventListener(THEME_CHANGE_EVENT, onChange);
-  window.addEventListener("storage", onChange);
-  return () => {
-    window.removeEventListener(THEME_CHANGE_EVENT, onChange);
-    window.removeEventListener("storage", onChange);
-  };
+  const observer = new MutationObserver(onChange);
+  observer.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+  return () => observer.disconnect();
 }
 
-function setPreference(next: ThemePreference) {
+function setTheme(next: ThemePreference) {
   try {
-    if (next === "system") localStorage.removeItem(THEME_STORAGE_KEY);
-    else localStorage.setItem(THEME_STORAGE_KEY, next);
+    localStorage.setItem(THEME_STORAGE_KEY, next);
   } catch {
     // Storage blocked: the choice simply won't persist.
-    document.documentElement.dataset.theme = next === "system" ? "light" : next;
   }
+  document.documentElement.dataset.theme = next;
   window.dispatchEvent(new Event(THEME_CHANGE_EVENT));
 }
 
@@ -45,36 +36,28 @@ function Icon({ preference }: { preference: ThemePreference }) {
       </svg>
     );
   }
-  if (preference === "dark") {
-    return (
-      <svg {...common}>
-        <path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5Z" />
-      </svg>
-    );
-  }
   return (
     <svg {...common}>
-      <circle cx="12" cy="12" r="8.5" />
-      <path d="M12 3.5v17a8.5 8.5 0 0 0 0-17Z" fill="currentColor" stroke="none" />
+      <path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5Z" />
     </svg>
   );
 }
 
-/** Cycles Auto (follow the OS) -> Light -> Dark. */
+/** Switches between the light and dark themes; the choice is remembered. */
 export function ThemeToggle({ className = "", showLabel = false }: { className?: string; showLabel?: boolean }) {
-  const preference = useSyncExternalStore(subscribe, readPreference, () => "system" as const);
-  const next = ORDER[(ORDER.indexOf(preference) + 1) % ORDER.length];
+  const theme = useSyncExternalStore(subscribe, readTheme, () => "light" as const);
+  const next: ThemePreference = theme === "dark" ? "light" : "dark";
 
   return (
     <button
       type="button"
-      onClick={() => setPreference(next)}
-      aria-label={`Colour theme: ${LABEL[preference]}. Switch to ${LABEL[next]}.`}
-      title={`Theme: ${LABEL[preference]}`}
+      onClick={() => setTheme(next)}
+      aria-label={`Colour theme: ${LABEL[theme]}. Switch to ${LABEL[next]}.`}
+      title={`Switch to ${LABEL[next].toLowerCase()} theme`}
       className={`inline-flex h-11 items-center gap-2 px-2 text-ink transition-colors ${className}`}
     >
-      <Icon preference={preference} />
-      {showLabel ? <span className="text-[0.8rem]">{LABEL[preference]}</span> : null}
+      <Icon preference={theme} />
+      {showLabel ? <span className="text-[0.8rem]">{LABEL[theme]}</span> : null}
     </button>
   );
 }

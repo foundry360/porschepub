@@ -98,18 +98,19 @@ test.describe("dark mode", () => {
     });
   }
 
-  test("the toggle overrides the OS setting and persists across reloads", async ({ page }) => {
+  test("the toggle switches between light and dark only, and persists across reloads", async ({ page }) => {
     await page.goto("/");
     const toggle = page.getByRole("button", { name: /Colour theme/ });
-    await expect(toggle).toHaveAttribute("aria-label", /Auto/);
+    await expect(toggle).toHaveAttribute("aria-label", "Colour theme: Dark. Switch to Light.");
     await toggle.click();
     await expect(page.locator("html")).toHaveAttribute("data-theme", "light");
+    await expect(toggle).toHaveAttribute("aria-label", "Colour theme: Light. Switch to Dark.");
     await page.reload();
     await expect(page.locator("html")).toHaveAttribute("data-theme", "light");
-    await expect(toggle).toHaveAttribute("aria-label", /Light/);
-    await toggle.click();
     await toggle.click();
     await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
-    await expect(toggle).toHaveAttribute("aria-label", /Auto/);
+    await page.reload();
+    await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
+    await expect(toggle).toHaveAttribute("aria-label", "Colour theme: Dark. Switch to Light.");
   });
 });
