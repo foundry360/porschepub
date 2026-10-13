@@ -4,7 +4,12 @@ import { useEffect, useState } from "react";
 import { EditorialImage } from "@/components/ui/editorial-image";
 import type { MediaImage } from "@/lib/types";
 
-export type HeroSlide = { image: MediaImage; position: string };
+export type HeroSlide = {
+  image: MediaImage;
+  position: string;
+  /** Extra shading for busy or bright photos, faded in and out with the slide. */
+  scrim?: string;
+};
 
 const INTERVAL_MS = 7000;
 
@@ -62,6 +67,7 @@ export function HeroCarousel({
             className="!absolute inset-0 !aspect-auto h-full w-full"
             imageClassName={slide.position}
           />
+          {slide.scrim ? <div className={`absolute inset-0 ${slide.scrim}`} /> : null}
         </div>
       ))}
       <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/30 to-transparent" />

@@ -21,7 +21,7 @@ export const metadata: Metadata = {
   openGraph: { url: "/" },
 };
 
-/** Licensed under the Unsplash License (free commercial use, no permission needed). */
+/** Credited slides are Unsplash photos (Unsplash License: free commercial use). The uncredited slide is AI-generated. */
 const HERO_SLIDES: HeroSlide[] = [
   {
     image: {
@@ -46,6 +46,19 @@ const HERO_SLIDES: HeroSlide[] = [
       credit: "Marco Piccinelli / Unsplash",
     },
     position: "object-[50%_center]",
+  },
+  {
+    image: {
+      id: "home-hero-gathering",
+      url: "/images/hero-porsche-gathering-3168.jpg",
+      width: 3168,
+      height: 1344,
+      alt: "",
+      caption: null,
+      credit: null,
+    },
+    position: "object-[50%_bottom]",
+    scrim: "bg-gradient-to-r from-black/55 via-black/20 to-transparent",
   },
 ];
 
