@@ -416,8 +416,8 @@ async function readHeroSetting(): Promise<Partial<HomepageData["hero"]>> {
 /**
  * Homepage composition with explicit fallbacks:
  *   featured  -> editor-selected story, else the newest live story
- *   picks     -> editor-selected stories (ordered), else next newest stories
- *   latest    -> newest stories not already shown above
+ *   picks     -> editor-selected stories (ordered), topped up with stories left over after latest
+ *   latest    -> newest stories other than the featured story and editor-selected picks
  */
 export async function getHomepage(): Promise<HomepageData> {
   "use cache";
@@ -460,6 +460,9 @@ export async function getHomepage(): Promise<HomepageData> {
       used.add(row.id);
     }
   }
+  const latest = recentStories.filter((story) => !used.has(story.id)).slice(0, homepage.latestCount);
+  latest.forEach((story) => used.add(story.id));
+
   for (const story of recentStories) {
     if (picks.length >= homepage.editorsPicksCount) break;
     if (!used.has(story.id)) {
@@ -467,9 +470,6 @@ export async function getHomepage(): Promise<HomepageData> {
       used.add(story.id);
     }
   }
-
-  const latest = recentStories.filter((story) => !used.has(story.id)).slice(0, homepage.latestCount);
-  latest.forEach((story) => used.add(story.id));
 
   const { data: categoryRows, error: categoryError } = await db
     .from("categories")
