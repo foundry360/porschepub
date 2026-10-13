@@ -196,7 +196,8 @@ test("4. a visitor submits a story proposal", async ({ page }) => {
   await page.getByLabel(/Email address/).fill(`${state.run}-submitter@example.test`);
   await page.getByLabel(/Working title/).fill(submissionTitle);
   await page.getByLabel(/Porsche model or subject/).fill("A fictional 944");
-  await page.getByLabel(/Category/).selectOption({ label: state.categoryName });
+  await page.getByRole("combobox", { name: /Category/ }).click();
+  await page.getByRole("option", { name: state.categoryName }).click();
   await page.getByLabel(/Your story/).fill("This is a fictional pitch written by the automated test suite. ".repeat(6));
   await page.getByLabel(/I have read and accept/).check();
   await page.getByRole("button", { name: "Send pitch" }).click();
@@ -228,7 +229,8 @@ test("10. invalid and abusive submissions are rejected safely", async ({ page, r
   await page.getByLabel(/Email address/).fill(`${state.run}-bot@example.test`);
   await page.getByLabel(/Working title/).fill(`${state.run} BOT SPAM`);
   await page.getByLabel(/Porsche model or subject/).fill("spam");
-  await page.getByLabel(/Category/).selectOption({ label: state.categoryName });
+  await page.getByRole("combobox", { name: /Category/ }).click();
+  await page.getByRole("option", { name: state.categoryName }).click();
   await page.getByLabel(/Your story/).fill("spam spam spam spam spam spam spam spam spam spam spam spam spam spam spam spam spam spam spam spam spam");
   await page.getByLabel(/I have read and accept/).check();
   await page.getByRole("button", { name: "Send pitch" }).click();

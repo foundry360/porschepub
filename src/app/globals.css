@@ -432,6 +432,21 @@ main:has(.submit-cta) + .site-footer {
   transform: none;
 }
 
+/* Custom dropdown panel (<SelectMenu>). */
+.select-menu-panel:not([hidden]) {
+  animation: select-menu-in 220ms var(--ease-editorial) both;
+}
+@keyframes select-menu-in {
+  from {
+    opacity: 0;
+    transform: translateY(-6px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
 /* Radial red glow behind call-to-action sections. */
 .glow-accent {
   background-image: radial-gradient(60% 55% at 50% 115%, rgb(195 29 20 / 11%), transparent 70%);

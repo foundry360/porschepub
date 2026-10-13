@@ -3,6 +3,7 @@
 import Link from "next/link";
 import Script from "next/script";
 import { useActionState, useEffect, useRef, useState } from "react";
+import { SelectMenu } from "@/components/ui/select-menu";
 import { track } from "@/lib/analytics";
 import {
   rawSubmissionSchema,
@@ -245,22 +246,14 @@ export function SubmissionForm({
         </Field>
         <Field id="field-categoryId" label="Category" error={errors.categoryId}>
           {(a11y) => (
-            <select
+            <SelectMenu
               id="field-categoryId"
               name="categoryId"
+              placeholder="Choose a category"
               defaultValue={values.categoryId ?? ""}
-              className={inputClass}
+              options={categories.map((category) => ({ value: category.id, label: category.name }))}
               {...a11y}
-            >
-              <option value="" disabled>
-                Choose a category
-              </option>
-              {categories.map((category) => (
-                <option key={category.id} value={category.id}>
-                  {category.name}
-                </option>
-              ))}
-            </select>
+            />
           )}
         </Field>
       </div>
