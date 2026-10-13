@@ -2,6 +2,7 @@
 
 /* eslint-disable @next/next/no-img-element -- admin thumbnails are small, authenticated-context previews */
 import { useCallback, useEffect, useRef, useState, useTransition } from "react";
+import { createPortal } from "react-dom";
 import { getBrowserClient } from "@/lib/supabase-browser";
 import { finalizeUploadAction, requestUploadPathAction } from "@/app/admin/(console)/media/actions";
 import { listMediaAction } from "@/app/admin/(console)/media/picker-actions";
@@ -27,54 +28,48 @@ export function MediaPicker({
 
   useEffect(() => {
     const dialog = dialogRef.current;
-    if (!dialog) return;
-    if (open && !dialog.open) dialog.showModal();
-    if (!open && dialog.open) dialog.close();
+    if (open && dialog && !dialog.open) dialog.showModal();
   }, [open]);
 
-  return (
+  if (!open) return null;
+
+  // Portalled out of the host form, and React submit events stopped here, because the picker's own
+  // forms would otherwise submit (and save) the story or contributor form it is opened from.
+  return createPortal(
     <dialog
       ref={dialogRef}
       onClose={onClose}
+      onSubmit={(event) => event.stopPropagation()}
       aria-labelledby="media-picker-title"
       className="m-auto w-[min(60rem,calc(100vw-2rem))] max-h-[calc(100dvh-2rem)] overflow-y-auto border border-ink bg-paper p-0 text-ink backdrop:bg-ink/60"
     >
-      {open ? (
-        <div className="p-5 sm:p-7">
-          <div className="mb-5 flex items-start justify-between gap-4">
-            <h2 id="media-picker-title" className="font-display text-[1.8rem] leading-none">
-              Choose an image
-            </h2>
-            <button type="button" onClick={onClose} className={buttonSecondaryClass}>
-              Close
-            </button>
-          </div>
-          <div role="tablist" aria-label="Image source" className="mb-5 flex gap-2">
-            {(["library", "upload"] as const).map((value) => (
-              <button
-                key={value}
-                role="tab"
-                type="button"
-                aria-selected={tab === value}
-                onClick={() => setTab(value)}
-                className={`border px-4 py-2 text-[0.82rem] font-semibold uppercase tracking-[0.1em] ${tab === value ? "border-ink bg-ink text-paper" : "border-line bg-surface"}`}
-              >
-                {value === "library" ? "Library" : "Upload new"}
-              </button>
-            ))}
-          </div>
-          {tab === "library" ? (
-            <Library onSelect={onSelect} />
-          ) : (
-            <Upload
-              onUploaded={(image) => {
-                onSelect(image);
-              }}
-            />
-          )}
+      <div className="p-5 sm:p-7">
+        <div className="mb-5 flex items-start justify-between gap-4">
+          <h2 id="media-picker-title" className="font-display text-[1.8rem] leading-none">
+            Choose an image
+          </h2>
+          <button type="button" onClick={onClose} className={buttonSecondaryClass}>
+            Close
+          </button>
         </div>
-      ) : null}
-    </dialog>
+        <div role="tablist" aria-label="Image source" className="mb-5 flex gap-2">
+          {(["library", "upload"] as const).map((value) => (
+            <button
+              key={value}
+              role="tab"
+              type="button"
+              aria-selected={tab === value}
+              onClick={() => setTab(value)}
+              className={`border px-4 py-2 text-[0.82rem] font-semibold uppercase tracking-[0.1em] ${tab === value ? "border-ink bg-ink text-paper" : "border-line bg-surface"}`}
+            >
+              {value === "library" ? "Library" : "Upload new"}
+            </button>
+          ))}
+        </div>
+        {tab === "library" ? <Library onSelect={onSelect} /> : <Upload onUploaded={onSelect} />}
+      </div>
+    </dialog>,
+    document.body,
   );
 }
 

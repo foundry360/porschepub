@@ -91,6 +91,32 @@ test("6. an editor creates a draft (uploading a lead image) and previews it", as
   await context.close();
 });
 
+test("an editor uploads a contributor portrait and it is still there after saving", async ({ browser }) => {
+  const { page, context } = await editorPage(browser);
+  await page.goto("/admin/contributors");
+  await page.getByRole("link", { name: state.contributorName }).click();
+  await page.waitForURL(/\/admin\/contributors\/[0-9a-f-]{36}$/);
+  const editUrl = page.url();
+
+  await page.getByRole("button", { name: "Choose image" }).click();
+  const dialog = page.getByRole("dialog");
+  await dialog.getByRole("tab", { name: "Upload new" }).click();
+  await dialog.getByLabel("Image file").setInputFiles(LEAD_IMAGE);
+  await dialog.getByLabel("Alt text").fill(`${state.run} Portrait of a fictional contributor`);
+  await dialog.getByLabel("Credit").fill("Automated test suite");
+  await dialog.getByRole("button", { name: "Upload and use image" }).click();
+  await expect(dialog).toBeHidden();
+  // Uploading must not save the contributor behind the editor's back.
+  expect(page.url()).toBe(editUrl);
+  await expect(page.getByAltText(`${state.run} Portrait of a fictional contributor`)).toBeVisible();
+
+  await page.getByRole("button", { name: "Save contributor" }).click();
+  await page.waitForURL(/\/admin\/contributors\?saved=1$/);
+  await page.goto(editUrl);
+  await expect(page.getByAltText(`${state.run} Portrait of a fictional contributor`)).toBeVisible();
+  await context.close();
+});
+
 test("9. an unauthorized visitor cannot reach a draft, a submission, or admin actions", async ({ browser, request }) => {
   const { page, context } = await anonymous(browser);
 
