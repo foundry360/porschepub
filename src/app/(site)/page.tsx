@@ -22,7 +22,7 @@ export const metadata: Metadata = {
 };
 
 /** Credited slides are Unsplash photos (Unsplash License: free commercial use). The uncredited slide is AI-generated. */
-const HERO_SLIDES: HeroSlide[] = [
+const HERO_SLIDES: Array<Omit<HeroSlide, "headline"> & { headline?: string }> = [
   {
     image: {
       id: "home-hero-targa",
@@ -46,6 +46,7 @@ const HERO_SLIDES: HeroSlide[] = [
       credit: "Marco Piccinelli / Unsplash",
     },
     position: "object-[50%_center]",
+    headline: "Legends still racing",
   },
   {
     image: {
@@ -59,6 +60,7 @@ const HERO_SLIDES: HeroSlide[] = [
     },
     position: "object-[50%_bottom]",
     scrim: "bg-gradient-to-r from-black/55 via-black/20 to-transparent",
+    headline: "Every car has a story",
   },
 ];
 
@@ -75,16 +77,10 @@ export default async function HomePage() {
 
       {/* Hero ------------------------------------------------------------ */}
       <HeroCarousel
-        slides={HERO_SLIDES}
+        slides={HERO_SLIDES.map((slide) => ({ ...slide, headline: slide.headline ?? hero.headline }))}
+        kicker={hero.kicker}
         className="on-dark relative isolate flex min-h-[78svh] items-end overflow-hidden bg-charcoal text-paper"
       >
-        <p className="eyebrow animate-fade-up text-paper">{hero.kicker}</p>
-        <h1
-          id="hero-heading"
-          className="font-display animate-fade-up mt-5 max-w-4xl text-[3rem] leading-[0.98] [animation-delay:120ms] sm:text-[5.5rem]"
-        >
-          {hero.headline}
-        </h1>
         <p className="animate-fade-up mt-6 max-w-xl text-[1.1rem] leading-relaxed text-paper/85 [animation-delay:240ms] sm:text-[1.25rem]">
           {hero.intro}
         </p>

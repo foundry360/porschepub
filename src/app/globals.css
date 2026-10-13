@@ -503,3 +503,24 @@ main:has(.submit-cta) + .site-footer {
 .hero-slide.is-active img {
   transform: scale(1);
 }
+
+.hero-headline {
+  opacity: 0;
+  transform: translateY(0.25em);
+  transition:
+    opacity 900ms var(--ease-editorial),
+    transform 900ms var(--ease-editorial);
+}
+
+.hero-headline.is-active {
+  opacity: 1;
+  transform: none;
+  transition-delay: 350ms;
+}
+
+@starting-style {
+  .hero-headline.is-active {
+    opacity: 0;
+    transform: translateY(0.25em);
+  }
+}

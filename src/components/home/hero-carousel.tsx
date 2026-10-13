@@ -9,6 +9,7 @@ export type HeroSlide = {
   position: string;
   /** Extra shading for busy or bright photos, faded in and out with the slide. */
   scrim?: string;
+  headline: string;
 };
 
 const INTERVAL_MS = 7000;
@@ -19,11 +20,14 @@ const INTERVAL_MS = 7000;
  */
 export function HeroCarousel({
   slides,
+  kicker,
   className = "",
   children,
 }: {
   slides: HeroSlide[];
+  kicker: React.ReactNode;
   className?: string;
+  /** Everything below the headline. */
   children: React.ReactNode;
 }) {
   const [active, setActive] = useState(0);
@@ -73,6 +77,22 @@ export function HeroCarousel({
       <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/30 to-transparent" />
 
       <div className="relative mx-auto w-full max-w-[88rem] px-5 pb-12 pt-32 sm:px-8 sm:pb-20">
+        <p className="eyebrow animate-fade-up text-paper">{kicker}</p>
+        {/* Headlines share one grid cell so the block keeps the height of the longest;
+            only the active one is the page's h1. */}
+        <div className="font-display animate-fade-up mt-5 grid max-w-4xl text-[3rem] leading-[0.98] [animation-delay:120ms] sm:text-[5.5rem]">
+          {slides.map((slide, index) =>
+            index === active ? (
+              <h1 key={slide.image.id} id="hero-heading" className="hero-headline is-active col-start-1 row-start-1">
+                {slide.headline}
+              </h1>
+            ) : (
+              <p key={slide.image.id} aria-hidden className="hero-headline col-start-1 row-start-1">
+                {slide.headline}
+              </p>
+            ),
+          )}
+        </div>
         {children}
         <div className="mt-10 flex flex-wrap items-center justify-between gap-x-6 gap-y-4">
           <p className="text-[0.7rem] uppercase tracking-[0.12em] text-paper/60" aria-live="off">
