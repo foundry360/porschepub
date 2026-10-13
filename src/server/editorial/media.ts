@@ -154,13 +154,13 @@ export async function deleteMedia(db: Db, actorId: string, id: string): Promise<
 
 export type MediaUsage = { kind: "story" | "contributor"; id: string; label: string };
 
-/** Where an asset is referenced (lead, social image, avatar or inline in a body). */
+/** Where an asset is referenced (lead, social image, avatar, contributor cover or inline in a body). */
 export async function mediaUsage(db: Db, assetId: string): Promise<MediaUsage[]> {
   const usage: MediaUsage[] = [];
   const [lead, og, avatars, inline] = await Promise.all([
     db.from("stories").select("id, headline").eq("lead_image_id", assetId),
     db.from("stories").select("id, headline").eq("og_image_id", assetId),
-    db.from("contributors").select("id, name").eq("avatar_asset_id", assetId),
+    db.from("contributors").select("id, name").or(`avatar_asset_id.eq.${assetId},cover_asset_id.eq.${assetId}`),
     // Inline images live inside the JSON body; match on the asset id string.
     db.from("stories").select("id, headline").filter("body", "cs", JSON.stringify([{ type: "image", assetId }])),
   ]);

@@ -32,6 +32,7 @@ export async function saveContributor(
     descriptor: input.descriptor,
     bio: input.bio,
     avatar_asset_id: input.avatarAssetId,
+    cover_asset_id: input.coverAssetId,
     expertise: input.expertise,
     website_url: input.websiteUrl,
     social_url: input.socialUrl,

@@ -31,6 +31,8 @@ export type ContributorSummary = {
 };
 
 export type ContributorProfile = ContributorSummary & {
+  /** Their car or another scene; never the headshot. */
+  cover: MediaImage | null;
   bio: string | null;
   expertise: string[];
   websiteUrl: string | null;

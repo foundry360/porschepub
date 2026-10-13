@@ -75,6 +75,7 @@ describe("other editorial schemas", () => {
     descriptor: "",
     bio: "",
     avatarAssetId: "",
+    coverAssetId: "",
     websiteUrl: "",
     socialUrl: "",
     email: "",

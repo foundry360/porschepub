@@ -290,7 +290,7 @@ export async function getContributorBySlug(slug: string): Promise<ContributorPro
   const { data, error } = await db
     .from("contributors")
     .select(
-      `${CONTRIBUTOR_SELECT}, bio, expertise, website_url, social_url, updated_at`,
+      `${CONTRIBUTOR_SELECT}, cover:media_assets!cover_asset_id(${MEDIA_COLUMNS}), bio, expertise, website_url, social_url, updated_at`,
     )
     .eq("slug", slug)
     .eq("profile_visible", true)
@@ -299,6 +299,7 @@ export async function getContributorBySlug(slug: string): Promise<ContributorPro
   if (!data) return null;
 
   const row = data as unknown as Parameters<typeof toContributorSummary>[0] & {
+    cover: MediaAssetRow | null;
     bio: string | null;
     expertise: string[];
     website_url: string | null;
@@ -309,6 +310,7 @@ export async function getContributorBySlug(slug: string): Promise<ContributorPro
   if (!summary) return null;
   return {
     ...summary,
+    cover: toMediaImage(row.cover),
     bio: row.bio,
     expertise: row.expertise,
     websiteUrl: row.website_url,

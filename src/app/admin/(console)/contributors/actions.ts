@@ -23,6 +23,7 @@ export async function saveContributorAction(_previous: FormState, formData: Form
     descriptor: formString(formData, "descriptor"),
     bio: formString(formData, "bio"),
     avatarAssetId: formString(formData, "avatarAssetId"),
+    coverAssetId: formString(formData, "coverAssetId"),
     expertise: formList(formData, "expertise"),
     websiteUrl: formString(formData, "websiteUrl"),
     socialUrl: formString(formData, "socialUrl"),

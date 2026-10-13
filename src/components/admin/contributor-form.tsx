@@ -24,12 +24,15 @@ export type ContributorFormValues = {
 export function ContributorForm({
   values,
   avatar,
+  cover: initialCover,
 }: {
   values: ContributorFormValues;
   avatar: ImageInfo | null;
+  cover: ImageInfo | null;
 }) {
   const { state, onSubmit, pending } = useActionForm(saveContributorAction);
   const [image, setImage] = useState<ImageInfo | null>(avatar);
+  const [cover, setCover] = useState<ImageInfo | null>(initialCover);
   const [visible, setVisible] = useState(values.profileVisible);
   const err = (name: string) => fieldError(state, name);
 
@@ -38,6 +41,7 @@ export function ContributorForm({
       {values.id ? <input type="hidden" name="id" value={values.id} /> : null}
       <input type="hidden" name="previousSlug" value={values.slug} />
       <input type="hidden" name="avatarAssetId" value={image?.id ?? ""} />
+      <input type="hidden" name="coverAssetId" value={cover?.id ?? ""} />
 
       <div className="min-w-0 space-y-5">
         <FormBanner state={state} />
@@ -83,7 +87,14 @@ export function ContributorForm({
             <span>Feature on the homepage contributor section</span>
           </label>
           <div className="mt-5">
-            <ImageField label="Portrait (optional)" value={image} onChange={setImage} />
+            <ImageField label="Headshot (optional)" value={image} onChange={setImage} />
+            <p className="mt-1.5 text-[0.8rem] text-stone">Shown small and round beside their name.</p>
+          </div>
+          <div className="mt-5">
+            <ImageField label="Cover image (optional)" value={cover} onChange={setCover} />
+            <p className="mt-1.5 text-[0.8rem] text-stone">
+              Their car or another scene, shown large on the homepage. Without one, the lead image of their latest story is used.
+            </p>
           </div>
         </Card>
         <Card title="Private editorial notes">

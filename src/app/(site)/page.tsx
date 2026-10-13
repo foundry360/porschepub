@@ -12,7 +12,7 @@ import { formatDate } from "@/lib/dates";
 import { organizationJsonLd, websiteJsonLd } from "@/lib/seo/jsonld";
 import type { ContributorSummary, StorySummary } from "@/lib/types";
 import { paths } from "@/lib/urls";
-import { getContributorBySlug, getHomepage } from "@/server/content/public";
+import { getContributorBySlug, getHomepage, listStories } from "@/server/content/public";
 
 export const metadata: Metadata = {
   title: { absolute: `${brand.name}: ${brand.tagline}` },
@@ -240,33 +240,50 @@ async function ContributorSpotlight({
 }) {
   const profile = await getContributorBySlug(contributor.slug);
   const bio = profile?.bio?.split("\n").find((line) => line.trim()) ?? null;
+  let cover = profile?.cover ?? null;
+  if (!cover) {
+    const { items } = await listStories({ page: 1, contributorId: contributor.id, pageSize: 6 });
+    cover = items.find((story) => story.leadImage)?.leadImage ?? null;
+  }
 
   return (
     <section aria-labelledby="spotlight-heading">
       <PageContainer className="grid gap-12 py-20 sm:py-28 md:grid-cols-12 md:items-center md:gap-16">
-        <div className="md:col-span-5">
-          {contributor.avatar ? (
+        <div className="md:col-span-6">
+          {cover ? (
             <EditorialImage
-              image={contributor.avatar}
-              aspect="4/5"
-              sizes="(min-width: 768px) 40vw, 100vw"
-              decorative
+              image={cover}
+              aspect="4/3"
+              sizes="(min-width: 768px) 50vw, 100vw"
               className="rounded-[2px]"
             />
           ) : (
-            <div aria-hidden className="font-display flex aspect-[4/5] items-center justify-center rounded-[2px] bg-paper-deep text-[8rem] italic text-stone">
+            <div aria-hidden className="font-display flex aspect-[4/3] items-center justify-center rounded-[2px] bg-paper-deep text-[8rem] italic text-stone">
               {contributor.name.charAt(0)}
             </div>
           )}
         </div>
-        <div className="md:col-span-7">
+        <div className="md:col-span-6">
           <p className="eyebrow eyebrow-slash text-stone">Contributor</p>
-          <h2 id="spotlight-heading" className="font-headline mt-5 text-[clamp(2.6rem,6vw,5.5rem)]">
-            {contributor.name}
-          </h2>
-          {contributor.descriptor ? (
-            <p className="font-display mt-3 text-[1.6rem] italic text-stone">{contributor.descriptor}</p>
-          ) : null}
+          <div className="mt-5 flex items-center gap-5">
+            {contributor.avatar ? (
+              <EditorialImage
+                image={contributor.avatar}
+                aspect="1/1"
+                sizes="96px"
+                decorative
+                className="w-20 shrink-0 overflow-hidden rounded-full sm:w-24"
+              />
+            ) : null}
+            <div className="min-w-0">
+              <h2 id="spotlight-heading" className="font-headline text-[clamp(2.4rem,5vw,4.5rem)]">
+                {contributor.name}
+              </h2>
+              {contributor.descriptor ? (
+                <p className="font-display mt-1 text-[1.4rem] italic text-stone">{contributor.descriptor}</p>
+              ) : null}
+            </div>
+          </div>
           {bio ? (
             <p className="mt-7 max-w-xl text-[1.1rem] leading-relaxed text-charcoal">
               <InlineText text={bio} />

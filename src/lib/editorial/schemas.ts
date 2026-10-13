@@ -65,6 +65,7 @@ export const contributorInputSchema = z.object({
   descriptor: optionalText(160),
   bio: optionalMultiline(3000),
   avatarAssetId: optionalUuid,
+  coverAssetId: optionalUuid,
   expertise: z.array(text(60).refine((v) => v.length > 0)).max(12).default([]),
   websiteUrl: httpsUrl,
   socialUrl: httpsUrl,

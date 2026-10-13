@@ -74,17 +74,30 @@ export default async function ContributorPage(props: PageProps<"/contributors/[s
       <TrackEvent event="Contributor View" props={{ contributor: contributor.slug }} />
 
       <header className="grid gap-10 pb-16 pt-14 sm:pt-20 md:grid-cols-12 md:gap-14">
-        {contributor.avatar ? (
-          <div className="animate-fade-in md:col-span-4 lg:col-span-3">
-            <EditorialImage image={contributor.avatar} aspect="4/5" sizes="(min-width: 1024px) 25vw, (min-width: 768px) 33vw, 100vw" priority className="rounded-[2px]" />
+        {contributor.cover ? (
+          <div className="animate-fade-in md:col-span-5">
+            <EditorialImage image={contributor.cover} aspect="4/3" sizes="(min-width: 768px) 42vw, 100vw" priority className="rounded-[2px]" />
           </div>
         ) : null}
-        <div className={`animate-fade-up ${contributor.avatar ? "md:col-span-8 lg:col-span-9" : "md:col-span-12"}`}>
+        <div className={`animate-fade-up ${contributor.cover ? "md:col-span-7" : "md:col-span-12"}`}>
           <p className="eyebrow eyebrow-slash mb-5 text-stone">Contributor</p>
-          <h1 className="font-headline text-[clamp(2.8rem,7vw,6rem)]">{contributor.name}</h1>
-          {contributor.descriptor ? (
-            <p className="font-display mt-4 text-[1.7rem] italic text-stone">{contributor.descriptor}</p>
-          ) : null}
+          <div className="flex items-center gap-5 sm:gap-6">
+            {contributor.avatar ? (
+              <EditorialImage
+                image={contributor.avatar}
+                aspect="1/1"
+                sizes="128px"
+                priority
+                className="w-20 shrink-0 overflow-hidden rounded-full sm:w-28"
+              />
+            ) : null}
+            <div className="min-w-0">
+              <h1 className="font-headline text-[clamp(2.8rem,7vw,6rem)]">{contributor.name}</h1>
+              {contributor.descriptor ? (
+                <p className="font-display mt-2 text-[1.7rem] italic text-stone">{contributor.descriptor}</p>
+              ) : null}
+            </div>
+          </div>
           <div className="mt-8 max-w-2xl space-y-4 text-[1.05rem] leading-relaxed text-charcoal">
             {paragraphs.map((paragraph, index) => (
               <p key={index}>

@@ -24,16 +24,18 @@ export default async function EditContributorPage({ params }: PageProps<"/admin/
   ]);
   if (!c) notFound();
 
-  const media = c.avatar_asset_id ? await getMediaByIds(db, [c.avatar_asset_id]) : {};
-  const avatar = c.avatar_asset_id && media[c.avatar_asset_id]
-    ? { id: c.avatar_asset_id, url: media[c.avatar_asset_id].url, alt: media[c.avatar_asset_id].alt }
-    : null;
+  const assetIds = [c.avatar_asset_id, c.cover_asset_id].filter((id): id is string => Boolean(id));
+  const media = assetIds.length > 0 ? await getMediaByIds(db, assetIds) : {};
+  const info = (id: string | null) => (id && media[id] ? { id, url: media[id].url, alt: media[id].alt } : null);
+  const avatar = info(c.avatar_asset_id);
+  const cover = info(c.cover_asset_id);
 
   return (
     <>
       <AdminHeading title={c.name} description={`${count ?? 0} stor${count === 1 ? "y" : "ies"} credited.`} />
       <ContributorForm
         avatar={avatar}
+        cover={cover}
         values={{
           id: c.id,
           name: c.name,

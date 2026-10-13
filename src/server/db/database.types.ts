@@ -73,19 +73,25 @@ isOneToOne: true
                   ]
                 },"contributors": {
                   Row: {
-                    "avatar_asset_id": string | null,"bio": string | null,"created_at": string,"descriptor": string | null,"expertise": (string)[],"id": string,"is_highlighted": boolean,"name": string,"profile_visible": boolean,"slug": string,"social_url": string | null,"updated_at": string,"website_url": string | null
+                    "avatar_asset_id": string | null,"bio": string | null,"cover_asset_id": string | null,"created_at": string,"descriptor": string | null,"expertise": (string)[],"id": string,"is_highlighted": boolean,"name": string,"profile_visible": boolean,"slug": string,"social_url": string | null,"updated_at": string,"website_url": string | null
                   }
                   ComputedFields: never
                   Insert: {
-                    "avatar_asset_id"?: string | null,"bio"?: string | null,"created_at"?: string,"descriptor"?: string | null,"expertise"?: (string)[],"id"?: string,"is_highlighted"?: boolean,"name": string,"profile_visible"?: boolean,"slug": string,"social_url"?: string | null,"updated_at"?: string,"website_url"?: string | null
+                    "avatar_asset_id"?: string | null,"bio"?: string | null,"cover_asset_id"?: string | null,"created_at"?: string,"descriptor"?: string | null,"expertise"?: (string)[],"id"?: string,"is_highlighted"?: boolean,"name": string,"profile_visible"?: boolean,"slug": string,"social_url"?: string | null,"updated_at"?: string,"website_url"?: string | null
                   }
                   Update: {
-                    "avatar_asset_id"?: string | null,"bio"?: string | null,"created_at"?: string,"descriptor"?: string | null,"expertise"?: (string)[],"id"?: string,"is_highlighted"?: boolean,"name"?: string,"profile_visible"?: boolean,"slug"?: string,"social_url"?: string | null,"updated_at"?: string,"website_url"?: string | null
+                    "avatar_asset_id"?: string | null,"bio"?: string | null,"cover_asset_id"?: string | null,"created_at"?: string,"descriptor"?: string | null,"expertise"?: (string)[],"id"?: string,"is_highlighted"?: boolean,"name"?: string,"profile_visible"?: boolean,"slug"?: string,"social_url"?: string | null,"updated_at"?: string,"website_url"?: string | null
                   }
                   Relationships: [
                     {
       foreignKeyName: "contributors_avatar_asset_id_fkey"
       columns: ["avatar_asset_id"]
+isOneToOne: false
+      referencedRelation: "media_assets"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "contributors_cover_asset_id_fkey"
+      columns: ["cover_asset_id"]
 isOneToOne: false
       referencedRelation: "media_assets"
       referencedColumns: ["id"]

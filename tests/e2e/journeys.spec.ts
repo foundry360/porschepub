@@ -98,7 +98,7 @@ test("an editor uploads a contributor portrait and it is still there after savin
   await page.waitForURL(/\/admin\/contributors\/[0-9a-f-]{36}$/);
   const editUrl = page.url();
 
-  await page.getByRole("button", { name: "Choose image" }).click();
+  await page.getByRole("button", { name: "Choose image" }).first().click();
   const dialog = page.getByRole("dialog");
   await dialog.getByRole("tab", { name: "Upload new" }).click();
   await dialog.getByLabel("Image file").setInputFiles(LEAD_IMAGE);

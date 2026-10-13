@@ -12,6 +12,7 @@ export default function NewContributorPage() {
       <AdminHeading title="New contributor" />
       <ContributorForm
         avatar={null}
+        cover={null}
         values={{
           name: "",
           slug: "",
