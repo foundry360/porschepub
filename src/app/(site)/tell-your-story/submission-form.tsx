@@ -18,7 +18,7 @@ type CategoryOption = { id: string; name: string };
 const initialState: SubmissionFormState = { status: "idle" };
 
 const inputClass =
-  "mt-2 block w-full rounded-none border-0 border-b border-line bg-transparent px-0 py-3 text-[1.05rem] text-ink placeholder:text-mist focus:border-accent focus:shadow-[0_1px_0_0_var(--color-accent)] focus:outline-none aria-[invalid=true]:border-accent";
+  "field-underline mt-2 block w-full rounded-none border-0 border-b border-line bg-transparent px-0 py-3 text-[1.05rem] text-ink placeholder:text-mist focus:border-ink focus:shadow-[0_1px_0_0_var(--color-ink)] focus:outline-none aria-[invalid=true]:border-accent";
 
 function Field({
   id,
@@ -326,7 +326,7 @@ export function SubmissionForm({
             type="checkbox"
             aria-invalid={Boolean(errors.consent)}
             aria-describedby={errors.consent ? "field-consent-error" : undefined}
-            className="mt-1 h-5 w-5 shrink-0 accent-[var(--color-accent)]"
+            className="field-check mt-1 h-5 w-5 shrink-0 accent-[var(--color-accent)]"
           />
           <label htmlFor="field-consent" className="text-[0.95rem] leading-snug">
             I have read and accept the{" "}

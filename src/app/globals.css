@@ -158,6 +158,15 @@ body {
   outline-color: #fff;
 }
 
+/* Underlined form fields show focus by thickening their underline instead. */
+.field-underline:focus-visible {
+  outline: none;
+}
+
+.field-check:focus-visible {
+  outline-color: var(--color-ink);
+}
+
 /* Typography helpers ------------------------------------------------------- */
 .font-display {
   font-family: var(--font-serif);
