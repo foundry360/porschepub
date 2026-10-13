@@ -59,7 +59,7 @@ export default async function HomePage() {
             />
             <div
               aria-hidden
-              className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/50 to-black/25"
+              className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/30 to-transparent"
             />
           </>
         ) : null}
