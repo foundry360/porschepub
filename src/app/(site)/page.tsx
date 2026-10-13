@@ -6,7 +6,7 @@ import { EditorialImage } from "@/components/ui/editorial-image";
 import { InlineText } from "@/components/ui/inline-text";
 import { EmptyState, JsonLd, PageContainer, SectionHeader, SubmitCta } from "@/components/ui/misc";
 import { Pill } from "@/components/ui/pill";
-import { ZoomInOnView } from "@/components/ui/zoom-in-on-view";
+import { RevealOnView } from "@/components/ui/reveal-on-view";
 import { formatDate } from "@/lib/dates";
 import { organizationJsonLd, websiteJsonLd } from "@/lib/seo/jsonld";
 import type { ContributorSummary, MediaImage, StorySummary } from "@/lib/types";
@@ -104,16 +104,18 @@ export default async function HomePage() {
           <FeaturedStory story={featured} />
 
           {recent.length > 0 ? (
-            <section aria-labelledby="latest-heading">
-              <PageContainer className="py-20 sm:py-28">
-                <SectionHeader id="latest-heading" title="Most recent" href={paths.stories()} hrefLabel="All stories" />
-                <div className="mt-10 grid gap-x-8 gap-y-14 sm:grid-cols-2 lg:grid-cols-3">
-                  {recent.map((story) => (
-                    <StoryCard key={story.id} story={story} className="reveal-on-scroll" />
-                  ))}
-                </div>
-              </PageContainer>
-            </section>
+            <RevealOnView effect="from-left">
+              <section aria-labelledby="latest-heading">
+                <PageContainer className="py-20 sm:py-28">
+                  <SectionHeader id="latest-heading" title="Most recent" href={paths.stories()} hrefLabel="All stories" />
+                  <div className="mt-10 grid gap-x-8 gap-y-14 sm:grid-cols-2 lg:grid-cols-3">
+                    {recent.map((story) => (
+                      <StoryCard key={story.id} story={story} />
+                    ))}
+                  </div>
+                </PageContainer>
+              </section>
+            </RevealOnView>
           ) : null}
 
           {home.editorsPicks.length > 0 ? (
@@ -137,8 +139,8 @@ export default async function HomePage() {
       </section>
 
       {home.categories.length > 0 ? (
-        <ZoomInOnView>
-          <section aria-labelledby="explore-heading" className="zoom-item bg-paper-deep">
+        <RevealOnView effect="zoom">
+          <section aria-labelledby="explore-heading" className="bg-paper-deep">
             <PageContainer className="py-20 sm:py-28">
               <SectionHeader id="explore-heading" title="Explore" eyebrow="Categories" href={paths.stories()} hrefLabel="All stories" />
               <ol className="mt-4">
@@ -162,7 +164,7 @@ export default async function HomePage() {
               </ol>
             </PageContainer>
           </section>
-        </ZoomInOnView>
+        </RevealOnView>
       ) : null}
 
       {spotlight ? <ContributorSpotlight contributor={spotlight} others={home.contributors.filter((c) => c.id !== spotlight.id)} /> : null}

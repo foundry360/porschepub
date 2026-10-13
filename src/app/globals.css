@@ -386,20 +386,25 @@ main:has(.submit-cta) + .site-footer {
   margin-top: 0;
 }
 
-/* Zoom-in reveal driven by <ZoomInOnView>. */
-[data-zoom] .zoom-item {
+/* Scroll reveals driven by <RevealOnView>. The transition only runs on the way in. */
+[data-reveal] > * {
   transform-origin: center;
 }
-[data-zoom="in"] .zoom-item {
+[data-reveal="in"] > * {
   transition:
     opacity 1400ms var(--ease-editorial),
     transform 2000ms var(--ease-editorial);
 }
-[data-zoom="ready"] .zoom-item {
+[data-reveal="ready"] > * {
   opacity: 0;
+}
+[data-reveal="ready"][data-effect="zoom"] > * {
   transform: scale(0.85);
 }
-[data-zoom="in"] .zoom-item {
+[data-reveal="ready"][data-effect="from-left"] > * {
+  transform: translateX(-12vw);
+}
+[data-reveal="in"] > * {
   opacity: 1;
   transform: none;
 }

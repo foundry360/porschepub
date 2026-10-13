@@ -2,22 +2,32 @@
 
 import { useEffect, useRef, type ReactNode } from "react";
 
+export type RevealEffect = "zoom" | "from-left";
+
 /**
- * Zooms its `.zoom-item` descendants in every time it scrolls into view, and
- * resets them once it leaves. Content stays fully visible without JavaScript or when the
+ * Animates its children in every time it scrolls into view, and resets them
+ * once it leaves. Content stays fully visible without JavaScript or when the
  * visitor prefers reduced motion.
  */
-export function ZoomInOnView({ children, className = "" }: { children: ReactNode; className?: string }) {
+export function RevealOnView({
+  children,
+  effect,
+  className = "",
+}: {
+  children: ReactNode;
+  effect: RevealEffect;
+  className?: string;
+}) {
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const element = ref.current;
     if (!element || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
-    element.dataset.zoom = "ready";
+    element.dataset.reveal = "ready";
     const observer = new IntersectionObserver(
       ([entry]) => {
-        element.dataset.zoom = entry.isIntersecting ? "in" : "ready";
+        element.dataset.reveal = entry.isIntersecting ? "in" : "ready";
       },
       { threshold: 0.15 },
     );
@@ -26,7 +36,7 @@ export function ZoomInOnView({ children, className = "" }: { children: ReactNode
   }, []);
 
   return (
-    <div ref={ref} className={className}>
+    <div ref={ref} data-effect={effect} className={className}>
       {children}
     </div>
   );
