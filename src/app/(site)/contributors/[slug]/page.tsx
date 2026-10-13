@@ -76,7 +76,7 @@ export default async function ContributorPage(props: PageProps<"/contributors/[s
       <header className="grid gap-10 pb-16 pt-14 sm:pt-20 md:grid-cols-12 md:gap-14">
         {contributor.cover ? (
           <div className="animate-fade-in md:col-span-5">
-            <EditorialImage image={contributor.cover} aspect="4/3" sizes="(min-width: 768px) 42vw, 100vw" priority className="rounded-[2px]" />
+            <EditorialImage image={contributor.cover} aspect="4/3" sizes="(min-width: 768px) 42vw, 100vw" priority className="rounded-lg" />
           </div>
         ) : null}
         <div className={`animate-fade-up ${contributor.cover ? "md:col-span-7" : "md:col-span-12"}`}>

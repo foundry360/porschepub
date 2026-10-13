@@ -87,7 +87,7 @@ export default async function HomePage() {
         <div className="animate-fade-up mt-9 flex flex-wrap items-center gap-x-8 gap-y-4 [animation-delay:360ms]">
           <Link
             href={paths.stories()}
-            className="border border-paper bg-paper px-7 py-4 text-sm tracking-wide text-ink transition-colors hover:bg-transparent hover:text-paper"
+            className="border border-paper bg-transparent px-7 py-4 text-sm tracking-wide text-paper transition-colors hover:border-ink hover:bg-ink"
           >
             Read the stories
           </Link>
@@ -183,8 +183,44 @@ export default async function HomePage() {
   );
 }
 
-/** The featured story as a typographic slab that continues the hero. */
+/** The featured story: its lead image beside the headline, or a typographic slab without one. */
 function FeaturedStory({ story }: { story: StorySummary }) {
+  if (story.leadImage) {
+    return (
+      <section aria-labelledby="featured-heading" className="bg-paper-deep text-ink">
+        <div className="mx-auto grid max-w-[88rem] gap-10 px-5 py-20 sm:px-8 sm:py-28 lg:grid-cols-12 lg:items-center lg:gap-16">
+          <Link href={paths.story(story.slug)} tabIndex={-1} aria-hidden className="group block overflow-hidden rounded-lg lg:col-span-7">
+            <EditorialImage
+              image={story.leadImage}
+              aspect="4/3"
+              sizes="(min-width: 1024px) 55vw, 100vw"
+              decorative
+              imageClassName="transition-transform duration-700 group-hover:scale-[1.03]"
+            />
+          </Link>
+          <div className="space-y-6 lg:col-span-5">
+            <p className="eyebrow eyebrow-slash text-stone">
+              Featured story{story.category ? ` · ${story.category.name}` : ""}
+            </p>
+            <h2 id="featured-heading" className="font-condensed text-[clamp(2.6rem,5vw,4.75rem)]">
+              <Link href={paths.story(story.slug)}>{story.headline}</Link>
+            </h2>
+            {story.subtitle || story.summary ? (
+              <p className="text-[1.1rem] leading-relaxed text-charcoal">{story.subtitle ?? story.summary}</p>
+            ) : null}
+            <p className="eyebrow text-stone">
+              {story.contributor ? `${story.contributor.name} / ` : ""}
+              <time dateTime={story.publishedAt}>{formatDate(story.publishedAt)}</time> / {story.readingMinutes} min read
+            </p>
+            <Pill href={paths.story(story.slug)} variant="solid">
+              Read the story
+            </Pill>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
   return (
     <section aria-labelledby="featured-heading" className="bg-paper-deep text-ink">
       <div className="mx-auto grid max-w-[88rem] gap-10 px-5 py-20 sm:px-8 sm:py-28 lg:grid-cols-12 lg:items-end">
@@ -255,10 +291,10 @@ async function ContributorSpotlight({
               image={cover}
               aspect="4/3"
               sizes="(min-width: 768px) 50vw, 100vw"
-              className="rounded-[2px]"
+              className="rounded-lg"
             />
           ) : (
-            <div aria-hidden className="font-display flex aspect-[4/3] items-center justify-center rounded-[2px] bg-paper-deep text-[8rem] italic text-stone">
+            <div aria-hidden className="font-display flex aspect-[4/3] items-center justify-center rounded-lg bg-paper-deep text-[8rem] italic text-stone">
               {contributor.name.charAt(0)}
             </div>
           )}

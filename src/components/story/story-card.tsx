@@ -45,7 +45,7 @@ export function StoryCard({
 
   if (variant === "tile") {
     return (
-      <article className={`on-dark group relative isolate flex min-h-[22rem] overflow-hidden rounded-[2px] bg-charcoal text-paper ${className}`}>
+      <article className={`on-dark group relative isolate flex min-h-[22rem] overflow-hidden rounded-lg bg-charcoal text-paper ${className}`}>
         {story.leadImage ? (
           <EditorialImage
             image={story.leadImage}
@@ -73,7 +73,7 @@ export function StoryCard({
   if (variant === "wide") {
     return (
       <article
-        className={`group relative grid overflow-hidden rounded-[2px] border border-line bg-paper md:grid-cols-[minmax(0,1fr)_minmax(0,2fr)] ${className}`}
+        className={`group relative grid overflow-hidden rounded-lg border border-line bg-paper md:grid-cols-[minmax(0,1fr)_minmax(0,2fr)] ${className}`}
       >
         {story.leadImage ? (
           <EditorialImage
@@ -104,7 +104,7 @@ export function StoryCard({
 
   if (variant === "compact") {
     return (
-      <article className={`group relative rounded-[2px] border border-line bg-paper p-5 sm:p-6 ${className}`}>
+      <article className={`group relative rounded-lg border border-line bg-paper p-5 sm:p-6 ${className}`}>
         <div className="grid grid-cols-[1fr_auto] gap-5">
           <div className="space-y-2.5">
             <Category story={story} />
@@ -126,7 +126,7 @@ export function StoryCard({
                 sizes="144px"
                 decorative
                 reveal={false}
-                className="rounded-[2px]"
+                className="rounded-md"
                 imageClassName="transition-transform duration-700 group-hover:scale-[1.04]"
               />
             </div>
@@ -139,7 +139,7 @@ export function StoryCard({
   if (variant === "lead") {
     return (
       <article
-        className={`group relative grid overflow-hidden rounded-[2px] border border-line bg-paper md:grid-cols-12 ${className}`}
+        className={`group relative grid overflow-hidden rounded-lg border border-line bg-paper md:grid-cols-12 ${className}`}
       >
         {story.leadImage ? (
           <div className="md:col-span-7">
@@ -173,7 +173,7 @@ export function StoryCard({
 
   return (
     <article
-      className={`group relative flex h-full flex-col overflow-hidden rounded-[2px] border border-line bg-paper ${className}`}
+      className={`group relative flex h-full flex-col overflow-hidden rounded-lg border border-line bg-paper ${className}`}
     >
       {story.leadImage ? (
         <EditorialImage
