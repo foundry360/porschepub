@@ -104,7 +104,7 @@ export function StoryCard({
 
   if (variant === "compact") {
     return (
-      <article className={`group relative border-t border-line py-6 first:border-t-0 sm:py-7 ${className}`}>
+      <article className={`group relative rounded-[2px] border border-line bg-paper p-5 sm:p-6 ${className}`}>
         <div className="grid grid-cols-[1fr_auto] gap-5">
           <div className="space-y-2.5">
             <Category story={story} />
@@ -138,7 +138,9 @@ export function StoryCard({
 
   if (variant === "lead") {
     return (
-      <article className={`group relative grid gap-6 md:grid-cols-12 md:items-end md:gap-10 ${className}`}>
+      <article
+        className={`group relative grid overflow-hidden rounded-[2px] border border-line bg-paper md:grid-cols-12 ${className}`}
+      >
         {story.leadImage ? (
           <div className="md:col-span-7">
             <EditorialImage
@@ -147,12 +149,13 @@ export function StoryCard({
               sizes="(min-width: 1280px) 760px, (min-width: 768px) 58vw, 100vw"
               priority={priority}
               decorative
-              className="rounded-[2px]"
               imageClassName="transition-transform duration-700 group-hover:scale-[1.025]"
             />
           </div>
         ) : null}
-        <div className={`${story.leadImage ? "md:col-span-5" : "md:col-span-12"} space-y-4 pb-1`}>
+        <div
+          className={`${story.leadImage ? "md:col-span-5" : "md:col-span-12"} flex flex-col gap-4 p-6 sm:p-8 md:justify-center`}
+        >
           <Category story={story} />
           <Heading className="font-condensed text-[2.4rem] text-ink sm:text-[3.4rem]">
             <Link href={href} className="after:absolute after:inset-0">
@@ -169,7 +172,9 @@ export function StoryCard({
   }
 
   return (
-    <article className={`group relative flex flex-col gap-4 ${className}`}>
+    <article
+      className={`group relative flex h-full flex-col overflow-hidden rounded-[2px] border border-line bg-paper ${className}`}
+    >
       {story.leadImage ? (
         <EditorialImage
           image={story.leadImage}
@@ -177,11 +182,10 @@ export function StoryCard({
           sizes="(min-width: 1280px) 420px, (min-width: 768px) 33vw, 100vw"
           priority={priority}
           decorative
-          className="rounded-[2px]"
           imageClassName="transition-transform duration-700 group-hover:scale-[1.035]"
         />
       ) : null}
-      <div className="space-y-2.5">
+      <div className="flex flex-1 flex-col gap-2.5 p-5 sm:p-6">
         <Category story={story} />
         <Heading className="font-condensed text-[1.75rem] text-ink transition-colors group-hover:text-accent">
           <Link href={href} className="after:absolute after:inset-0">
@@ -191,7 +195,7 @@ export function StoryCard({
         {story.summary ? (
           <p className="line-clamp-3 text-[0.95rem] leading-relaxed text-stone">{story.summary}</p>
         ) : null}
-        <Meta story={story} />
+        <Meta story={story} className="mt-auto pt-3 text-stone" />
       </div>
     </article>
   );

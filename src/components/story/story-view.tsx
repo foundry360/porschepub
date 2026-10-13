@@ -217,7 +217,7 @@ export function StoryView({
               Keep <em>reading</em>
             </h2>
           </div>
-          <div className="mt-10 grid gap-x-8 gap-y-12 md:grid-cols-3">
+          <div className="mt-10 grid gap-8 md:grid-cols-3">
             {related.map((item) => (
               <StoryCard key={item.id} story={item} />
             ))}

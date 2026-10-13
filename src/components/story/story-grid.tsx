@@ -68,7 +68,7 @@ export function StoryGrid({
 
   return (
     <>
-      <ul ref={listRef} className={`grid gap-x-8 gap-y-14 sm:grid-cols-2 lg:grid-cols-3 ${className}`}>
+      <ul ref={listRef} className={`grid gap-8 sm:grid-cols-2 lg:grid-cols-3 ${className}`}>
         {items.map((story, index) => (
           <li key={story.id} className={index >= initialItems.length ? "animate-fade-up" : undefined}>
             <StoryCard story={story} headingLevel={2} priority={index < priorityCount} />

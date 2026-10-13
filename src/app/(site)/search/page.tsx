@@ -97,7 +97,7 @@ async function SearchResults({ searchParams }: Pick<PageProps<"/search">, "searc
         </EmptyState>
       ) : (
         <>
-          <ul className="grid gap-x-8 gap-y-14 pb-8 sm:grid-cols-2 lg:grid-cols-3">
+          <ul className="grid gap-8 pb-8 sm:grid-cols-2 lg:grid-cols-3">
             {result.items.map((story) => (
               <li key={story.id}>
                 <StoryCard story={story} headingLevel={2} />

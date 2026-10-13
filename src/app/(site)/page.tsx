@@ -112,7 +112,7 @@ export default async function HomePage() {
                   <SectionHeader id="latest-heading" title="Most recent" href={paths.stories()} hrefLabel="All stories" />
                   <StoryCard story={recentLead} variant="wide" className="mt-10" />
                   {recent.length > 0 ? (
-                    <div className="mt-14 grid gap-x-8 gap-y-14 sm:grid-cols-2 lg:grid-cols-3">
+                    <div className="mt-14 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
                       {recent.map((story) => (
                         <StoryCard key={story.id} story={story} />
                       ))}

@@ -6,7 +6,7 @@ import { StoryGrid } from "./story-grid";
 
 export function StoryListingSkeleton() {
   return (
-    <div aria-busy="true" aria-live="polite" className="grid gap-x-8 gap-y-14 sm:grid-cols-2 lg:grid-cols-3">
+    <div aria-busy="true" aria-live="polite" className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
       <span className="sr-only">Loading stories…</span>
       {Array.from({ length: 6 }).map((_, index) => (
         <div key={index} className="space-y-4" aria-hidden>
@@ -54,9 +54,7 @@ export function StoryListing({
   return (
     <>
       {showLead ? (
-        <div className="border-b border-line pb-14">
-          <StoryCard story={lead} variant="lead" priority headingLevel={2} />
-        </div>
+        <StoryCard story={lead} variant="lead" priority headingLevel={2} />
       ) : null}
       <StoryGrid
         initialItems={grid}
@@ -71,7 +69,7 @@ export function StoryListing({
         )}
         firstPageHref={hrefFor(1)}
         priorityCount={showLead ? 0 : 3}
-        className={showLead ? "pt-14" : ""}
+        className={showLead ? "pt-8" : ""}
       />
     </>
   );
