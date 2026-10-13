@@ -54,7 +54,7 @@ export default async function TellYourStoryPage() {
         </h2>
         <div className="mt-10 max-w-4xl">
           {FAQ.map((item) => (
-            <details key={item.question} className="group border-b border-line">
+            <details key={item.question} name="faq" className="group border-b border-line">
               <summary className="flex cursor-pointer list-none items-center justify-between gap-6 py-6 text-[1.2rem] font-medium tracking-[-0.01em] sm:text-[1.4rem] [&::-webkit-details-marker]:hidden">
                 {item.question}
                 <span aria-hidden className="text-[1.6rem] leading-none text-accent transition-transform duration-300 group-open:rotate-45">
