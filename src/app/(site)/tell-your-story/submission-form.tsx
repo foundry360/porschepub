@@ -74,6 +74,7 @@ export function SubmissionForm({
 }) {
   const [state, formAction, pending] = useActionState(submitStoryAction, initialState);
   const [clientErrors, setClientErrors] = useState<SubmissionFieldErrors>({});
+  const [consented, setConsented] = useState(false);
   const formRef = useRef<HTMLFormElement>(null);
   const summaryRef = useRef<HTMLDivElement>(null);
   const mountedAt = useRef<number>(0);
@@ -327,6 +328,8 @@ export function SubmissionForm({
             id="field-consent"
             name="consent"
             type="checkbox"
+            checked={consented}
+            onChange={(event) => setConsented(event.target.checked)}
             aria-invalid={Boolean(errors.consent)}
             aria-describedby={errors.consent ? "field-consent-error" : undefined}
             className="field-check mt-1 h-5 w-5 shrink-0 accent-[var(--color-accent)]"
@@ -364,13 +367,18 @@ export function SubmissionForm({
       <div className="flex flex-wrap items-center gap-6">
         <button
           type="submit"
-          disabled={pending}
+          disabled={pending || !consented}
+          aria-describedby="submit-status"
           className="inline-flex items-center gap-2.5 rounded-full border border-ink bg-ink px-8 py-4 text-[0.8125rem] font-medium tracking-[0.02em] text-paper transition-colors hover:bg-transparent hover:text-ink disabled:cursor-not-allowed disabled:opacity-60"
         >
           {pending ? "Sending…" : "Send story"}
         </button>
-        <p className="text-[0.85rem] text-stone" aria-live="polite">
-          {pending ? "Saving your story…" : "We read every story. Fields marked * are required."}
+        <p id="submit-status" className="text-[0.85rem] text-stone" aria-live="polite">
+          {pending
+            ? "Saving your story…"
+            : consented
+              ? "We read every story. Fields marked * are required."
+              : "Tick the box above to accept the terms and send your story."}
         </p>
       </div>
     </form>

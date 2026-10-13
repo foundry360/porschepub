@@ -214,9 +214,14 @@ test("10. invalid and abusive submissions are rejected safely", async ({ page, r
   // Client + server validation: empty form shows specific errors and stores nothing.
   await page.goto("/tell-your-story");
   await page.waitForTimeout(submissionPolicy.minFillSeconds * 1000 + 500);
-  await page.getByRole("button", { name: "Send story" }).click();
+  const send = page.getByRole("button", { name: "Send story" });
+  await expect(send).toBeDisabled();
+  await page.getByLabel(/I have read and accept/).check();
+  await expect(send).toBeEnabled();
+  await send.click();
   await expect(page.getByRole("alert").filter({ hasText: /\S/ })).toBeVisible();
   await expect(page.getByRole("link", { name: /name/i }).first()).toBeVisible();
+  await expect(page.getByLabel(/I have read and accept/)).toBeChecked();
 
   // Hostile text is accepted as inert text only when otherwise valid; never executed.
   await page.getByLabel(/Your name/).fill("<script>window.__pwned=1</script>");
