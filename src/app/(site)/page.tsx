@@ -101,8 +101,6 @@ export default async function HomePage() {
         </PageContainer>
       ) : (
         <>
-          <FeaturedStory story={featured} />
-
           {recent.length > 0 ? (
             <RevealOnView effect="from-left">
               <section aria-labelledby="latest-heading">
@@ -128,6 +126,8 @@ export default async function HomePage() {
               </section>
             </RevealOnView>
           ) : null}
+
+          <FeaturedStory story={featured} />
         </>
       )}
 
