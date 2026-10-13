@@ -484,3 +484,22 @@ main:has(.submit-cta) + .site-footer {
     display: none !important;
   }
 }
+
+/* Home hero carousel: cross-fade with a slow settle on the incoming photo. */
+.hero-slide {
+  opacity: 0;
+  transition: opacity 1600ms var(--ease-editorial);
+}
+
+.hero-slide.is-active {
+  opacity: 1;
+}
+
+.hero-slide img {
+  transform: scale(1.06);
+  transition: transform 9000ms linear;
+}
+
+.hero-slide.is-active img {
+  transform: scale(1);
+}

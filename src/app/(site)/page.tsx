@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { brand } from "@/config/brand";
 import { StoryCard } from "@/components/story/story-card";
+import { HeroCarousel, type HeroSlide } from "@/components/home/hero-carousel";
 import { EditorialImage } from "@/components/ui/editorial-image";
 import { InlineText } from "@/components/ui/inline-text";
 import { EmptyState, JsonLd, PageContainer, SectionHeader, SubmitCta } from "@/components/ui/misc";
@@ -21,20 +22,36 @@ export const metadata: Metadata = {
 };
 
 /** Licensed under the Unsplash License (free commercial use, no permission needed). */
-const HERO_IMAGE: MediaImage = {
-  id: "home-hero",
-  url: "/images/hero-porsche-911-targa-sunset-3200.jpg",
-  width: 3200,
-  height: 2133,
-  alt: "",
-  caption: null,
-  credit: "Jonathan Rathgeb / Unsplash",
-};
+const HERO_SLIDES: HeroSlide[] = [
+  {
+    image: {
+      id: "home-hero-targa",
+      url: "/images/hero-porsche-911-targa-sunset-3200.jpg",
+      width: 3200,
+      height: 2133,
+      alt: "",
+      caption: null,
+      credit: "Jonathan Rathgeb / Unsplash",
+    },
+    position: "object-[55%_center]",
+  },
+  {
+    image: {
+      id: "home-hero-550-spyder",
+      url: "/images/hero-porsche-550-spyder-mille-miglia-3200.jpg",
+      width: 3200,
+      height: 2133,
+      alt: "",
+      caption: null,
+      credit: "Marco Piccinelli / Unsplash",
+    },
+    position: "object-[50%_center]",
+  },
+];
 
 export default async function HomePage() {
   const home = await getHomepage();
   const { featured, hero } = home;
-  const heroImage = HERO_IMAGE;
   const [recentLead, ...recentRest] = home.latest;
   const recent = recentRest.length > 3 ? recentRest.slice(0, recentRest.length - (recentRest.length % 3)) : recentRest;
   const spotlight = home.contributors.find((contributor) => contributor.hasProfile) ?? null;
@@ -44,55 +61,32 @@ export default async function HomePage() {
       <JsonLd data={[organizationJsonLd(), websiteJsonLd()]} />
 
       {/* Hero ------------------------------------------------------------ */}
-      <section
-        aria-labelledby="hero-heading"
+      <HeroCarousel
+        slides={HERO_SLIDES}
         className="on-dark relative isolate flex min-h-[78svh] items-end overflow-hidden bg-charcoal text-paper"
       >
-        {heroImage ? (
-          <>
-            <EditorialImage
-              image={heroImage}
-              sizes="100vw"
-              priority
-              decorative
-              className="!absolute inset-0 !aspect-auto h-full w-full"
-              imageClassName="object-[55%_center]"
-            />
-            <div
-              aria-hidden
-              className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/30 to-transparent"
-            />
-          </>
-        ) : null}
-        <div className="relative mx-auto w-full max-w-[88rem] px-5 pb-12 pt-32 sm:px-8 sm:pb-20">
-          <p className="eyebrow animate-fade-up text-paper">{hero.kicker}</p>
-          <h1
-            id="hero-heading"
-            className="font-display animate-fade-up mt-5 max-w-4xl text-[3rem] leading-[0.98] [animation-delay:120ms] sm:text-[5.5rem]"
+        <p className="eyebrow animate-fade-up text-paper">{hero.kicker}</p>
+        <h1
+          id="hero-heading"
+          className="font-display animate-fade-up mt-5 max-w-4xl text-[3rem] leading-[0.98] [animation-delay:120ms] sm:text-[5.5rem]"
+        >
+          {hero.headline}
+        </h1>
+        <p className="animate-fade-up mt-6 max-w-xl text-[1.1rem] leading-relaxed text-paper/85 [animation-delay:240ms] sm:text-[1.25rem]">
+          {hero.intro}
+        </p>
+        <div className="animate-fade-up mt-9 flex flex-wrap items-center gap-x-8 gap-y-4 [animation-delay:360ms]">
+          <Link
+            href={paths.stories()}
+            className="border border-paper bg-paper px-7 py-4 text-sm tracking-wide text-ink transition-colors hover:bg-transparent hover:text-paper"
           >
-            {hero.headline}
-          </h1>
-          <p className="animate-fade-up mt-6 max-w-xl text-[1.1rem] leading-relaxed text-paper/85 [animation-delay:240ms] sm:text-[1.25rem]">
-            {hero.intro}
-          </p>
-          <div className="animate-fade-up mt-9 flex flex-wrap items-center gap-x-8 gap-y-4 [animation-delay:360ms]">
-            <Link
-              href={paths.stories()}
-              className="border border-paper bg-paper px-7 py-4 text-sm tracking-wide text-ink transition-colors hover:bg-transparent hover:text-paper"
-            >
-              Read the stories
-            </Link>
-            <Link href={paths.tellYourStory()} className="eyebrow border-b border-paper/60 pb-1 hover:border-paper">
-              Tell your story
-            </Link>
-          </div>
-          {heroImage?.credit ? (
-            <p className="mt-10 text-[0.7rem] uppercase tracking-[0.12em] text-paper/60">
-              Photograph: {heroImage.credit}
-            </p>
-          ) : null}
+            Read the stories
+          </Link>
+          <Link href={paths.tellYourStory()} className="eyebrow border-b border-paper/60 pb-1 hover:border-paper">
+            Tell your story
+          </Link>
         </div>
-      </section>
+      </HeroCarousel>
 
       {!featured ? (
         <PageContainer className="py-24">
