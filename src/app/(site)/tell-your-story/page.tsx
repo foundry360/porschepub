@@ -22,7 +22,7 @@ export default async function TellYourStoryPage() {
         eyebrow="Contribute"
         title="Tell your"
         emphasis="story."
-        description="We publish first-person stories about the people behind Porsche. Pitch yours below."
+        description="We publish first-person stories about the people behind Porsche. Share yours below."
       />
       <div className="grid gap-14 pb-12 lg:grid-cols-12 lg:gap-20">
         <div className="lg:col-span-7">
