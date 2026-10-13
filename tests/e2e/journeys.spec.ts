@@ -200,22 +200,22 @@ test("4. a visitor submits a story proposal", async ({ page }) => {
   await page.getByRole("option", { name: state.categoryName }).click();
   await page.getByLabel(/Your story/).fill("This is a fictional pitch written by the automated test suite. ".repeat(6));
   await page.getByLabel(/I have read and accept/).check();
-  await page.getByRole("button", { name: "Send pitch" }).click();
-  await expect(page.getByRole("heading", { name: "Pitch received" })).toBeVisible();
+  await page.getByRole("button", { name: "Send story" }).click();
+  await expect(page.getByRole("heading", { name: "Story received" })).toBeVisible();
 });
 
 test("10. invalid and abusive submissions are rejected safely", async ({ page, request }) => {
   // Client + server validation: empty form shows specific errors and stores nothing.
   await page.goto("/tell-your-story");
   await page.waitForTimeout(submissionPolicy.minFillSeconds * 1000 + 500);
-  await page.getByRole("button", { name: "Send pitch" }).click();
+  await page.getByRole("button", { name: "Send story" }).click();
   await expect(page.getByRole("alert").filter({ hasText: /\S/ })).toBeVisible();
   await expect(page.getByRole("link", { name: /name/i }).first()).toBeVisible();
 
   // Hostile text is accepted as inert text only when otherwise valid; never executed.
   await page.getByLabel(/Your name/).fill("<script>window.__pwned=1</script>");
   await page.getByLabel(/Email address/).fill("not-an-email");
-  await page.getByRole("button", { name: "Send pitch" }).click();
+  await page.getByRole("button", { name: "Send story" }).click();
   await expect(page.getByRole("alert").filter({ hasText: /\S/ })).toBeVisible();
   expect(await page.evaluate(() => (window as unknown as { __pwned?: number }).__pwned)).toBeUndefined();
 
@@ -233,7 +233,7 @@ test("10. invalid and abusive submissions are rejected safely", async ({ page, r
   await page.getByRole("option", { name: state.categoryName }).click();
   await page.getByLabel(/Your story/).fill("spam spam spam spam spam spam spam spam spam spam spam spam spam spam spam spam spam spam spam spam spam");
   await page.getByLabel(/I have read and accept/).check();
-  await page.getByRole("button", { name: "Send pitch" }).click();
+  await page.getByRole("button", { name: "Send story" }).click();
   await expect(page.getByText(/Thank you/)).toBeVisible();
 
   // Wrong methods and oversized/garbled bodies are refused rather than crashing.

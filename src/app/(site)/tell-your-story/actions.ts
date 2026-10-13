@@ -52,13 +52,13 @@ export async function submitStoryAction(
         return {
           status: "success",
           message:
-            "Thank you. Your pitch has been received and saved. An editor will read it and reply by email if it looks like a fit. We can’t promise a reply to every pitch, and nothing is published without your agreement.",
+            "Thank you. Your story has been received and saved. An editor will read it and reply by email if it looks like a fit. We can’t promise a reply to every story, and nothing is published without your agreement.",
         };
       case "bot":
         // Do not reveal the honeypot. Nothing was stored.
         return {
           status: "success",
-          message: "Thank you. Your pitch has been received.",
+          message: "Thank you. Your story has been received.",
         };
       case "invalid":
         return {
@@ -70,7 +70,7 @@ export async function submitStoryAction(
       case "too_fast":
         return {
           status: "error",
-          message: "That was very quick. Please review your pitch and submit again.",
+          message: "That was very quick. Please review your story and submit again.",
           values,
         };
       case "verification_failed":
@@ -82,14 +82,14 @@ export async function submitStoryAction(
       case "rate_limited":
         return {
           status: "error",
-          message: "We’ve received several pitches from you recently. Please try again later.",
+          message: "We’ve received several stories from you recently. Please try again later.",
           values,
         };
       case "unavailable":
         return {
           status: "error",
           message:
-            "We couldn’t save your pitch right now, so it has not been sent. Please try again in a few minutes.",
+            "We couldn’t save your story right now, so it has not been sent. Please try again in a few minutes.",
           values,
         };
     }
@@ -98,7 +98,7 @@ export async function submitStoryAction(
     return {
       status: "error",
       message:
-        "Something went wrong and your pitch has not been sent. Please try again in a few minutes.",
+        "Something went wrong and your story has not been sent. Please try again in a few minutes.",
       values,
     };
   }

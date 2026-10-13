@@ -132,7 +132,7 @@ export function SubmissionForm({
         role="status"
         className="animate-fade-up rounded-[20px] border border-line bg-paper-deep px-6 py-10 outline-none sm:px-10"
       >
-        <h2 className="font-headline text-[2.25rem]">Pitch received</h2>
+        <h2 className="font-headline text-[2.25rem]">Story received</h2>
         <p className="mt-4 max-w-xl text-[1.05rem] leading-relaxed text-charcoal">{state.message}</p>
         <Link href="/stories" className="eyebrow link-underline mt-8 inline-block">
           Read the stories
@@ -337,7 +337,7 @@ export function SubmissionForm({
             <Link href="/privacy" target="_blank" className="link-underline">
               privacy policy
             </Link>
-            , and I understand that sending a pitch does not guarantee it will be published.
+            , and I understand that sending a story does not guarantee it will be published.
             <span aria-hidden className="text-accent">
               {" "}
               *
@@ -364,10 +364,10 @@ export function SubmissionForm({
           disabled={pending}
           className="inline-flex items-center gap-2.5 rounded-full border border-ink bg-ink px-8 py-4 text-[0.8125rem] font-medium tracking-[0.02em] text-paper transition-colors hover:bg-transparent hover:text-ink disabled:cursor-not-allowed disabled:opacity-60"
         >
-          {pending ? "Sending…" : "Send pitch"}
+          {pending ? "Sending…" : "Send story"}
         </button>
         <p className="text-[0.85rem] text-stone" aria-live="polite">
-          {pending ? "Saving your pitch…" : "We read every pitch. Fields marked * are required."}
+          {pending ? "Saving your story…" : "We read every story. Fields marked * are required."}
         </p>
       </div>
     </form>

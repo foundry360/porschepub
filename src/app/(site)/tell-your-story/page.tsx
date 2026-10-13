@@ -8,7 +8,7 @@ import { SubmissionForm } from "./submission-form";
 
 export const metadata: Metadata = {
   title: "Tell Your Story",
-  description: `Pitch a first-person story to ${brand.name}. Owners, racers, restorers, designers and enthusiasts welcome.`,
+  description: `Share a first-person story with ${brand.name}. Owners, racers, restorers, designers and enthusiasts welcome.`,
   alternates: { canonical: "/tell-your-story" },
 };
 

@@ -96,7 +96,7 @@ export default async function HomePage() {
 
       {!featured ? (
         <PageContainer className="py-24">
-          <EmptyState title="Stories are on their way" action={{ href: paths.tellYourStory(), label: "Pitch the first story" }}>
+          <EmptyState title="Stories are on their way" action={{ href: paths.tellYourStory(), label: "Share the first story" }}>
             <p>We haven&rsquo;t published anything yet. Check back soon, or tell us your story.</p>
           </EmptyState>
         </PageContainer>

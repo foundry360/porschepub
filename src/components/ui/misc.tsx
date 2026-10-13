@@ -175,7 +175,7 @@ export function SubmitCta() {
           people who made it matter. You don&rsquo;t need to be a writer.
         </p>
         <Pill href={paths.tellYourStory()} variant="inverse" className="mt-10">
-          Pitch a story
+          Share your story
         </Pill>
       </div>
     </section>
