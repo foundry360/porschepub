@@ -21,7 +21,7 @@ export async function SiteHeader() {
   const categories = await loadNavCategories();
 
   return (
-    <header className="on-black relative z-30 border-b border-line bg-black">
+    <header className="on-black sticky top-0 z-30 border-b border-line bg-black">
       <div className="mx-auto flex h-16 max-w-[88rem] items-center justify-between px-5 sm:h-20 sm:px-8">
         <Wordmark />
         <div className="flex items-center gap-1 sm:gap-3">

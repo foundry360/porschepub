@@ -8,7 +8,7 @@ export default function SiteLayout({ children }: LayoutProps<"/">) {
     <>
       <Suspense
         fallback={
-          <header className="on-black border-b border-line bg-black">
+          <header className="on-black sticky top-0 z-30 border-b border-line bg-black">
             <div className="mx-auto flex h-16 max-w-[88rem] items-center px-5 sm:h-20 sm:px-8">
               <Wordmark />
             </div>
