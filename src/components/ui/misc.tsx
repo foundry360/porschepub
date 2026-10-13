@@ -149,7 +149,7 @@ export function SubmitCta({ variant = "dark" }: { variant?: "dark" | "light" }) 
     >
       <div className="mx-auto grid max-w-[88rem] gap-8 px-5 py-16 sm:px-8 sm:py-24 md:grid-cols-12 md:items-end">
         <div className="md:col-span-8">
-          <p className={`eyebrow mb-4 ${dark ? "text-[#d9b9a8]" : "text-accent"}`}>Tell your story</p>
+          <p className={`eyebrow mb-4 ${dark ? "text-[#f4c9c5]" : "text-accent"}`}>Tell your story</p>
           <h2
             id="submit-cta-heading"
             className="font-display max-w-3xl text-[2.3rem] leading-[1.05] sm:text-[3.4rem]"
@@ -165,7 +165,7 @@ export function SubmitCta({ variant = "dark" }: { variant?: "dark" | "light" }) 
           <Link
             href={paths.tellYourStory()}
             className={`inline-block px-7 py-4 text-sm tracking-wide transition-colors ${
-              dark ? "bg-paper text-ink hover:bg-[#d9b9a8]" : "bg-ink text-paper hover:bg-charcoal"
+              dark ? "bg-paper text-ink hover:bg-[#f4c9c5]" : "bg-ink text-paper hover:bg-charcoal"
             }`}
           >
             Pitch a story

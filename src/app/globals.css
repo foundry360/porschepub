@@ -9,15 +9,15 @@
  * in src/config/brand.ts (used where CSS variables are unavailable).
  */
 @theme {
-  --color-paper: #f7f4ee;
-  --color-paper-deep: #efe9dd;
-  --color-ink: #121212;
-  --color-charcoal: #2b2a28;
-  --color-stone: #5f5a52;
-  --color-mist: #8d877c;
-  --color-line: #d8d1c3;
-  --color-accent: #8c3b2e;
-  --color-accent-deep: #6f2c21;
+  --color-paper: #ffffff;
+  --color-paper-deep: #f4f4f2;
+  --color-ink: #000000;
+  --color-charcoal: #1c1c1c;
+  --color-stone: #595959;
+  --color-mist: #6e6e6e;
+  --color-line: #e0e0e0;
+  --color-accent: #c31d14;
+  --color-accent-deep: #9f160f;
   /* Raised surfaces: cards, inputs, admin panels. */
   --color-surface: #ffffff;
 
@@ -74,30 +74,30 @@
 :root[data-theme="dark"],
 .on-black {
   color-scheme: dark;
-  --color-paper: #151311;
-  --color-paper-deep: #1d1a17;
-  --color-surface: #211e1a;
-  --color-ink: #f2ede4;
-  --color-charcoal: #d8d1c5;
-  --color-stone: #aca397;
-  --color-mist: #958d81;
-  --color-line: #3b362f;
-  --color-accent: #e2917c;
-  --color-accent-deep: #efab98;
+  --color-paper: #0b0b0b;
+  --color-paper-deep: #151515;
+  --color-surface: #1b1b1b;
+  --color-ink: #f5f5f5;
+  --color-charcoal: #dcdcdc;
+  --color-stone: #a6a6a6;
+  --color-mist: #8c8c8c;
+  --color-line: #2f2f2f;
+  --color-accent: #ef5a4f;
+  --color-accent-deep: #f68a82;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme]) {
     color-scheme: dark;
-    --color-paper: #151311;
-    --color-paper-deep: #1d1a17;
-    --color-surface: #211e1a;
-    --color-ink: #f2ede4;
-    --color-charcoal: #d8d1c5;
-    --color-stone: #aca397;
-    --color-mist: #958d81;
-    --color-line: #3b362f;
-    --color-accent: #e2917c;
-    --color-accent-deep: #efab98;
+    --color-paper: #0b0b0b;
+    --color-paper-deep: #151515;
+    --color-surface: #1b1b1b;
+    --color-ink: #f5f5f5;
+    --color-charcoal: #dcdcdc;
+    --color-stone: #a6a6a6;
+    --color-mist: #8c8c8c;
+    --color-line: #2f2f2f;
+    --color-accent: #ef5a4f;
+    --color-accent-deep: #f68a82;
   }
 }
 
@@ -108,20 +108,20 @@
  */
 .on-dark {
   color-scheme: dark;
-  --color-paper: #f7f4ee;
-  --color-paper-deep: #efe9dd;
+  --color-paper: #ffffff;
+  --color-paper-deep: #f4f4f2;
   --color-surface: #ffffff;
-  --color-ink: #121212;
-  --color-charcoal: #2b2a28;
-  --color-stone: #5f5a52;
-  --color-mist: #8d877c;
-  --color-line: #d8d1c3;
-  --color-accent: #8c3b2e;
-  --color-accent-deep: #6f2c21;
+  --color-ink: #000000;
+  --color-charcoal: #1c1c1c;
+  --color-stone: #595959;
+  --color-mist: #8c8c8c;
+  --color-line: #e0e0e0;
+  --color-accent: #c31d14;
+  --color-accent-deep: #9f160f;
 }
 /* In dark mode the near-black footer needs an edge to separate it from the page. */
 [data-theme="dark"] footer.on-dark {
-  border-top: 1px solid #3b362f;
+  border-top: 1px solid #2f2f2f;
 }
 
 html {

@@ -102,7 +102,7 @@ export function MenuDialog({
                   <Link
                     href={item.href}
                     onClick={() => setOpen(false)}
-                    className="font-display block py-2 text-[2.4rem] leading-tight text-paper transition-colors hover:text-[#d9b9a8] sm:text-5xl"
+                    className="font-display block py-2 text-[2.4rem] leading-tight text-paper transition-colors hover:text-[#f4c9c5] sm:text-5xl"
                     aria-current={pathname === item.href ? "page" : undefined}
                   >
                     {item.label}

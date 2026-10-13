@@ -60,10 +60,10 @@ export const brand = {
     .filter((entry): entry is [string, string] => Boolean(optionalEnv(entry[1])))
     .map(([label, href]): SocialLink => ({ label, href: href.trim() })),
   /** Literal accent for places that cannot use CSS variables. */
-  accentColor: "#8c3b2e",
-  themeColor: "#f7f4ee",
+  accentColor: "#c31d14",
+  themeColor: "#ffffff",
   /** Browser chrome colour in dark mode; matches the dark `--color-paper`. */
-  themeColorDark: "#151311",
+  themeColorDark: "#0b0b0b",
   /** Shown in the footer and on the About page. */
   disclaimer:
     "Independent publication. Not affiliated with, authorised or endorsed by Porsche AG. Porsche and related names are trademarks of their respective owners.",

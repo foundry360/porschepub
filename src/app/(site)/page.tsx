@@ -60,7 +60,7 @@ export default async function HomePage() {
           <div className="animate-fade-up mt-9 flex flex-wrap items-center gap-x-8 gap-y-4 [animation-delay:360ms]">
             <Link
               href={paths.stories()}
-              className="bg-paper px-7 py-4 text-sm tracking-wide text-ink transition-colors hover:bg-[#d9b9a8]"
+              className="bg-paper px-7 py-4 text-sm tracking-wide text-ink transition-colors hover:bg-[#f4c9c5]"
             >
               Read the stories
             </Link>
