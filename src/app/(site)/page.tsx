@@ -9,7 +9,7 @@ import { Pill } from "@/components/ui/pill";
 import { ZoomInOnView } from "@/components/ui/zoom-in-on-view";
 import { formatDate } from "@/lib/dates";
 import { organizationJsonLd, websiteJsonLd } from "@/lib/seo/jsonld";
-import type { ContributorSummary, StorySummary } from "@/lib/types";
+import type { ContributorSummary, MediaImage, StorySummary } from "@/lib/types";
 import { paths } from "@/lib/urls";
 import { getContributorBySlug, getHomepage } from "@/server/content/public";
 
@@ -20,10 +20,21 @@ export const metadata: Metadata = {
   openGraph: { url: "/" },
 };
 
+/** Licensed under the Unsplash License (free commercial use, no permission needed). */
+const HERO_IMAGE: MediaImage = {
+  id: "home-hero",
+  url: "/images/hero-porsche-911-gt3-dusk.jpg",
+  width: 1024,
+  height: 682,
+  alt: "",
+  caption: null,
+  credit: "Jack White / Unsplash",
+};
+
 export default async function HomePage() {
   const home = await getHomepage();
   const { featured, hero } = home;
-  const heroImage = featured?.leadImage ?? null;
+  const heroImage = HERO_IMAGE;
   const recent = home.latest.length > 3 ? home.latest.slice(0, home.latest.length - (home.latest.length % 3)) : home.latest;
   const spotlight = home.contributors.find((contributor) => contributor.hasProfile) ?? null;
 
@@ -44,6 +55,7 @@ export default async function HomePage() {
               priority
               decorative
               className="!absolute inset-0 !aspect-auto h-full w-full"
+              imageClassName="object-[70%_center]"
             />
             <div
               aria-hidden

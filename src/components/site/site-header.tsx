@@ -27,7 +27,7 @@ export async function SiteHeader() {
       <div className="mx-auto flex h-16 max-w-[88rem] items-center justify-between px-5 sm:h-20 sm:px-8">
         <Wordmark />
         <div className="flex items-center gap-2 sm:gap-3">
-          <Link href={paths.tellYourStory()} className={pillClass("outline", "hidden !px-5 !py-2.5 sm:inline-flex")}>
+          <Link href={paths.tellYourStory()} className={pillClass("outline", "whitespace-nowrap !px-5 !py-2.5 max-sm:hidden")}>
             Tell Your Story
           </Link>
           <ThemeToggle className="w-11 justify-center rounded-full border border-line hover:border-accent" />
