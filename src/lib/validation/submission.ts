@@ -10,7 +10,21 @@ export const SUBMISSION_LIMITS = {
   maxLinksInText: 3,
 } as const;
 
+/**
+ * Optional photos. The browser downsizes each photo before sending so the whole
+ * request stays well under the hosting platform's ~4.5 MB body limit; the server
+ * re-checks everything and re-encodes the files.
+ */
+export const SUBMISSION_IMAGE_LIMITS = {
+  maxCount: 4,
+  maxBytesEach: 1024 * 1024,
+  maxTotalBytes: 3.6 * 1024 * 1024,
+  maxEdge: 2000,
+  acceptedTypes: ["image/jpeg", "image/png", "image/webp"],
+} as const;
+
 export type SubmissionFieldName =
+  | "images"
   | "name"
   | "email"
   | "title"

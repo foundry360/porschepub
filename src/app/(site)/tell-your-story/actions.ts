@@ -6,6 +6,7 @@ import { getEmailProvider } from "@/server/email/provider";
 import { hashIdentifier, getClientAddress } from "@/server/security/request";
 import { checkRateLimit } from "@/server/security/rate-limit";
 import { verifyTurnstile } from "@/server/security/turnstile";
+import { checkImageSizes } from "@/server/submissions/images";
 import { processSubmission } from "@/server/submissions/process";
 import { createServiceClient } from "@/server/supabase/clients";
 import { logger } from "@/server/logger";
@@ -33,8 +34,20 @@ export async function submitStoryAction(
   const values: Record<string, string> = {};
   for (const field of FIELD_NAMES) values[field] = raw[field].slice(0, 6000);
 
+  const files = formData.getAll("images").filter((entry): entry is File => entry instanceof File && entry.size > 0);
+  const sizeError = checkImageSizes(files.map((file) => file.size));
+  if (sizeError) {
+    return {
+      status: "error",
+      message: "Please check the highlighted fields and try again.",
+      errors: { images: sizeError },
+      values,
+    };
+  }
+
   try {
     const ip = await getClientAddress();
+    const imageFiles = await Promise.all(files.map(async (file) => Buffer.from(await file.arrayBuffer())));
     const outcome = await processSubmission(
       raw,
       { ip },
@@ -45,6 +58,7 @@ export async function submitStoryAction(
         hash: hashIdentifier,
         verifyHuman: verifyTurnstile,
       },
+      imageFiles,
     );
 
     switch (outcome.kind) {
@@ -52,7 +66,10 @@ export async function submitStoryAction(
         return {
           status: "success",
           message:
-            "Thank you. Your story has been received and saved. An editor will read it and reply by email if it looks like a fit. We can’t promise a reply to every story, and nothing is published without your agreement.",
+            "Thank you. Your story has been received and saved. An editor will read it and reply by email if it looks like a fit. We can’t promise a reply to every story, and nothing is published without your agreement." +
+            (outcome.images.failed > 0
+              ? ` ${outcome.images.failed === 1 ? "One of your photos" : `${outcome.images.failed} of your photos`} couldn’t be saved, so an editor may ask you to send ${outcome.images.failed === 1 ? "it" : "them"} again.`
+              : ""),
         };
       case "bot":
         // Do not reveal the honeypot. Nothing was stored.

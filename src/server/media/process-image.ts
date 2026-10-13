@@ -30,7 +30,19 @@ export class ImageRejectedError extends Error {}
  *  - Applies EXIF orientation, then strips all metadata (location, device, etc.).
  *  - Caps the long edge so oversized originals never reach the public site.
  */
-export async function processImage(input: Buffer): Promise<ProcessedImage> {
+export type ImageFormat = keyof typeof OUTPUT_FORMATS;
+
+const FORMAT_NAMES: Record<ImageFormat, string> = { jpeg: "JPEG", png: "PNG", webp: "WebP", avif: "AVIF" };
+
+function formatList(formats: readonly ImageFormat[]): string {
+  const names = formats.map((format) => FORMAT_NAMES[format]);
+  return names.length > 1 ? `${names.slice(0, -1).join(", ")} or ${names.at(-1)}` : names[0];
+}
+
+export async function processImage(
+  input: Buffer,
+  allowed: readonly ImageFormat[] = ["jpeg", "png", "webp", "avif"],
+): Promise<ProcessedImage> {
   if (input.byteLength === 0) throw new ImageRejectedError("The file is empty.");
   if (input.byteLength > MAX_UPLOAD_BYTES) throw new ImageRejectedError("The file is larger than 15 MB.");
 
@@ -41,8 +53,8 @@ export async function processImage(input: Buffer): Promise<ProcessedImage> {
   } catch {
     throw new ImageRejectedError("That file isn’t a readable image.");
   }
-  if (!format || !(format in OUTPUT_FORMATS)) {
-    throw new ImageRejectedError("Use a JPEG, PNG, WebP or AVIF image.");
+  if (!format || !allowed.includes(format as ImageFormat)) {
+    throw new ImageRejectedError(`Use a ${formatList(allowed)} image.`);
   }
   const target = OUTPUT_FORMATS[format as keyof typeof OUTPUT_FORMATS];
 

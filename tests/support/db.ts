@@ -82,6 +82,14 @@ export async function anyCategory(service: Db) {
 /** Remove everything this run created. Safe to call repeatedly. */
 export async function cleanup() {
   const service = serviceClient();
+  // Submission photos live in storage, which a row cascade cannot reach.
+  const { data: photoRows } = await service
+    .from("submission_images")
+    .select("storage_path, submissions!inner(title)")
+    .like("submissions.title", `${RUN}%`);
+  const photoPaths = (photoRows ?? []).map((row) => row.storage_path);
+  if (photoPaths.length) await service.storage.from("submission-images").remove(photoPaths);
+
   // Children first, then parents. Failures are surfaced: silent leftovers pollute the dev database.
   const steps = [
     // Submissions first: a "published" submission requires its linked story to exist.

@@ -311,6 +311,26 @@ isOneToOne: false
       referencedColumns: ["id"]
     }
                   ]
+                },"submission_images": {
+                  Row: {
+                    "byte_size": number,"created_at": string,"height": number,"id": string,"mime_type": string,"position": number,"storage_path": string,"submission_id": string,"width": number
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "byte_size": number,"created_at"?: string,"height": number,"id"?: string,"mime_type": string,"position"?: number,"storage_path": string,"submission_id": string,"width": number
+                  }
+                  Update: {
+                    "byte_size"?: number,"created_at"?: string,"height"?: number,"id"?: string,"mime_type"?: string,"position"?: number,"storage_path"?: string,"submission_id"?: string,"width"?: number
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "submission_images_submission_id_fkey"
+      columns: ["submission_id"]
+isOneToOne: false
+      referencedRelation: "submissions"
+      referencedColumns: ["id"]
+    }
+                  ]
                 },"submissions": {
                   Row: {
                     "additional_info": string | null,"anonymized_at": string | null,"category_id": string | null,"consent_version": string,"consented_at": string,"created_at": string,"decided_at": string | null,"decided_by": string | null,"decision_note": string | null,"email": string,"id": string,"ip_hash": string | null,"name": string,"notification_error": string | null,"notification_status": Database["public"]['Enums']["delivery_status"],"pitch": string,"portfolio_url": string | null,"status": Database["public"]['Enums']["submission_status"],"story_id": string | null,"subject": string,"title": string,"updated_at": string

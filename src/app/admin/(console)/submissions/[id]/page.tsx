@@ -5,6 +5,7 @@ import { AdminHeading, Badge, Card } from "@/components/admin/ui";
 import { formatDateTime } from "@/lib/dates";
 import { allowedSubmissionTransitions, SUBMISSION_STATUS_LABEL, type SubmissionStatus } from "@/lib/workflow";
 import { requireEditor } from "@/server/auth/session";
+import { SUBMISSION_IMAGE_BUCKET } from "@/server/submissions/images";
 
 // Authenticated, request-time screen: opt out of instant-navigation validation.
 export const instant = false;
@@ -27,7 +28,7 @@ export default async function SubmissionDetailPage({ params }: PageProps<"/admin
   if (!UUID.test(id)) notFound();
   const { db } = await requireEditor();
 
-  const [{ data: s }, live] = await Promise.all([
+  const [{ data: s }, live, { data: imageRows }] = await Promise.all([
     db.from("submissions").select("*, category:categories(name)").eq("id", id).maybeSingle(),
     db
       .from("stories")
@@ -36,8 +37,23 @@ export default async function SubmissionDetailPage({ params }: PageProps<"/admin
       .lte("published_at", new Date().toISOString())
       .order("published_at", { ascending: false })
       .limit(200),
+    db
+      .from("submission_images")
+      .select("storage_path, width, height")
+      .eq("submission_id", id)
+      .order("position"),
   ]);
   if (!s) notFound();
+
+  // Private bucket: links expire, so they are minted per request and never cached.
+  const paths = (imageRows ?? []).map((row) => row.storage_path);
+  const { data: signed } = paths.length
+    ? await db.storage.from(SUBMISSION_IMAGE_BUCKET).createSignedUrls(paths, 3600)
+    : { data: [] };
+  const photos = (imageRows ?? []).flatMap((row, index) => {
+    const url = signed?.[index]?.signedUrl;
+    return url ? [{ url, width: row.width, height: row.height }] : [];
+  });
 
   const status = s.status as SubmissionStatus;
   const category = s.category as { name: string } | null;
@@ -68,6 +84,33 @@ export default async function SubmissionDetailPage({ params }: PageProps<"/admin
                 <a href={s.portfolio_url} target="_blank" rel="noopener noreferrer nofollow" className="underline underline-offset-4">
                   {s.portfolio_url}
                 </a>
+              ) : (
+                "—"
+              )}
+            </Row>
+            <Row label="Photos">
+              {photos.length > 0 ? (
+                <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+                  {photos.map((photo, index) => (
+                    <li key={photo.url}>
+                      <a href={photo.url} target="_blank" rel="noopener noreferrer" className="block">
+                        {/* eslint-disable-next-line @next/next/no-img-element -- short-lived signed URL from a private bucket */}
+                        <img
+                          src={photo.url}
+                          alt={`Submitted photo ${index + 1}`}
+                          width={photo.width}
+                          height={photo.height}
+                          className="aspect-square w-full rounded-md border border-line object-cover"
+                        />
+                      </a>
+                      <span className="mt-1 block text-[0.75rem] text-stone">
+                        {photo.width}×{photo.height}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              ) : paths.length > 0 ? (
+                <em className="text-stone">Photos could not be loaded.</em>
               ) : (
                 "—"
               )}

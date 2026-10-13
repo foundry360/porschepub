@@ -12,6 +12,7 @@ import {
   type SubmissionFieldErrors,
 } from "@/lib/validation/submission";
 import { submitStoryAction, type SubmissionFormState } from "./actions";
+import { PhotoPicker } from "./photo-picker";
 
 type CategoryOption = { id: string; name: string };
 
@@ -277,6 +278,8 @@ export function SubmissionForm({
         )}
       </Field>
 
+      <PhotoPicker error={errors.images} syncKey={state} />
+
       <Field
         id="field-portfolioUrl"
         label="Portfolio or social profile"
@@ -337,7 +340,7 @@ export function SubmissionForm({
             <Link href="/privacy" target="_blank" className="link-underline">
               privacy policy
             </Link>
-            , and I understand that sending a story does not guarantee it will be published.
+            . Any photos I attach are mine or I have permission to share them, and I understand that sending a story does not guarantee it will be published.
             <span aria-hidden className="text-accent">
               {" "}
               *

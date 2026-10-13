@@ -13,6 +13,12 @@ export default async function globalTeardown() {
   const service = createClient(url, process.env.SUPABASE_SECRET_KEY!, { auth: { persistSession: false, autoRefreshToken: false } });
   const run = state.run;
 
+  const { data: photos } = await service
+    .from("submission_images")
+    .select("storage_path, submissions!inner(title)")
+    .like("submissions.title", `${run}%`);
+  if (photos?.length) await service.storage.from("submission-images").remove(photos.map((p) => p.storage_path));
+
   await service.from("stories").delete().like("slug", `${run}%`);
   await service.from("submissions").delete().like("title", `${run}%`);
   await service.from("contributors").delete().like("slug", `${run}%`);

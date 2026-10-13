@@ -10,6 +10,7 @@ export type SubmissionNotice = {
   subject: string;
   categoryName: string | null;
   pitchExcerpt: string;
+  photoCount?: number;
 };
 
 /** Plain, escaped editorial notification. Contains an excerpt, not the full pitch. */
@@ -24,6 +25,7 @@ export function newSubmissionEmail(notice: SubmissionNotice) {
     `Subject: ${notice.subject}`,
     `Category: ${notice.categoryName ?? "-"}`,
     `From: ${notice.name} <${notice.email}>`,
+    `Photos: ${notice.photoCount ?? 0}`,
     ``,
     `Excerpt:`,
     notice.pitchExcerpt,
@@ -41,6 +43,7 @@ ${row("Title", notice.title)}
 ${row("Subject", notice.subject)}
 ${row("Category", notice.categoryName ?? "-")}
 ${row("From", `${notice.name} <${notice.email}>`)}
+${row("Photos", String(notice.photoCount ?? 0))}
 </table>
 <p style="margin:16px 0 4px;color:#595959;font-size:13px">Excerpt</p>
 <blockquote style="margin:0;padding-left:12px;border-left:2px solid #c31d14;white-space:pre-wrap">${escapeHtml(notice.pitchExcerpt)}</blockquote>

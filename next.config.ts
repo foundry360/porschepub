@@ -86,6 +86,13 @@ const nextConfig: NextConfig = {
   cacheComponents: true,
   partialPrefetching: true,
   poweredByHeader: false,
+  experimental: {
+    serverActions: {
+      // Story submissions may carry up to 3.6 MB of browser-downsized photos;
+      // Vercel rejects request bodies above ~4.5 MB regardless.
+      bodySizeLimit: "4mb",
+    },
+  },
   reactStrictMode: true,
   turbopack: {
     rules: {

@@ -12,9 +12,15 @@ import { getEmailConfig } from "@/server/env";
 import { logger } from "@/server/logger";
 import type { RateLimitResult } from "@/server/security/rate-limit";
 import type { Db } from "@/server/supabase/clients";
+import { prepareSubmissionImages, storeSubmissionImages } from "./images";
 
 export type SubmissionOutcome =
-  | { kind: "created"; id: string; notification: "sent" | "failed" | "skipped" }
+  | {
+      kind: "created";
+      id: string;
+      notification: "sent" | "failed" | "skipped";
+      images: { stored: number; failed: number };
+    }
   | { kind: "invalid"; errors: SubmissionFieldErrors }
   | { kind: "bot" }
   | { kind: "too_fast" }
@@ -48,6 +54,7 @@ export async function processSubmission(
   raw: RawSubmission,
   context: { ip: string },
   deps: SubmissionDeps,
+  imageFiles: Buffer[] = [],
 ): Promise<SubmissionOutcome> {
   const ipHash = deps.hash(context.ip, "ip");
 
@@ -104,6 +111,9 @@ export async function processSubmission(
   }
   if (!category) return { kind: "invalid", errors: { categoryId: "Please choose a category from the list." } };
 
+  const prepared = await prepareSubmissionImages(imageFiles);
+  if (!prepared.ok) return { kind: "invalid", errors: { images: prepared.error } };
+
   const { data: row, error: insertError } = await deps.db
     .from("submissions")
     .insert({
@@ -127,7 +137,8 @@ export async function processSubmission(
     return { kind: "unavailable" };
   }
 
-  logger.info("submission.created", { submissionId: row.id });
+  const images = await storeSubmissionImages(deps.db, row.id, prepared.images);
+  logger.info("submission.created", { submissionId: row.id, images: images.stored, imagesFailed: images.failed });
 
   // Notification is best-effort and must never lose the stored submission.
   let notification: "sent" | "failed" | "skipped" = "skipped";
@@ -145,6 +156,7 @@ export async function processSubmission(
         subject: input.subject,
         categoryName: category.name,
         pitchExcerpt: input.pitch.length > 400 ? `${input.pitch.slice(0, 400)}…` : input.pitch,
+        photoCount: images.stored,
       });
       const result = await deps.email.send({ to: recipients, replyTo: input.email, ...message });
       if (result.status === "sent") notification = "sent";
@@ -176,5 +188,5 @@ export async function processSubmission(
     logger.error("submission.notification_status_update_failed", { submissionId: row.id }, updateError);
   }
 
-  return { kind: "created", id: row.id, notification };
+  return { kind: "created", id: row.id, notification, images };
 }

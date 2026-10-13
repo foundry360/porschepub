@@ -1,3 +1,5 @@
+import { randomUUID } from "node:crypto";
+import sharp from "sharp";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { rawSubmissionSchema, type RawSubmission } from "@/lib/validation/submission";
 import type { EmailProvider } from "@/server/email/provider";
@@ -8,7 +10,7 @@ import { storyInputSchema } from "@/lib/editorial/schemas";
 import { hashIdentifier } from "@/server/security/request";
 import { processSubmission, type SubmissionDeps } from "@/server/submissions/process";
 import { checkRateLimit } from "@/server/security/rate-limit";
-import { RUN, anyCategory, cleanup, createUser, makeAsset, makeContributor, serviceClient, type TestUser } from "../support/db";
+import { RUN, anonClient, anyCategory, cleanup, createUser, makeAsset, makeContributor, serviceClient, type TestUser } from "../support/db";
 
 const service = serviceClient();
 let editor: TestUser;
@@ -175,6 +177,68 @@ describe("public submission pipeline", () => {
     const { data } = await service.from("submissions").select("subject").eq("id", outcome.id).single();
     expect(data?.subject).toBe(hostile.replace(/\s+/g, " "));
     expect((await service.from("submissions").select("id").limit(1)).error).toBeNull(); // table still exists
+  });
+});
+
+describe("submission photos", () => {
+  const photo = (color: string) =>
+    sharp({ create: { width: 900, height: 600, channels: 3, background: color } })
+      .withExif({ IFD3: { GPSLatitudeRef: "N", GPSLatitude: "51/1 30/1 0/1" }, IFD0: { Make: "SecretCameraCo" } })
+      .jpeg()
+      .toBuffer();
+
+  it("stores photos privately, stripped of metadata, and tells editors how many arrived", async () => {
+    const d = deps();
+    const outcome = await processSubmission(raw(), ctx(30), d, [await photo("#123456"), await photo("#654321")]);
+    expect(outcome.kind).toBe("created");
+    if (outcome.kind !== "created") return;
+    expect(outcome.images).toEqual({ stored: 2, failed: 0 });
+
+    const { data: rows } = await service
+      .from("submission_images")
+      .select("storage_path, mime_type, position")
+      .eq("submission_id", outcome.id)
+      .order("position");
+    expect(rows?.map((r) => [r.mime_type, r.position])).toEqual([["image/jpeg", 0], ["image/jpeg", 1]]);
+    expect(rows?.every((r) => r.storage_path.startsWith(`${outcome.id}/`))).toBe(true);
+
+    const { data: blob } = await service.storage.from("submission-images").download(rows![0].storage_path);
+    const stored = Buffer.from(await blob!.arrayBuffer());
+    expect(stored.includes(Buffer.from("SecretCameraCo"))).toBe(false);
+    expect((await sharp(stored).metadata()).exif).toBeUndefined();
+
+    expect(d.sent[0].text).toContain("Photos: 2");
+  });
+
+  it("rejects a non-image attachment and stores nothing", async () => {
+    const input = raw();
+    const outcome = await processSubmission(input, ctx(31), deps(), [Buffer.from("%PDF-1.7 not a photo")]);
+    expect(outcome).toEqual({ kind: "invalid", errors: { images: expect.stringMatching(/readable image/) } });
+    expect((await service.from("submissions").select("id").eq("title", input.title)).data).toHaveLength(0);
+  });
+
+  it("keeps photos away from the public and from accounts without an editorial profile", async () => {
+    const outcome = await processSubmission(raw(), ctx(32), deps(), [await photo("#222222")]);
+    if (outcome.kind !== "created") throw new Error(`unexpected ${outcome.kind}`);
+    const { data: row } = await service
+      .from("submission_images")
+      .select("storage_path")
+      .eq("submission_id", outcome.id)
+      .single();
+    const path = row!.storage_path;
+    const plain = await createUser(null);
+
+    for (const client of [anonClient(), plain.db]) {
+      expect((await client.from("submission_images").select("id").eq("submission_id", outcome.id)).data ?? []).toHaveLength(0);
+      expect((await client.storage.from("submission-images").download(path)).data).toBeNull();
+      expect((await client.storage.from("submission-images").createSignedUrl(path, 60)).data).toBeNull();
+      const upload = await client.storage.from("submission-images").upload(`${randomUUID()}/${randomUUID()}.jpg`, Buffer.from("x"), { contentType: "image/jpeg" });
+      expect(upload.error).not.toBeNull();
+    }
+
+    const { data: signed } = await editor.db.storage.from("submission-images").createSignedUrl(path, 60);
+    expect(signed?.signedUrl).toBeTruthy();
+    expect((await editor.db.storage.from("submission-images").remove([path])).data ?? []).toHaveLength(0);
   });
 });
 

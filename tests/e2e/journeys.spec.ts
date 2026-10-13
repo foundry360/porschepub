@@ -1,4 +1,5 @@
 import { expect, test, type Browser, type Page } from "@playwright/test";
+import sharp from "sharp";
 import { submissionPolicy } from "../../src/config/site";
 import { ADMIN_AUTH, EDITOR_AUTH, LEAD_IMAGE, loadState } from "./state";
 
@@ -199,9 +200,14 @@ test("4. a visitor submits a story proposal", async ({ page }) => {
   await page.getByRole("combobox", { name: /Category/ }).click();
   await page.getByRole("option", { name: state.categoryName }).click();
   await page.getByLabel(/Your story/).fill("This is a fictional pitch written by the automated test suite. ".repeat(6));
+  const photo = await sharp({ create: { width: 3000, height: 2000, channels: 3, background: "#6a7f99" } }).jpeg().toBuffer();
+  await page.locator('input[type="file"][accept]').setInputFiles({ name: "garage.jpg", mimeType: "image/jpeg", buffer: photo });
+  await expect(page.getByRole("img", { name: "Photo 1" })).toBeVisible();
+  await expect(page.getByText("1 of 4 photos attached.")).toBeVisible();
   await page.getByLabel(/I have read and accept/).check();
   await page.getByRole("button", { name: "Send story" }).click();
   await expect(page.getByRole("heading", { name: "Story received" })).toBeVisible();
+  await expect(page.getByText(/couldn’t be saved/)).toHaveCount(0);
 });
 
 test("10. invalid and abusive submissions are rejected safely", async ({ page, request }) => {
@@ -267,6 +273,10 @@ test("5. an editor authenticates and reviews the proposal", async ({ browser }) 
   await page.goto("/admin/submissions");
   await page.getByRole("link", { name: submissionTitle }).click();
   await expect(page.getByRole("heading", { level: 1, name: submissionTitle })).toBeVisible();
+  const submitted = page.getByRole("img", { name: "Submitted photo 1" });
+  await expect(submitted).toBeVisible();
+  expect(await submitted.evaluate((img: HTMLImageElement) => img.complete && img.naturalWidth)).toBeGreaterThan(0);
+  await expect(page.getByText("2000×1333")).toBeVisible();
 
   // Move to review.
   await page.getByLabel("Status").selectOption({ label: "In review" });
