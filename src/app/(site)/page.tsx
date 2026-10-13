@@ -150,7 +150,7 @@ export default async function HomePage() {
                   <li key={category.id} className="border-b border-line">
                     <Link
                       href={paths.category(category.slug)}
-                      className="group grid grid-cols-[2.5rem_1fr_auto] items-baseline gap-4 py-6 sm:grid-cols-[4rem_minmax(0,1fr)_minmax(0,1.2fr)_auto] sm:gap-8"
+                      className="group grid grid-cols-[2.5rem_1fr_auto] items-center gap-4 py-6 sm:grid-cols-[4rem_minmax(0,1fr)_minmax(0,1.2fr)_auto] sm:gap-8"
                     >
                       <span className="eyebrow text-stone">{String(index + 1).padStart(2, "0")}</span>
                       <span className="font-condensed text-[1.8rem] transition-colors group-hover:text-accent sm:text-[2.6rem]">
