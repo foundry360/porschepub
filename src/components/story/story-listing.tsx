@@ -1,7 +1,8 @@
 import type { Paginated, StorySummary } from "@/lib/types";
 import { EmptyState } from "@/components/ui/misc";
-import { Pagination } from "@/components/ui/pagination";
+import type { StoryScope } from "@/app/(site)/load-more-action";
 import { StoryCard } from "./story-card";
+import { StoryGrid } from "./story-grid";
 
 export function StoryListingSkeleton() {
   return (
@@ -20,18 +21,20 @@ export function StoryListingSkeleton() {
 }
 
 /**
- * Archive grid with a lead story on the first page for visual rhythm.
- * Pagination uses real links so every page is crawlable and shareable.
+ * Archive grid with a lead story on the first page for visual rhythm, and a
+ * "Load more" control backed by real page links so every page stays crawlable.
  */
 export function StoryListing({
   result,
   hrefFor,
+  scope = {},
   emptyTitle = "No stories yet",
   emptyMessage,
   withLead = true,
 }: {
   result: Paginated<StorySummary>;
   hrefFor: (page: number) => string;
+  scope?: StoryScope;
   emptyTitle?: string;
   emptyMessage?: string;
   withLead?: boolean;
@@ -55,14 +58,21 @@ export function StoryListing({
           <StoryCard story={lead} variant="lead" priority headingLevel={2} />
         </div>
       ) : null}
-      <ul className={`grid gap-x-8 gap-y-14 sm:grid-cols-2 lg:grid-cols-3 ${showLead ? "pt-14" : ""}`}>
-        {grid.map((story, index) => (
-          <li key={story.id}>
-            <StoryCard story={story} headingLevel={2} priority={!showLead && index < 3} />
-          </li>
-        ))}
-      </ul>
-      <Pagination page={result.page} totalPages={result.totalPages} hrefFor={hrefFor} label="Stories pagination" />
+      <StoryGrid
+        initialItems={grid}
+        page={result.page}
+        totalPages={result.totalPages}
+        scope={scope}
+        pageHrefs={Object.fromEntries(
+          Array.from({ length: Math.max(0, result.totalPages - result.page) }, (_, i) => {
+            const n = result.page + 1 + i;
+            return [n, hrefFor(n)];
+          }),
+        )}
+        firstPageHref={hrefFor(1)}
+        priorityCount={showLead ? 0 : 3}
+        className={showLead ? "pt-14" : ""}
+      />
     </>
   );
 }

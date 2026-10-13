@@ -155,6 +155,7 @@ async function ContributorStories({
       <StoryListing
         result={result}
         withLead={false}
+        scope={{ contributorId }}
         hrefFor={(n) => (n > 1 ? `${paths.contributor(slug)}?page=${n}` : paths.contributor(slug))}
         emptyTitle="No published stories yet"
       />

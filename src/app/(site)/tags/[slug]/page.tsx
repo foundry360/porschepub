@@ -54,7 +54,12 @@ async function TagContent({
   if (page > result.totalPages) notFound();
   return (
     <div className="pb-8">
-      <StoryListing result={result} hrefFor={(n) => paths.tag(tagSlug, n)} emptyTitle="No stories with this topic yet" />
+      <StoryListing
+        result={result}
+        hrefFor={(n) => paths.tag(tagSlug, n)}
+        scope={{ tagId }}
+        emptyTitle="No stories with this topic yet"
+      />
     </div>
   );
 }

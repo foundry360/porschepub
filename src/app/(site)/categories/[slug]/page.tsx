@@ -80,6 +80,7 @@ async function CategoryContent({
       <StoryListing
         result={result}
         hrefFor={(n) => paths.category(categorySlug, n)}
+        scope={{ categoryId }}
         emptyTitle="No stories in this category yet"
         emptyMessage="We haven’t published a story here yet. Have one to tell?"
       />
