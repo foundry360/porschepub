@@ -93,7 +93,7 @@ export function validateSubmission(raw: RawSubmission): SubmissionValidation {
   if (pitch.length < L.pitch.min) {
     errors.pitch = `Please tell us a little more (at least ${L.pitch.min} characters).`;
   } else if (pitch.length > L.pitch.max) {
-    errors.pitch = `Please keep your pitch under ${L.pitch.max} characters.`;
+    errors.pitch = `Please keep your story under ${L.pitch.max} characters.`;
   } else if (countLinks(pitch) > L.maxLinksInText) {
     errors.pitch = "Please keep links to a minimum. You can add more detail once we reply.";
   }

@@ -267,7 +267,7 @@ export function SubmissionForm({
 
       <Field
         id="field-pitch"
-        label="Your pitch"
+        label="Your story"
         hint={`Tell us the story in your own words: who, what, and why it matters. ${SUBMISSION_LIMITS.pitch.min}–${SUBMISSION_LIMITS.pitch.max} characters.`}
         error={errors.pitch}
       >
