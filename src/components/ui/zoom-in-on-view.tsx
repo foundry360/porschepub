@@ -3,7 +3,7 @@
 import { useEffect, useRef, type ReactNode } from "react";
 
 /**
- * Zooms its `.zoom-item` descendants in, staggered, the first time it scrolls
+ * Zooms its `.zoom-item` descendants in the first time it scrolls
  * into view. Content stays fully visible without JavaScript or when the
  * visitor prefers reduced motion.
  */

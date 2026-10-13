@@ -1,4 +1,3 @@
-import type { CSSProperties } from "react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { brand } from "@/config/brand";
@@ -127,12 +126,12 @@ export default async function HomePage() {
 
       {home.categories.length > 0 ? (
         <section aria-labelledby="explore-heading">
-          <PageContainer className="py-20 sm:py-28">
-            <SectionHeader id="explore-heading" title="Explore" eyebrow="Categories" href={paths.stories()} hrefLabel="All stories" />
-            <ZoomInOnView>
+          <ZoomInOnView>
+            <PageContainer className="zoom-item py-20 sm:py-28">
+              <SectionHeader id="explore-heading" title="Explore" eyebrow="Categories" href={paths.stories()} hrefLabel="All stories" />
               <ol className="mt-4">
                 {home.categories.map((category, index) => (
-                  <li key={category.id} className="zoom-item border-b border-line" style={{ "--i": index } as CSSProperties}>
+                  <li key={category.id} className="border-b border-line">
                     <Link
                       href={paths.category(category.slug)}
                       className="group grid grid-cols-[2.5rem_1fr_auto] items-baseline gap-4 py-6 sm:grid-cols-[4rem_minmax(0,1fr)_minmax(0,1.2fr)_auto] sm:gap-8"
@@ -149,8 +148,8 @@ export default async function HomePage() {
                   </li>
                 ))}
               </ol>
-            </ZoomInOnView>
-          </PageContainer>
+            </PageContainer>
+          </ZoomInOnView>
         </section>
       ) : null}
 
