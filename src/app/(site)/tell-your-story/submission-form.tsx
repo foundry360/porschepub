@@ -194,7 +194,7 @@ export function SubmissionForm({
             />
           )}
         </Field>
-        <Field id="field-email" label="Email address" error={errors.email} hint="We’ll only use this to reply to you.">
+        <Field id="field-email" label="Email address" error={errors.email}>
           {(a11y) => (
             <input
               id="field-email"
