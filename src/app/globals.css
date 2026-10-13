@@ -386,6 +386,25 @@ main:has(.submit-cta) + .site-footer {
   margin-top: 0;
 }
 
+/* Zoom-in reveal driven by <ZoomInOnView>; --i staggers the items. */
+[data-zoom] .zoom-item {
+  transform-origin: left center;
+}
+[data-zoom="in"] .zoom-item {
+  transition:
+    opacity 700ms var(--ease-editorial),
+    transform 900ms var(--ease-editorial);
+  transition-delay: calc(var(--i, 0) * 90ms);
+}
+[data-zoom="ready"] .zoom-item {
+  opacity: 0;
+  transform: scale(0.88);
+}
+[data-zoom="in"] .zoom-item {
+  opacity: 1;
+  transform: none;
+}
+
 /* Radial red glow behind call-to-action sections. */
 .glow-accent {
   background-image: radial-gradient(55% 70% at 50% 110%, rgb(195 29 20 / 32%), transparent 70%);

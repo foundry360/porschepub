@@ -1,3 +1,4 @@
+import type { CSSProperties } from "react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { brand } from "@/config/brand";
@@ -6,6 +7,7 @@ import { EditorialImage } from "@/components/ui/editorial-image";
 import { InlineText } from "@/components/ui/inline-text";
 import { EmptyState, JsonLd, PageContainer, SectionHeader, SubmitCta } from "@/components/ui/misc";
 import { Pill } from "@/components/ui/pill";
+import { ZoomInOnView } from "@/components/ui/zoom-in-on-view";
 import { formatDate } from "@/lib/dates";
 import { organizationJsonLd, websiteJsonLd } from "@/lib/seo/jsonld";
 import type { ContributorSummary, StorySummary } from "@/lib/types";
@@ -127,25 +129,27 @@ export default async function HomePage() {
         <section aria-labelledby="explore-heading">
           <PageContainer className="py-20 sm:py-28">
             <SectionHeader id="explore-heading" title="Explore" eyebrow="Categories" href={paths.stories()} hrefLabel="All stories" />
-            <ol className="mt-4">
-              {home.categories.map((category, index) => (
-                <li key={category.id} className="border-b border-line">
-                  <Link
-                    href={paths.category(category.slug)}
-                    className="group grid grid-cols-[2.5rem_1fr_auto] items-baseline gap-4 py-6 sm:grid-cols-[4rem_minmax(0,1fr)_minmax(0,1.2fr)_auto] sm:gap-8"
-                  >
-                    <span className="eyebrow text-stone">{String(index + 1).padStart(2, "0")}</span>
-                    <span className="font-condensed text-[1.8rem] transition-colors group-hover:text-accent sm:text-[2.6rem]">
-                      {category.name}
-                    </span>
-                    <span className="hidden text-[0.95rem] leading-snug text-stone sm:block">{category.description}</span>
-                    <span aria-hidden className="text-stone transition-transform group-hover:translate-x-1 group-hover:text-accent">
-                      →
-                    </span>
-                  </Link>
-                </li>
-              ))}
-            </ol>
+            <ZoomInOnView>
+              <ol className="mt-4">
+                {home.categories.map((category, index) => (
+                  <li key={category.id} className="zoom-item border-b border-line" style={{ "--i": index } as CSSProperties}>
+                    <Link
+                      href={paths.category(category.slug)}
+                      className="group grid grid-cols-[2.5rem_1fr_auto] items-baseline gap-4 py-6 sm:grid-cols-[4rem_minmax(0,1fr)_minmax(0,1.2fr)_auto] sm:gap-8"
+                    >
+                      <span className="eyebrow text-stone">{String(index + 1).padStart(2, "0")}</span>
+                      <span className="font-condensed text-[1.8rem] transition-colors group-hover:text-accent sm:text-[2.6rem]">
+                        {category.name}
+                      </span>
+                      <span className="hidden text-[0.95rem] leading-snug text-stone sm:block">{category.description}</span>
+                      <span aria-hidden className="text-stone transition-transform group-hover:translate-x-1 group-hover:text-accent">
+                        →
+                      </span>
+                    </Link>
+                  </li>
+                ))}
+              </ol>
+            </ZoomInOnView>
           </PageContainer>
         </section>
       ) : null}
