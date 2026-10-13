@@ -190,7 +190,6 @@ export function PhotoPicker({ error, syncKey }: { error?: string; syncKey: unkno
             disabled={busy || full}
             onClick={() => pickerRef.current?.click()}
             aria-describedby={["field-images-hint", message ? "field-images-error" : null].filter(Boolean).join(" ")}
-            aria-invalid={Boolean(message)}
             className="inline-flex items-center gap-2.5 rounded-full border border-line px-6 py-3 text-[0.8125rem] font-medium tracking-[0.02em] text-ink transition-colors hover:border-ink hover:bg-ink hover:text-paper disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:border-line disabled:hover:bg-transparent disabled:hover:text-ink"
           >
             <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden fill="none" stroke="currentColor" strokeWidth="1.5">

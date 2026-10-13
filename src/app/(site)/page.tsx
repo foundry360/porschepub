@@ -10,7 +10,7 @@ import { Pill } from "@/components/ui/pill";
 import { RevealOnView } from "@/components/ui/reveal-on-view";
 import { formatDate } from "@/lib/dates";
 import { organizationJsonLd, websiteJsonLd } from "@/lib/seo/jsonld";
-import type { ContributorSummary, MediaImage, StorySummary } from "@/lib/types";
+import type { ContributorSummary, StorySummary } from "@/lib/types";
 import { paths } from "@/lib/urls";
 import { getContributorBySlug, getHomepage } from "@/server/content/public";
 
