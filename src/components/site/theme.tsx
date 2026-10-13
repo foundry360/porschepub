@@ -71,7 +71,7 @@ export function ThemeToggle({ className = "", showLabel = false }: { className?:
       onClick={() => setPreference(next)}
       aria-label={`Colour theme: ${LABEL[preference]}. Switch to ${LABEL[next]}.`}
       title={`Theme: ${LABEL[preference]}`}
-      className={`inline-flex h-11 items-center gap-2 px-2 text-ink transition-colors hover:text-accent ${className}`}
+      className={`inline-flex h-11 items-center gap-2 px-2 text-ink transition-colors ${className}`}
     >
       <Icon preference={preference} />
       {showLabel ? <span className="text-[0.8rem]">{LABEL[preference]}</span> : null}

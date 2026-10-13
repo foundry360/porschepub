@@ -370,7 +370,7 @@ export function SubmissionForm({
         <button
           type="submit"
           disabled={pending}
-          className="inline-flex items-center gap-2.5 rounded-full border border-ink bg-ink px-8 py-4 text-[0.8125rem] font-medium tracking-[0.02em] text-paper transition-colors hover:border-accent hover:bg-accent disabled:cursor-not-allowed disabled:opacity-60"
+          className="inline-flex items-center gap-2.5 rounded-full border border-ink bg-ink px-8 py-4 text-[0.8125rem] font-medium tracking-[0.02em] text-paper transition-colors hover:bg-transparent hover:text-ink disabled:cursor-not-allowed disabled:opacity-60"
         >
           {pending ? "Sending…" : "Send pitch"}
         </button>

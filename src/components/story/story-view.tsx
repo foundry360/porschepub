@@ -157,7 +157,7 @@ export function StoryView({
               <li key={tag.id}>
                 <Link
                   href={paths.tag(tag.slug)}
-                  className="inline-block rounded-full border border-line px-4 py-2 text-[0.8rem] text-stone transition-colors hover:border-accent hover:text-ink"
+                  className="inline-block rounded-full border border-line px-4 py-2 text-[0.8rem] text-stone transition-colors hover:border-ink hover:text-ink"
                 >
                   {tag.name}
                 </Link>

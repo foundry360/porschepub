@@ -30,7 +30,7 @@ export async function SiteHeader() {
           <Link href={paths.tellYourStory()} className={pillClass("outline", "whitespace-nowrap !px-5 !py-2.5 max-sm:hidden")}>
             Tell Your Story
           </Link>
-          <ThemeToggle className="w-11 justify-center rounded-full border border-line hover:border-accent" />
+          <ThemeToggle className="w-11 justify-center rounded-full border border-line hover:border-ink" />
           <MenuDialog
           items={navigation.primary}
           categories={categories.map((category) => ({

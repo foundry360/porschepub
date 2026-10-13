@@ -97,7 +97,7 @@ export function PageIntro({
 
 function chipClass(active: boolean): string {
   return `inline-block whitespace-nowrap rounded-full border px-4 py-2 text-[0.8125rem] transition-colors ${
-    active ? "border-ink bg-ink text-paper" : "border-line text-stone hover:border-accent hover:text-ink"
+    active ? "border-ink bg-ink text-paper" : "border-line text-stone hover:border-ink hover:text-ink"
   }`;
 }
 

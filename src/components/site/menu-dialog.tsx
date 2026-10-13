@@ -25,7 +25,7 @@ function BurgerLines({ open }: { open: boolean }) {
 }
 
 const circleButton =
-  "flex h-11 w-11 items-center justify-center rounded-full border border-line text-ink transition-colors hover:border-accent";
+  "flex h-11 w-11 items-center justify-center rounded-full border border-line text-ink transition-colors hover:border-ink";
 
 /**
  * Full-screen menu using a native modal <dialog>: focus is trapped, Escape closes,
@@ -154,7 +154,7 @@ export function MenuDialog({
                 <Link
                   href="/search"
                   onClick={() => setOpen(false)}
-                  className="eyebrow border-b border-stone pb-1 text-ink hover:border-accent"
+                  className="eyebrow border-b border-stone pb-1 text-ink hover:border-ink"
                 >
                   Search stories
                 </Link>

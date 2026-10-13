@@ -157,7 +157,7 @@ export default async function HomePage() {
                         {category.name}
                       </span>
                       <span className="hidden text-[0.95rem] leading-snug text-stone sm:block">{category.description}</span>
-                      <span aria-hidden className="text-stone transition-transform group-hover:translate-x-1 group-hover:text-accent">
+                      <span aria-hidden className="text-stone transition-transform group-hover:translate-x-1 group-hover:text-ink">
                         →
                       </span>
                     </Link>
