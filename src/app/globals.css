@@ -434,7 +434,7 @@ main:has(.submit-cta) + .site-footer {
 
 /* Radial red glow behind call-to-action sections. */
 .glow-accent {
-  background-image: radial-gradient(55% 70% at 50% 110%, rgb(195 29 20 / 32%), transparent 70%);
+  background-image: radial-gradient(60% 55% at 50% 115%, rgb(195 29 20 / 11%), transparent 70%);
 }
 
 @media (prefers-reduced-motion: reduce) {
