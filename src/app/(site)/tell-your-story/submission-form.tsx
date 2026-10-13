@@ -229,7 +229,6 @@ export function SubmissionForm({
         <Field
           id="field-subject"
           label="Porsche model or subject"
-          hint="For example: a 1987 911 Carrera, a race team, a restoration shop."
           error={errors.subject}
         >
           {(a11y) => (
