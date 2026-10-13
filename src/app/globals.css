@@ -360,6 +360,26 @@ body {
   pointer-events: none;
   background: radial-gradient(60% 55% at 85% 100%, rgb(195 29 20 / 28%), transparent 70%);
 }
+/* Close icon: the two burger lines swing into an X as the menu opens, and back as it closes. */
+.menu-x-line {
+  transition: transform 550ms var(--ease-editorial) 200ms;
+}
+.menu-panel[open] .menu-x-top {
+  transform: translateY(2.5px) rotate(45deg);
+}
+.menu-panel[open] .menu-x-bottom {
+  transform: translateY(-2.5px) rotate(-45deg);
+}
+@starting-style {
+  .menu-panel[open] .menu-x-top,
+  .menu-panel[open] .menu-x-bottom {
+    transform: none;
+  }
+}
+.menu-panel:not([open]) .menu-x-line {
+  transition-delay: 0ms;
+}
+
 .menu-item {
   opacity: 0;
   transform: translateY(24px);

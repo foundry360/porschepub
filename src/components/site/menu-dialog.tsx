@@ -7,25 +7,26 @@ import { brand } from "@/config/brand";
 
 type NavItem = { label: string; href: string };
 
+/** Two lines that stagger on hover; inside the open menu they swing into an X. */
 function BurgerLines({ open }: { open: boolean }) {
+  if (open) {
+    return (
+      <span aria-hidden className="relative block h-3 w-[18px]">
+        <span className="menu-x-line menu-x-top absolute left-0 top-[3px] block h-px w-[18px] bg-current" />
+        <span className="menu-x-line menu-x-bottom absolute left-0 top-[8px] block h-px w-[18px] bg-current" />
+      </span>
+    );
+  }
   return (
     <span aria-hidden className="relative block h-3 w-[18px]">
-      <span
-        className={`absolute left-0 block h-px w-[18px] bg-current transition-transform duration-300 ${
-          open ? "top-1/2 rotate-45" : "top-[3px]"
-        }`}
-      />
-      <span
-        className={`absolute left-0 block h-px w-[18px] bg-current transition-transform duration-300 ${
-          open ? "top-1/2 -rotate-45" : "bottom-[3px]"
-        }`}
-      />
+      <span className="absolute left-0 top-[3px] block h-px w-[18px] bg-current transition-all duration-500 ease-[var(--ease-editorial)] group-hover:w-[11px]" />
+      <span className="absolute right-0 top-[8px] block h-px w-[18px] bg-current transition-all delay-75 duration-500 ease-[var(--ease-editorial)] group-hover:w-[11px]" />
     </span>
   );
 }
 
 const circleButton =
-  "flex h-11 w-11 items-center justify-center rounded-full border border-line text-ink transition-colors hover:border-ink";
+  "group flex h-11 w-11 items-center justify-center rounded-full border border-line text-ink transition-colors hover:border-ink";
 
 /**
  * Full-screen menu using a native modal <dialog>: focus is trapped, Escape closes,
