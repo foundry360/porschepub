@@ -186,7 +186,7 @@ function FeaturedStory({ story }: { story: StorySummary }) {
             Featured story{story.category ? ` · ${story.category.name}` : ""}
           </p>
           <h2 id="featured-heading" className="font-condensed mt-6 text-[clamp(2.8rem,7vw,6.5rem)]">
-            <Link href={paths.story(story.slug)} className="transition-colors hover:text-[#f4c9c5]">
+            <Link href={paths.story(story.slug)}>
               {story.headline}
             </Link>
           </h2>
