@@ -23,9 +23,9 @@ export const metadata: Metadata = {
 /** Licensed under the Unsplash License (free commercial use, no permission needed). */
 const HERO_IMAGE: MediaImage = {
   id: "home-hero",
-  url: "/images/hero-porsche-911-targa-sunset.jpg",
-  width: 1024,
-  height: 682,
+  url: "/images/hero-porsche-911-targa-sunset-3200.jpg",
+  width: 3200,
+  height: 2133,
   alt: "",
   caption: null,
   credit: "Jonathan Rathgeb / Unsplash",
