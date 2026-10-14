@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { brand } from "@/config/brand";
+import { BrandLogo } from "./wordmark";
 
 type NavItem = { label: string; href: string };
 
@@ -99,10 +100,10 @@ export function MenuDialog({
             <Link
               href="/"
               onClick={() => setOpen(false)}
-              className="inline-flex items-center gap-2.5 text-[0.9375rem] font-semibold leading-none tracking-[-0.01em] text-ink"
+              aria-label={`${brand.name}, home`}
+              className="inline-flex items-center text-ink"
             >
-              <span aria-hidden className="block h-2.5 w-2.5 rounded-full bg-accent" />
-              {brand.wordmark.text}
+              <BrandLogo className="w-[12rem] sm:w-[15rem]" />
             </Link>
             <button type="button" onClick={() => setOpen(false)} className={circleButton}>
               <BurgerLines open />

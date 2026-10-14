@@ -1,7 +1,7 @@
 /**
  * Central brand configuration.
  *
- * "The Porsche Journal" is a TEMPORARY working name. Everything that depends on
+ * The publication is named "Werks & Marque". Everything that depends on
  * the publication's identity (name, wordmark, tagline, colours, social links,
  * contact details, disclaimers) is read from here so a rename never requires
  * edits across the codebase.
@@ -26,7 +26,7 @@ function optionalEnv(value: string | undefined): string | undefined {
   return trimmed ? trimmed : undefined;
 }
 
-const name = env(process.env.NEXT_PUBLIC_BRAND_NAME, "The Porsche Journal");
+const name = env(process.env.NEXT_PUBLIC_BRAND_NAME, "Werks & Marque");
 
 export type SocialLink = { label: string; href: string };
 

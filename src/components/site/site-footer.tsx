@@ -4,6 +4,7 @@ import { brand } from "@/config/brand";
 import { navigation } from "@/config/site";
 import { paths } from "@/lib/urls";
 import { loadNavCategories } from "./site-header";
+import { BrandLogo } from "./wordmark";
 
 async function CurrentYear() {
   "use cache";
@@ -14,20 +15,11 @@ async function CurrentYear() {
 export async function SiteFooter() {
   const categories = await loadNavCategories();
 
-  const nameParts = brand.name.trim().split(/\s+/);
-  const lastWord = nameParts.length > 1 ? nameParts.pop() : null;
-
   return (
     <footer className="site-footer on-dark bg-ink text-paper">
       <div className="mx-auto max-w-[88rem] px-5 pb-10 pt-20 sm:px-8 sm:pt-28">
-        <Link href="/" aria-label={`${brand.name}, home`} className="font-headline block text-[clamp(3rem,11vw,10.5rem)] leading-[0.92]">
-          {lastWord ? (
-            <>
-              {nameParts.join(" ")} <em>{lastWord}</em>
-            </>
-          ) : (
-            brand.name
-          )}
+        <Link href="/" aria-label={`${brand.name}, home`} className="block w-full max-w-[64rem]">
+          <BrandLogo className="w-full" />
         </Link>
         <p className="mt-6 max-w-md text-[1rem] leading-relaxed text-paper/70">{brand.tagline}.</p>
 
