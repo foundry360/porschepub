@@ -36,7 +36,12 @@ function Figure({
             : "my-10"
       }
     >
-      <EditorialImage image={image} sizes={sizes} className="reveal-on-scroll" reveal={false} />
+      <EditorialImage
+        image={image}
+        sizes={sizes}
+        className={`reveal-on-scroll ${layout === "full" ? "" : "rounded-lg"}`}
+        reveal={false}
+      />
       {caption || image.credit ? (
         <figcaption className="mx-auto mt-3 max-w-[44rem] px-5 text-[0.85rem] leading-snug text-stone sm:px-0">
           {caption ? <span>{caption}</span> : null}
@@ -135,7 +140,7 @@ export function BlockRenderer({ blocks, images, variant = "story" }: Props) {
           case "embed":
             return (
               <figure key={index} className="my-10">
-                <div className="relative aspect-video w-full overflow-hidden bg-ink">
+                <div className="relative aspect-video w-full overflow-hidden rounded-lg bg-ink">
                   <iframe
                     src={embedUrl(block)}
                     title={block.title}
