@@ -148,66 +148,63 @@ export function StoryView({
         <p className="mx-auto mt-4 max-w-[88rem] px-5 text-[0.85rem] leading-snug text-stone sm:px-8">{lead.caption}</p>
       ) : null}
 
-      <div className="mx-auto mt-14 max-w-[44rem] px-5 sm:mt-20 sm:px-0" id="story-body">
-        <BlockRenderer blocks={story.blocks} images={story.images} />
+      <div className="mx-auto mt-14 grid max-w-[68rem] grid-cols-1 gap-y-16 px-5 sm:mt-20 lg:grid-cols-[12.5rem_minmax(0,44rem)] lg:justify-center lg:gap-x-16 lg:px-8">
+        <div id="story-body" className="min-w-0 lg:col-start-2">
+          <BlockRenderer blocks={story.blocks} images={story.images} />
 
-        {story.tags.length > 0 ? (
-          <ul aria-label="Topics" className="mt-14 flex flex-wrap gap-2">
-            {story.tags.map((tag) => (
-              <li key={tag.id}>
-                <Link
-                  href={paths.tag(tag.slug)}
-                  className="inline-block rounded-full border border-line px-4 py-2 text-[0.8rem] text-stone transition-colors hover:border-ink hover:text-ink"
-                >
-                  {tag.name}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        ) : null}
-
-        <div className="no-print mt-12 border-t border-line pt-8">
-          <ShareControls url={shareUrl} title={story.headline} />
+          {story.tags.length > 0 ? (
+            <ul aria-label="Topics" className="mt-14 flex flex-wrap gap-2">
+              {story.tags.map((tag) => (
+                <li key={tag.id}>
+                  <Link
+                    href={paths.tag(tag.slug)}
+                    className="inline-block rounded-full border border-line px-4 py-2 text-[0.8rem] text-stone transition-colors hover:border-ink hover:text-ink"
+                  >
+                    {tag.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          ) : null}
         </div>
 
-        {story.contributor ? (
-          <aside aria-label="About the contributor" className="mt-16 rounded-[20px] border border-line p-6 sm:p-8">
-            <p className="eyebrow eyebrow-slash text-stone">About the contributor</p>
-            <div className="mt-5 flex gap-5">
+        <aside className="no-print flex flex-col gap-10 lg:sticky lg:top-28 lg:col-start-1 lg:row-start-1 lg:max-h-[calc(100svh-8rem)] lg:self-start lg:overflow-y-auto">
+          <ShareControls url={shareUrl} title={story.headline} layout="column" />
+          {story.contributor ? (
+            <aside aria-label="About the contributor" className="rounded-[20px] border border-line p-4">
+              <p className="eyebrow eyebrow-slash text-stone">About the contributor</p>
               {story.contributor.avatar ? (
-                <div className="w-20 shrink-0 sm:w-24">
+                <div className="mt-4 w-16">
                   <EditorialImage
                     image={story.contributor.avatar}
                     aspect="1/1"
-                    sizes="96px"
+                    sizes="64px"
                     decorative
                     reveal={false}
                     className="rounded-full"
                   />
                 </div>
               ) : null}
-              <div>
-                <p className="font-headline text-[1.75rem]">{story.contributor.name}</p>
-                {story.contributor.descriptor ? (
-                  <p className="font-display mt-1 text-[1.2rem] italic text-stone">{story.contributor.descriptor}</p>
-                ) : null}
-                {contributor?.bio ? (
-                  <p className="mt-3 line-clamp-4 text-[0.95rem] leading-relaxed text-charcoal">
-                    <InlineText text={contributor.bio.split("\n")[0]} />
-                  </p>
-                ) : null}
-                {story.contributor.hasProfile ? (
-                  <Link
-                    href={paths.contributor(story.contributor.slug)}
-                    className="eyebrow mt-5 inline-block text-ink transition-colors hover:text-accent"
-                  >
-                    Profile and stories <span aria-hidden>→</span>
-                  </Link>
-                ) : null}
-              </div>
-            </div>
-          </aside>
-        ) : null}
+              <p className="font-headline mt-4 text-[1.45rem] leading-tight">{story.contributor.name}</p>
+              {story.contributor.descriptor ? (
+                <p className="font-display mt-1 text-[1.05rem] italic leading-snug text-stone">{story.contributor.descriptor}</p>
+              ) : null}
+              {contributor?.bio ? (
+                <p className="mt-3 line-clamp-6 text-[0.85rem] leading-relaxed text-charcoal">
+                  <InlineText text={contributor.bio.split("\n")[0]} />
+                </p>
+              ) : null}
+              {story.contributor.hasProfile ? (
+                <Link
+                  href={paths.contributor(story.contributor.slug)}
+                  className="eyebrow mt-4 inline-block text-ink transition-colors hover:text-accent"
+                >
+                  Profile and stories <span aria-hidden>→</span>
+                </Link>
+              ) : null}
+            </aside>
+          ) : null}
+        </aside>
       </div>
 
       {related.length > 0 ? (

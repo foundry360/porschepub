@@ -7,7 +7,7 @@ import { useState } from "react";
  * set no third-party scripts). The copy/share button enhances with the Web Share
  * API where available.
  */
-export function ShareControls({ url, title }: { url: string; title: string }) {
+export function ShareControls({ url, title, layout = "row" }: { url: string; title: string; layout?: "row" | "column" }) {
   const [status, setStatus] = useState<"idle" | "copied" | "failed">("idle");
   const encodedUrl = encodeURIComponent(url);
   const encodedTitle = encodeURIComponent(title);
@@ -29,7 +29,15 @@ export function ShareControls({ url, title }: { url: string; title: string }) {
 
   const linkClass = "eyebrow link-underline";
   return (
-    <div className="flex flex-wrap items-center gap-x-6 gap-y-3" aria-label="Share this story" role="group">
+    <div
+      className={
+        layout === "column"
+          ? "flex flex-col items-start gap-3"
+          : "flex flex-wrap items-center gap-x-6 gap-y-3"
+      }
+      aria-label="Share this story"
+      role="group"
+    >
       <span className="eyebrow text-stone">Share</span>
       <a
         className={linkClass}
