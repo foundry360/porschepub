@@ -46,7 +46,7 @@ export default async function StoryPreviewPage({ params }: PageProps<"/admin/sto
           Back to editor
         </Link>
       </div>
-      <StoryView story={display} related={[]} contributor={null} preview />
+      <StoryView story={display} related={[]} preview />
     </div>
   );
 }

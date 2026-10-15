@@ -75,6 +75,11 @@ export async function SiteFooter() {
                   RSS
                 </a>
               </li>
+              <li>
+                <Link href="/admin/login" className="hover:text-paper">
+                  Admin
+                </Link>
+              </li>
               {brand.social.map((item) => (
                 <li key={item.href}>
                   <a href={item.href} target="_blank" rel="noopener noreferrer" className="hover:text-paper">

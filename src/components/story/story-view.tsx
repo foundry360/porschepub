@@ -4,13 +4,12 @@ import { ReadingProgress } from "@/components/story/reading-progress";
 import { ShareControls } from "@/components/story/share-controls";
 import { StoryCard } from "@/components/story/story-card";
 import { EditorialImage } from "@/components/ui/editorial-image";
-import { InlineText } from "@/components/ui/inline-text";
 import { JsonLd, SubmitCta } from "@/components/ui/misc";
 import { countWords, blocksToPlainText } from "@/lib/content/blocks";
 import { inlineToPlainText } from "@/lib/content/inline";
 import { formatDate } from "@/lib/dates";
 import { articleJsonLd, breadcrumbJsonLd } from "@/lib/seo/jsonld";
-import type { ContributorProfile, StoryDetail, StorySummary } from "@/lib/types";
+import type { StoryDetail, StorySummary } from "@/lib/types";
 import { absoluteUrl, paths, storyCanonicalUrl } from "@/lib/urls";
 
 export function storyDescription(story: StoryDetail): string {
@@ -77,12 +76,10 @@ function StoryHeading({ story, onImage = false }: { story: StoryDetail; onImage?
 export function StoryView({
   story,
   related,
-  contributor,
   preview = false,
 }: {
   story: StoryDetail;
   related: StorySummary[];
-  contributor: ContributorProfile | null;
   preview?: boolean;
 }) {
   const canonical = storyCanonicalUrl({ slug: story.slug, canonical_url_override: story.canonicalUrlOverride });
@@ -148,8 +145,8 @@ export function StoryView({
         <p className="mx-auto mt-4 max-w-[88rem] px-5 text-[0.85rem] leading-snug text-stone sm:px-8">{lead.caption}</p>
       ) : null}
 
-      <div className="mx-auto mt-14 grid max-w-[68rem] grid-cols-1 gap-y-16 px-5 sm:mt-20 lg:grid-cols-[12.5rem_minmax(0,44rem)] lg:justify-center lg:gap-x-16 lg:px-8">
-        <div id="story-body" className="min-w-0 lg:col-start-2">
+      <div className="mx-auto mt-14 grid max-w-[76rem] grid-cols-1 gap-y-16 px-5 sm:mt-20 xl:grid-cols-[12.5rem_minmax(0,44rem)_7.5rem] xl:justify-center xl:gap-x-16 xl:px-8">
+        <div id="story-body" className="min-w-0 xl:col-start-2">
           <BlockRenderer blocks={story.blocks} images={story.images} />
 
           {story.tags.length > 0 ? (
@@ -168,43 +165,42 @@ export function StoryView({
           ) : null}
         </div>
 
-        <aside className="no-print flex flex-col gap-10 lg:sticky lg:top-28 lg:col-start-1 lg:row-start-1 lg:max-h-[calc(100svh-8rem)] lg:self-start lg:overflow-y-auto">
+        {story.contributor ? (
+          <aside
+            aria-label="About the contributor"
+            className="xl:col-start-1 xl:row-start-1 xl:self-start"
+          >
+            <p className="eyebrow eyebrow-slash text-stone">About the contributor</p>
+            {story.contributor.avatar ? (
+              <div className="mt-4 w-16">
+                <EditorialImage
+                  image={story.contributor.avatar}
+                  aspect="1/1"
+                  sizes="64px"
+                  decorative
+                  reveal={false}
+                  className="rounded-full"
+                />
+              </div>
+            ) : null}
+            <p className="font-headline mt-4 text-[1.45rem] leading-tight">{story.contributor.name}</p>
+            {story.contributor.descriptor ? (
+              <p className="font-display mt-1 text-[1.05rem] italic leading-snug text-stone">{story.contributor.descriptor}</p>
+            ) : null}
+            {story.contributor.hasProfile ? (
+              <Link
+                href={paths.contributor(story.contributor.slug)}
+                className="eyebrow mt-4 inline-block text-ink transition-colors hover:text-accent"
+              >
+                Profile and stories <span aria-hidden>→</span>
+              </Link>
+            ) : null}
+          </aside>
+        ) : null}
+
+        <div className="no-print xl:col-start-3 xl:row-start-1 xl:self-start">
           <ShareControls url={shareUrl} title={story.headline} layout="column" />
-          {story.contributor ? (
-            <aside aria-label="About the contributor" className="rounded-[20px] border border-line p-4">
-              <p className="eyebrow eyebrow-slash text-stone">About the contributor</p>
-              {story.contributor.avatar ? (
-                <div className="mt-4 w-16">
-                  <EditorialImage
-                    image={story.contributor.avatar}
-                    aspect="1/1"
-                    sizes="64px"
-                    decorative
-                    reveal={false}
-                    className="rounded-full"
-                  />
-                </div>
-              ) : null}
-              <p className="font-headline mt-4 text-[1.45rem] leading-tight">{story.contributor.name}</p>
-              {story.contributor.descriptor ? (
-                <p className="font-display mt-1 text-[1.05rem] italic leading-snug text-stone">{story.contributor.descriptor}</p>
-              ) : null}
-              {contributor?.bio ? (
-                <p className="mt-3 line-clamp-6 text-[0.85rem] leading-relaxed text-charcoal">
-                  <InlineText text={contributor.bio.split("\n")[0]} />
-                </p>
-              ) : null}
-              {story.contributor.hasProfile ? (
-                <Link
-                  href={paths.contributor(story.contributor.slug)}
-                  className="eyebrow mt-4 inline-block text-ink transition-colors hover:text-accent"
-                >
-                  Profile and stories <span aria-hidden>→</span>
-                </Link>
-              ) : null}
-            </aside>
-          ) : null}
-        </aside>
+        </div>
       </div>
 
       {related.length > 0 ? (

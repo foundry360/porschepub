@@ -4,7 +4,6 @@ import { storyDescription, StoryView } from "@/components/story/story-view";
 import { paths, storyCanonicalUrl } from "@/lib/urls";
 import {
   findStoryRedirect,
-  getContributorBySlug,
   getRelatedStories,
   getStoryBySlug,
   listLiveStoryIndex,
@@ -72,10 +71,7 @@ export default async function StoryPage({ params }: PageProps<"/stories/[slug]">
     notFound();
   }
 
-  const [related, contributor] = await Promise.all([
-    getRelatedStories(story.id, story.category?.id ?? null),
-    story.contributor?.hasProfile ? getContributorBySlug(story.contributor.slug) : Promise.resolve(null),
-  ]);
+  const related = await getRelatedStories(story.id, story.category?.id ?? null);
 
-  return <StoryView story={story} related={related} contributor={contributor} />;
+  return <StoryView story={story} related={related} />;
 }
