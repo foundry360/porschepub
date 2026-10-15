@@ -24,7 +24,7 @@ function Figure({
       ? "100vw"
       : layout === "wide"
         ? "(min-width: 1280px) 1180px, 100vw"
-        : "(min-width: 768px) 720px, 100vw";
+        : "(min-width: 768px) 800px, 100vw";
 
   return (
     <figure
@@ -32,8 +32,8 @@ function Figure({
         layout === "full"
           ? "story-full relative left-1/2 my-14 w-screen -translate-x-1/2"
           : layout === "wide"
-            ? "my-12 lg:-mx-[8vw] xl:-mx-[14rem]"
-            : "my-10"
+            ? "my-12 sm:-mx-10 md:-mx-16 lg:-mx-[8vw] xl:-mx-[14rem]"
+            : "my-10 sm:-mx-8 md:-mx-12"
       }
     >
       <EditorialImage
