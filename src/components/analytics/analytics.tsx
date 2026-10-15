@@ -64,7 +64,6 @@ export function Analytics() {
   if (pathname?.startsWith("/admin")) return null;
 
   const allowed = !config.requireConsent || consent === "granted";
-  const usesCookies = config.provider === "ga4";
 
   return (
     <>
@@ -106,26 +105,24 @@ export function Analytics() {
         <div
           role="region"
           aria-label="Analytics consent"
-          className="fixed inset-x-0 bottom-0 z-50 border-t border-line bg-paper px-5 py-4 shadow-[0_-8px_30px_rgb(0_0_0/0.06)]"
+          className="fixed inset-x-0 bottom-0 z-50 bg-brand px-5 py-4 text-on-brand"
         >
           <div className="mx-auto flex max-w-5xl flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-            <p className="text-sm text-charcoal">
-              {usesCookies
-                ? "We use Google Analytics to understand which stories people read. It uses cookies. Is that okay?"
-                : "We use privacy-focused analytics to understand which stories people read. It sets no cookies and collects no personal information. Is that okay?"}
+            <p className="text-sm text-on-brand/90">
+              We use analytics to understand which stories people read. Is that okay?
             </p>
             <div className="flex shrink-0 gap-3">
               <button
                 type="button"
                 onClick={() => writeConsent("denied")}
-                className="border border-ink px-4 py-2 text-sm hover:border-brand hover:bg-brand hover:text-on-brand"
+                className="border border-on-brand/70 px-4 py-2 text-sm text-on-brand transition-colors hover:border-paper hover:bg-paper hover:text-ink"
               >
                 No thanks
               </button>
               <button
                 type="button"
                 onClick={() => writeConsent("granted")}
-                className="bg-ink px-4 py-2 text-sm text-paper hover:bg-brand hover:text-on-brand"
+                className="bg-paper px-4 py-2 text-sm text-ink transition-colors hover:bg-ink hover:text-paper"
               >
                 Allow
               </button>

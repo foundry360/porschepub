@@ -172,6 +172,24 @@ export async function getRelatedStories(
       }
     }
   }
+
+  // Still short: fill from the newest stories, the same pool as Most Recent.
+  if (results.length < limit) {
+    const { data: latest, error: latestError } = await db
+      .from("stories")
+      .select(STORY_SUMMARY_SELECT)
+      .neq("id", storyId)
+      .order("published_at", { ascending: false })
+      .limit(limit + seen.size);
+    if (latestError) fail("getRelatedStories.latest", latestError);
+    for (const row of (latest ?? []) as unknown as StoryRow[]) {
+      if (results.length >= limit) break;
+      if (!seen.has(row.id)) {
+        seen.add(row.id);
+        results.push(toStorySummary(row));
+      }
+    }
+  }
   return results;
 }
 

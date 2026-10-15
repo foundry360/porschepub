@@ -404,7 +404,7 @@ export function StoryEditor({
         </Card>
 
         <Card title="Related stories">
-          <p className="mb-2 text-[0.8rem] text-stone">Up to 6. If none are chosen, related stories are picked automatically.</p>
+          <p className="mb-2 text-[0.8rem] text-stone">Up to 6. If fewer are chosen, the rest are filled from the newest stories.</p>
           <div className="max-h-52 space-y-1 overflow-y-auto border border-line p-2">
             {otherStories.length === 0 ? <p className="text-[0.85rem] text-stone">No other stories yet.</p> : null}
             {otherStories.map((s) => (

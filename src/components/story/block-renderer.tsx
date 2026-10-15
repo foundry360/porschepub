@@ -19,21 +19,16 @@ function Figure({
   caption: string | null;
   layout: "inline" | "wide" | "full";
 }) {
-  const sizes =
-    layout === "full"
-      ? "100vw"
-      : layout === "wide"
-        ? "(min-width: 1280px) 1180px, 100vw"
-        : "(min-width: 768px) 800px, 100vw";
+  // Body images share one size (same as "My First Porsche"): slightly wider than
+  // the text column. Only "full" breaks to the viewport edge.
+  const sizes = layout === "full" ? "100vw" : "(min-width: 768px) 800px, 100vw";
 
   return (
     <figure
       className={
         layout === "full"
           ? "story-full relative left-1/2 my-14 w-screen -translate-x-1/2"
-          : layout === "wide"
-            ? "my-12 sm:-mx-10 md:-mx-16 lg:-mx-[8vw] xl:-mx-[14rem]"
-            : "my-10 sm:-mx-8 md:-mx-12"
+          : "my-10 sm:-mx-8 md:-mx-12"
       }
     >
       <EditorialImage
