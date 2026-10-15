@@ -1,9 +1,9 @@
 "use client";
 
 import Script from "next/script";
-import { usePathname } from "next/navigation";
-import { useSyncExternalStore } from "react";
-import { analyticsConfig, CONSENT_STORAGE_KEY } from "@/lib/analytics";
+import { usePathname, useSearchParams } from "next/navigation";
+import { Suspense, useEffect, useRef, useSyncExternalStore } from "react";
+import { analyticsConfig, CONSENT_STORAGE_KEY, trackPageView } from "@/lib/analytics";
 
 type Consent = "granted" | "denied" | null;
 
@@ -32,6 +32,24 @@ function writeConsent(value: Exclude<Consent, null>) {
   listeners.forEach((listener) => listener());
 }
 
+function GaPageViews({ measurementId }: { measurementId: string }) {
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const initial = useRef(true);
+
+  useEffect(() => {
+    // gtag('config') already records the first page view on load.
+    if (initial.current) {
+      initial.current = false;
+      return;
+    }
+    const query = searchParams?.toString();
+    trackPageView(query ? `${pathname}?${query}` : pathname);
+  }, [pathname, searchParams, measurementId]);
+
+  return null;
+}
+
 /**
  * Loads the configured analytics provider. Renders nothing when analytics is not
  * configured. When NEXT_PUBLIC_ANALYTICS_REQUIRE_CONSENT=true the script is only
@@ -46,10 +64,31 @@ export function Analytics() {
   if (pathname?.startsWith("/admin")) return null;
 
   const allowed = !config.requireConsent || consent === "granted";
+  const usesCookies = config.provider === "ga4";
 
   return (
     <>
-      {allowed ? (
+      {allowed && config.provider === "ga4" ? (
+        <>
+          <Script
+            id="ga4-src"
+            strategy="afterInteractive"
+            src={`https://www.googletagmanager.com/gtag/js?id=${config.measurementId}`}
+          />
+          <Script id="ga4-init" strategy="afterInteractive">
+            {`
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', '${config.measurementId}', { anonymize_ip: true });
+            `}
+          </Script>
+          <Suspense fallback={null}>
+            <GaPageViews measurementId={config.measurementId} />
+          </Suspense>
+        </>
+      ) : null}
+      {allowed && config.provider === "plausible" ? (
         <>
           {/* Queue stub so events fired before the script loads are not lost. */}
           <Script id="plausible-init" strategy="afterInteractive">
@@ -71,8 +110,9 @@ export function Analytics() {
         >
           <div className="mx-auto flex max-w-5xl flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <p className="text-sm text-charcoal">
-              We use privacy-focused analytics to understand which stories people read. It sets no
-              cookies and collects no personal information. Is that okay?
+              {usesCookies
+                ? "We use Google Analytics to understand which stories people read. It uses cookies. Is that okay?"
+                : "We use privacy-focused analytics to understand which stories people read. It sets no cookies and collects no personal information. Is that okay?"}
             </p>
             <div className="flex shrink-0 gap-3">
               <button

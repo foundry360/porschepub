@@ -19,10 +19,12 @@ function isLocalHost(hostname: string | undefined): boolean {
   return hostname === "127.0.0.1" || hostname === "localhost";
 }
 
-const analyticsOrigin =
-  process.env.NEXT_PUBLIC_ANALYTICS_PROVIDER === "plausible"
+const analyticsProvider = process.env.NEXT_PUBLIC_ANALYTICS_PROVIDER;
+const plausibleOrigin =
+  analyticsProvider === "plausible"
     ? (originOf(process.env.NEXT_PUBLIC_PLAUSIBLE_SRC) ?? "https://plausible.io")
     : null;
+const ga4Enabled = analyticsProvider === "ga4";
 const turnstileEnabled = Boolean(process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY);
 
 /**
@@ -37,16 +39,27 @@ const turnstileEnabled = Boolean(process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY);
  */
 function contentSecurityPolicy(): string {
   const scriptSrc = ["'self'", "'unsafe-inline'", ...(isProd ? [] : ["'unsafe-eval'"])];
-  if (analyticsOrigin) scriptSrc.push(analyticsOrigin);
+  if (plausibleOrigin) scriptSrc.push(plausibleOrigin);
+  if (ga4Enabled) scriptSrc.push("https://www.googletagmanager.com");
   if (turnstileEnabled) scriptSrc.push("https://challenges.cloudflare.com");
 
   const connectSrc = ["'self'"];
   if (supabaseOrigin) connectSrc.push(supabaseOrigin);
-  if (analyticsOrigin) connectSrc.push(analyticsOrigin);
+  if (plausibleOrigin) connectSrc.push(plausibleOrigin);
+  if (ga4Enabled) {
+    connectSrc.push(
+      "https://www.googletagmanager.com",
+      "https://www.google-analytics.com",
+      "https://analytics.google.com",
+      "https://*.google-analytics.com",
+      "https://*.analytics.google.com",
+    );
+  }
   if (!isProd) connectSrc.push("ws:", "wss:");
 
   const imgSrc = ["'self'", "data:", "blob:"];
   if (supabaseOrigin) imgSrc.push(supabaseOrigin);
+  if (ga4Enabled) imgSrc.push("https://www.google-analytics.com", "https://www.googletagmanager.com");
 
   const frameSrc = ["https://www.youtube-nocookie.com", "https://player.vimeo.com"];
   if (turnstileEnabled) frameSrc.push("https://challenges.cloudflare.com");
