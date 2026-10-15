@@ -27,7 +27,7 @@ export function ImageField({
         <div className="flex items-start gap-4">
           <img src={value.url} alt={value.alt || ""} className="h-24 w-32 border border-line object-cover" />
           <div className="min-w-0 space-y-2 text-[0.85rem]">
-            <p className="text-stone">{value.alt ? value.alt : <span className="font-medium text-accent">No alt text{warnMissingAlt ? " (required to publish)" : ""}</span>}</p>
+            <p className="text-stone">{value.alt ? value.alt : <span className="font-medium text-danger">No alt text{warnMissingAlt ? " (required to publish)" : ""}</span>}</p>
             <div className="flex gap-2">
               <button type="button" onClick={() => setOpen(true)} className={buttonSecondaryClass}>
                 Change

@@ -1,26 +1,34 @@
 import Link from "next/link";
 import { brand } from "@/config/brand";
 
-const LOGO = { src: "/brand/werks-marque-logo.png", width: 943, height: 94 };
+/** Two aligned alpha masks cut from the same artwork: the lettering, and the ampersand alone. */
+const LOGO = {
+  letters: "/brand/werks-marque-logo-letters.png",
+  ampersand: "/brand/werks-marque-logo-ampersand.png",
+  width: 943,
+  height: 94,
+};
+
+function maskStyle(src: string) {
+  return {
+    maskImage: `url(${src})`,
+    maskSize: "contain",
+    maskRepeat: "no-repeat",
+    maskPosition: "left center",
+  };
+}
 
 /**
- * The logotype, painted in `currentColor` through an alpha mask so it follows
- * the surrounding text colour in light, dark and always-dark sections.
- * Size it with a width class; the height follows the artwork's ratio.
+ * The logotype, painted through alpha masks: the lettering in `currentColor`
+ * (so it follows light, dark and always-dark sections) and the ampersand in
+ * the accent. Size it with a width class; the height follows the artwork.
  */
 export function BrandLogo({ className = "" }: { className?: string }) {
   return (
-    <span
-      aria-hidden
-      className={`block bg-current ${className}`}
-      style={{
-        aspectRatio: `${LOGO.width} / ${LOGO.height}`,
-        maskImage: `url(${LOGO.src})`,
-        maskSize: "contain",
-        maskRepeat: "no-repeat",
-        maskPosition: "left center",
-      }}
-    />
+    <span aria-hidden className={`relative block ${className}`} style={{ aspectRatio: `${LOGO.width} / ${LOGO.height}` }}>
+      <span className="absolute inset-0 bg-current" style={maskStyle(LOGO.letters)} />
+      <span className="absolute inset-0 bg-accent" style={maskStyle(LOGO.ampersand)} />
+    </span>
   );
 }
 

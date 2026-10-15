@@ -261,7 +261,7 @@ export function StoryEditor({
           images={images}
           onImageKnown={rememberImage}
         />
-        {err("body") ? <p role="alert" className="text-[0.85rem] font-medium text-accent">{err("body")}</p> : null}
+        {err("body") ? <p role="alert" className="text-[0.85rem] font-medium text-danger">{err("body")}</p> : null}
       </div>
 
       <aside className="space-y-5 xl:sticky xl:top-6 xl:self-start">
@@ -346,7 +346,7 @@ export function StoryEditor({
             <ul className="space-y-2 text-[0.88rem]">
               {readiness.map((issue) => (
                 <li key={`${issue.field}-${issue.message}`} className="flex gap-2">
-                  <span aria-hidden className={issue.blocking ? "text-accent" : "text-stone"}>
+                  <span aria-hidden className={issue.blocking ? "text-danger" : "text-stone"}>
                     {issue.blocking ? "●" : "○"}
                   </span>
                   <span>
@@ -399,7 +399,7 @@ export function StoryEditor({
                 setDirty(true);
               }}
             />
-            {err("leadImageId") ? <p role="alert" className="text-[0.85rem] font-medium text-accent">{err("leadImageId")}</p> : null}
+            {err("leadImageId") ? <p role="alert" className="text-[0.85rem] font-medium text-danger">{err("leadImageId")}</p> : null}
           </div>
         </Card>
 

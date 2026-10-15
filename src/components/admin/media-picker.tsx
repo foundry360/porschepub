@@ -139,7 +139,7 @@ function Library({ onSelect }: { onSelect: (image: PickedImage) => void }) {
                   <img src={item.url} alt="" loading="lazy" className="h-full w-full object-cover" />
                 </span>
                 <span className="block px-2 py-2 text-[0.78rem] leading-snug text-stone">
-                  {item.alt ? item.alt.slice(0, 70) : <em className="text-accent">No alt text</em>}
+                  {item.alt ? item.alt.slice(0, 70) : <em className="text-danger">No alt text</em>}
                 </span>
               </button>
             </li>

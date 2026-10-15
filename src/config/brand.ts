@@ -60,7 +60,7 @@ export const brand = {
     .filter((entry): entry is [string, string] => Boolean(optionalEnv(entry[1])))
     .map(([label, href]): SocialLink => ({ label, href: href.trim() })),
   /** Literal accent for places that cannot use CSS variables. */
-  accentColor: "#c31d14",
+  accentColor: "#6c4d0c",
   themeColor: "#ffffff",
   /** Browser chrome colour in dark mode; matches the dark `--color-paper`. */
   themeColorDark: "#0b0b0b",

@@ -143,7 +143,7 @@ export function SelectMenu({
         onKeyDown={onKeyDown}
         className={`field-underline mt-2 flex w-full items-center justify-between gap-4 border-0 border-b bg-transparent px-0 py-3 text-left text-[1.05rem] transition-colors focus:outline-none ${
           open ? "border-ink" : "border-line"
-        } focus-visible:border-ink focus-visible:shadow-[0_1px_0_0_var(--color-ink)] aria-[invalid=true]:border-accent`}
+        } focus-visible:border-ink focus-visible:shadow-[0_1px_0_0_var(--color-ink)] aria-[invalid=true]:border-danger`}
       >
         <span className={selected ? "text-ink" : "text-mist"}>{selected ? selected.label : placeholder}</span>
         <svg

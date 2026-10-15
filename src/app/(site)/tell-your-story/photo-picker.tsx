@@ -155,7 +155,7 @@ export function PhotoPicker({ error, syncKey }: { error?: string; syncKey: unkno
           if (!full && event.dataTransfer.files.length) void addFiles(event.dataTransfer.files);
         }}
         className={`mt-4 rounded-[20px] border border-dashed p-4 transition-colors sm:p-5 ${
-          dragging ? "border-ink bg-paper-deep" : message ? "border-accent" : "border-line"
+          dragging ? "border-ink bg-paper-deep" : message ? "border-danger" : "border-line"
         }`}
       >
         {photos.length > 0 ? (
@@ -190,7 +190,7 @@ export function PhotoPicker({ error, syncKey }: { error?: string; syncKey: unkno
             disabled={busy || full}
             onClick={() => pickerRef.current?.click()}
             aria-describedby={["field-images-hint", message ? "field-images-error" : null].filter(Boolean).join(" ")}
-            className="inline-flex items-center gap-2.5 rounded-full border border-line px-6 py-3 text-[0.8125rem] font-medium tracking-[0.02em] text-ink transition-colors hover:border-ink hover:bg-ink hover:text-paper disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:border-line disabled:hover:bg-transparent disabled:hover:text-ink"
+            className="inline-flex items-center gap-2.5 rounded-full border border-line px-6 py-3 text-[0.8125rem] font-medium tracking-[0.02em] text-ink transition-colors hover:border-brand hover:bg-brand hover:text-on-brand disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:border-line disabled:hover:bg-transparent disabled:hover:text-ink"
           >
             <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden fill="none" stroke="currentColor" strokeWidth="1.5">
               <path d="M7 1v12M1 7h12" />
@@ -208,7 +208,7 @@ export function PhotoPicker({ error, syncKey }: { error?: string; syncKey: unkno
       </div>
 
       {message ? (
-        <p id="field-images-error" className="mt-2 text-[0.9rem] font-medium text-accent-deep">
+        <p id="field-images-error" className="mt-2 text-[0.9rem] font-medium text-danger-deep">
           {message}
         </p>
       ) : null}

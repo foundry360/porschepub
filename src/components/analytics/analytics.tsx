@@ -78,14 +78,14 @@ export function Analytics() {
               <button
                 type="button"
                 onClick={() => writeConsent("denied")}
-                className="border border-ink px-4 py-2 text-sm hover:bg-ink hover:text-paper"
+                className="border border-ink px-4 py-2 text-sm hover:border-brand hover:bg-brand hover:text-on-brand"
               >
                 No thanks
               </button>
               <button
                 type="button"
                 onClick={() => writeConsent("granted")}
-                className="bg-ink px-4 py-2 text-sm text-paper hover:bg-charcoal"
+                className="bg-ink px-4 py-2 text-sm text-paper hover:bg-brand hover:text-on-brand"
               >
                 Allow
               </button>

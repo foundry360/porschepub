@@ -50,7 +50,7 @@ function SearchShell({ query }: { query: string }) {
           autoComplete="off"
           className="min-w-0 flex-1 border-b border-ink bg-transparent py-3 text-lg placeholder:text-mist focus:outline-none focus-visible:border-accent focus-visible:ring-0"
         />
-        <button type="submit" className="bg-ink px-6 py-3 text-sm tracking-wide text-paper hover:bg-charcoal">
+        <button type="submit" className="bg-ink px-6 py-3 text-sm tracking-wide text-paper hover:bg-brand hover:text-on-brand">
           Search
         </button>
       </form>

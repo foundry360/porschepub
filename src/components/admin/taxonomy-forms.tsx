@@ -48,7 +48,7 @@ export function TagRenameForm({ tag }: { tag: { id: string; name: string } }) {
       <SubmitButton pending={pending} pendingLabel="…" className="border border-ink px-3 py-2 text-[0.75rem] font-semibold uppercase tracking-[0.1em] hover:bg-ink hover:text-paper">
         Rename
       </SubmitButton>
-      {state.status === "error" ? <span role="alert" className="text-[0.8rem] text-accent">{state.message}</span> : null}
+      {state.status === "error" ? <span role="alert" className="text-[0.8rem] text-danger">{state.message}</span> : null}
       {state.status === "ok" ? <span className="text-[0.8rem] text-emerald-800">Saved</span> : null}
     </form>
   );

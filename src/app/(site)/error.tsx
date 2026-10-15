@@ -20,7 +20,7 @@ export default function SiteError({ error, reset }: { error: Error & { digest?: 
         {error.digest ? <span className="mt-2 block text-[0.8rem]">Reference: {error.digest}</span> : null}
       </p>
       <div className="mt-10 flex flex-wrap items-center justify-center gap-x-8 gap-y-4">
-        <button type="button" onClick={reset} className="bg-ink px-7 py-4 text-sm tracking-wide text-paper hover:bg-charcoal">
+        <button type="button" onClick={reset} className="bg-ink px-7 py-4 text-sm tracking-wide text-paper hover:bg-brand hover:text-on-brand">
           Try again
         </button>
         <Link href="/" className="eyebrow link-underline">

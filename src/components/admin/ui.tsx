@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import type { StoryLifecycle } from "@/lib/workflow";
 
 export const inputClass =
-  "block w-full rounded-none border border-line bg-surface px-3 py-2.5 text-[0.95rem] text-ink placeholder:text-mist focus:border-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/40 aria-[invalid=true]:border-accent";
+  "block w-full rounded-none border border-line bg-surface px-3 py-2.5 text-[0.95rem] text-ink placeholder:text-mist focus:border-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/40 aria-[invalid=true]:border-danger";
 
 export const buttonClass =
   "inline-flex items-center justify-center gap-2 border border-ink bg-ink px-4 py-2.5 text-[0.8rem] font-semibold uppercase tracking-[0.12em] text-paper transition-colors hover:bg-charcoal focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent disabled:cursor-not-allowed disabled:opacity-50";
@@ -11,7 +11,7 @@ export const buttonSecondaryClass =
   "inline-flex items-center justify-center gap-2 border border-ink bg-transparent px-4 py-2.5 text-[0.8rem] font-semibold uppercase tracking-[0.12em] text-ink transition-colors hover:bg-ink hover:text-paper focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent disabled:cursor-not-allowed disabled:opacity-50";
 
 export const buttonDangerClass =
-  "inline-flex items-center justify-center gap-2 border border-accent bg-transparent px-4 py-2.5 text-[0.8rem] font-semibold uppercase tracking-[0.12em] text-accent transition-colors hover:bg-accent hover:text-paper focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent disabled:cursor-not-allowed disabled:opacity-50";
+  "inline-flex items-center justify-center gap-2 border border-danger bg-transparent px-4 py-2.5 text-[0.8rem] font-semibold uppercase tracking-[0.12em] text-danger transition-colors hover:bg-danger hover:text-paper focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-danger disabled:cursor-not-allowed disabled:opacity-50";
 
 export function AdminHeading({
   title,
@@ -61,7 +61,7 @@ export function Field({
         </p>
       ) : null}
       {error ? (
-        <p id={`${htmlFor}-error`} role="alert" className="text-[0.85rem] font-medium text-accent">
+        <p id={`${htmlFor}-error`} role="alert" className="text-[0.85rem] font-medium text-danger">
           {error}
         </p>
       ) : null}
@@ -84,7 +84,7 @@ export function Notice({
   const styles = {
     info: "border-line bg-paper-deep text-charcoal",
     success: "border-emerald-700 bg-emerald-50 text-emerald-950",
-    error: "border-accent bg-red-50 text-accent-deep",
+    error: "border-danger bg-red-50 text-danger-deep",
     warning: "border-amber-600 bg-amber-50 text-amber-950",
   } as const;
   return (

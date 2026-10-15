@@ -46,7 +46,7 @@ ${row("From", `${notice.name} <${notice.email}>`)}
 ${row("Photos", String(notice.photoCount ?? 0))}
 </table>
 <p style="margin:16px 0 4px;color:#595959;font-size:13px">Excerpt</p>
-<blockquote style="margin:0;padding-left:12px;border-left:2px solid #c31d14;white-space:pre-wrap">${escapeHtml(notice.pitchExcerpt)}</blockquote>
+<blockquote style="margin:0;padding-left:12px;border-left:2px solid #6c4d0c;white-space:pre-wrap">${escapeHtml(notice.pitchExcerpt)}</blockquote>
 <p style="margin-top:20px"><a href="${escapeHtml(reviewUrl)}">Review this pitch</a></p>
 </body></html>`;
 

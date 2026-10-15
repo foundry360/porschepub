@@ -4,10 +4,10 @@ import type { ReactNode } from "react";
 type PillVariant = "solid" | "outline" | "inverse";
 
 const VARIANTS: Record<PillVariant, string> = {
-  solid: "border-ink bg-ink text-paper hover:bg-transparent hover:text-ink",
-  outline: "border-line text-ink hover:border-ink hover:bg-ink hover:text-paper",
+  solid: "border-ink bg-ink text-paper hover:border-brand hover:bg-brand hover:text-on-brand",
+  outline: "border-line text-ink hover:border-brand hover:bg-brand hover:text-on-brand",
   /** For always-dark sections, where the light tokens are pinned. */
-  inverse: "border-paper bg-paper text-ink hover:bg-transparent hover:text-paper",
+  inverse: "border-paper bg-paper text-ink hover:border-brand hover:bg-brand hover:text-on-brand",
 };
 
 export function pillClass(variant: PillVariant = "solid", className = ""): string {

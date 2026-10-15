@@ -28,7 +28,7 @@ export async function SiteFooter() {
             <ul className="flex flex-wrap gap-x-7 gap-y-3">
               {navigation.footer.map((item) => (
                 <li key={item.href}>
-                  <Link href={item.href} className="text-[0.95rem] text-paper/85 transition-colors hover:text-[#f4c9c5]">
+                  <Link href={item.href} className="text-[0.95rem] text-paper/85 transition-colors hover:text-[#ecd9b0]">
                     {item.label}
                   </Link>
                 </li>

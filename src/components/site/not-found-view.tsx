@@ -13,7 +13,7 @@ export function NotFoundView() {
         The story or page you&rsquo;re looking for doesn&rsquo;t exist, hasn&rsquo;t been published, or has moved.
       </p>
       <div className="mt-10 flex flex-wrap items-center justify-center gap-x-8 gap-y-4">
-        <Link href={paths.home()} className="bg-ink px-7 py-4 text-sm tracking-wide text-paper hover:bg-charcoal">
+        <Link href={paths.home()} className="bg-ink px-7 py-4 text-sm tracking-wide text-paper hover:bg-brand hover:text-on-brand">
           Back to the homepage
         </Link>
         <Link href={paths.stories()} className="eyebrow link-underline">

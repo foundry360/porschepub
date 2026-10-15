@@ -87,7 +87,7 @@ export function StoryGrid({
               href={nextHref}
               onClick={loadMore}
               aria-disabled={pending}
-              className={`inline-flex items-center gap-2.5 rounded-full border border-ink px-8 py-4 text-[0.8125rem] font-medium tracking-[0.02em] text-ink transition-colors hover:bg-ink hover:text-paper ${
+              className={`inline-flex items-center gap-2.5 rounded-full border border-ink px-8 py-4 text-[0.8125rem] font-medium tracking-[0.02em] text-ink transition-colors hover:border-brand hover:bg-brand hover:text-on-brand ${
                 pending ? "pointer-events-none opacity-60" : ""
               }`}
             >

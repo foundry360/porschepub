@@ -19,7 +19,7 @@ type CategoryOption = { id: string; name: string };
 const initialState: SubmissionFormState = { status: "idle" };
 
 const inputClass =
-  "field-underline mt-2 block w-full rounded-none border-0 border-b border-line bg-transparent px-0 py-3 text-[1.05rem] text-ink placeholder:text-mist focus:border-ink focus:shadow-[0_1px_0_0_var(--color-ink)] focus:outline-none aria-[invalid=true]:border-accent";
+  "field-underline mt-2 block w-full rounded-none border-0 border-b border-line bg-transparent px-0 py-3 text-[1.05rem] text-ink placeholder:text-mist focus:border-ink focus:shadow-[0_1px_0_0_var(--color-ink)] focus:outline-none aria-[invalid=true]:border-danger";
 
 function Field({
   id,
@@ -57,7 +57,7 @@ function Field({
       ) : null}
       {children({ "aria-describedby": describedBy, "aria-invalid": Boolean(error) })}
       {error ? (
-        <p id={`${id}-error`} className="mt-2 text-[0.9rem] font-medium text-accent-deep">
+        <p id={`${id}-error`} className="mt-2 text-[0.9rem] font-medium text-danger-deep">
           {error}
         </p>
       ) : null}
@@ -156,8 +156,8 @@ export function SubmissionForm({
     >
       <div ref={summaryRef} tabIndex={-1} className="outline-none" aria-live="polite">
         {hasErrors ? (
-          <div role="alert" className="border border-accent bg-surface/70 px-5 py-4">
-            <p className="font-medium text-accent-deep">
+          <div role="alert" className="border border-danger bg-surface/70 px-5 py-4">
+            <p className="font-medium text-danger-deep">
               {state.status === "error" && state.message ? state.message : "Please check the highlighted fields."}
             </p>
             {errorEntries.length > 0 ? (
@@ -351,7 +351,7 @@ export function SubmissionForm({
           </label>
         </div>
         {errors.consent ? (
-          <p id="field-consent-error" className="mt-2 text-[0.9rem] font-medium text-accent-deep">
+          <p id="field-consent-error" className="mt-2 text-[0.9rem] font-medium text-danger-deep">
             {errors.consent}
           </p>
         ) : null}
@@ -369,7 +369,7 @@ export function SubmissionForm({
           type="submit"
           disabled={pending || !consented}
           aria-describedby="submit-status"
-          className="inline-flex items-center gap-2.5 rounded-full border border-ink bg-ink px-8 py-4 text-[0.8125rem] font-medium tracking-[0.02em] text-paper transition-colors hover:bg-transparent hover:text-ink disabled:cursor-not-allowed disabled:opacity-60"
+          className="inline-flex items-center gap-2.5 rounded-full border border-ink bg-ink px-8 py-4 text-[0.8125rem] font-medium tracking-[0.02em] text-paper transition-colors enabled:hover:border-brand enabled:hover:bg-brand enabled:hover:text-on-brand disabled:cursor-not-allowed disabled:opacity-60"
         >
           {pending ? "Sending…" : "Send story"}
         </button>

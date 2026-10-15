@@ -27,7 +27,7 @@ export function storyDescription(story: StoryDetail): string {
 
 function StoryHeading({ story, onImage = false }: { story: StoryDetail; onImage?: boolean }) {
   const muted = onImage ? "text-paper/80" : "text-stone";
-  const hover = onImage ? "hover:text-[#f4c9c5]" : "hover:text-accent";
+  const hover = onImage ? "hover:text-[#ecd9b0]" : "hover:text-accent";
   return (
     <div className="max-w-5xl">
       <p className={`eyebrow eyebrow-slash animate-fade-in ${muted}`}>

@@ -16,8 +16,13 @@
   --color-stone: #595959;
   --color-mist: #6e6e6e;
   --color-line: #e0e0e0;
-  --color-accent: #c31d14;
-  --color-accent-deep: #9f160f;
+  --color-accent: #6c4d0c;
+  --color-accent-deep: #523a09;
+  /* The brand colour itself, identical in every theme: button fills and the logo ampersand. */
+  --color-brand: #6c4d0c;
+  --color-on-brand: #ffffff;
+  --color-danger: #b3261e;
+  --color-danger-deep: #8c1d18;
   /* Raised surfaces: cards, inputs, admin panels. */
   --color-surface: #ffffff;
 
@@ -83,8 +88,10 @@
   --color-stone: #a6a6a6;
   --color-mist: #8c8c8c;
   --color-line: #2f2f2f;
-  --color-accent: #ef5a4f;
-  --color-accent-deep: #f68a82;
+  --color-accent: #d6a94e;
+  --color-accent-deep: #e6c98d;
+  --color-danger: #f2766b;
+  --color-danger-deep: #f6a39b;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme]) {
@@ -97,8 +104,10 @@
     --color-stone: #a6a6a6;
     --color-mist: #8c8c8c;
     --color-line: #2f2f2f;
-    --color-accent: #ef5a4f;
-    --color-accent-deep: #f68a82;
+    --color-accent: #d6a94e;
+    --color-accent-deep: #e6c98d;
+    --color-danger: #f2766b;
+    --color-danger-deep: #f6a39b;
   }
 }
 
@@ -117,8 +126,10 @@
   --color-stone: #595959;
   --color-mist: #8c8c8c;
   --color-line: #e0e0e0;
-  --color-accent: #c31d14;
-  --color-accent-deep: #9f160f;
+  --color-accent: #d6a94e;
+  --color-accent-deep: #e6c98d;
+  --color-danger: #f2766b;
+  --color-danger-deep: #f6a39b;
 }
 /* In dark mode the near-black footer needs an edge to separate it from the page. */
 [data-theme="dark"] footer.on-dark {
@@ -367,7 +378,7 @@ body {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  background: radial-gradient(60% 55% at 85% 100%, rgb(195 29 20 / 28%), transparent 70%);
+  background: radial-gradient(60% 55% at 85% 100%, rgb(255 255 255 / 7%), transparent 70%);
 }
 /* Close icon: the two burger lines swing into an X as the menu opens, and back as it closes. */
 .menu-x-line {
@@ -458,7 +469,7 @@ main:has(.submit-cta) + .site-footer {
 
 /* Radial red glow behind call-to-action sections. */
 .glow-accent {
-  background-image: radial-gradient(60% 55% at 50% 115%, rgb(195 29 20 / 11%), transparent 70%);
+  background-image: radial-gradient(60% 55% at 50% 115%, rgb(108 77 12 / 11%), transparent 70%);
 }
 
 @media (prefers-reduced-motion: reduce) {
