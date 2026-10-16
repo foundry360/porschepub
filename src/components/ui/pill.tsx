@@ -6,8 +6,8 @@ type PillVariant = "solid" | "outline" | "inverse";
 const VARIANTS: Record<PillVariant, string> = {
   solid: "border-ink bg-ink text-paper hover:border-brand hover:bg-brand hover:text-on-brand",
   outline: "border-line text-ink hover:border-brand hover:bg-brand hover:text-on-brand",
-  /** For always-dark sections, where the light tokens are pinned. */
-  inverse: "border-paper bg-paper text-ink hover:border-brand hover:bg-brand hover:text-on-brand",
+  /** For always-dark sections: clear at rest, gold on hover. */
+  inverse: "border-paper bg-transparent text-paper hover:border-accent hover:bg-accent hover:text-ink",
 };
 
 export function pillClass(variant: PillVariant = "solid", className = ""): string {

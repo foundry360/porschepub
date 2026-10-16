@@ -3,6 +3,7 @@ import { BlockRenderer } from "@/components/story/block-renderer";
 import { ReadingProgress } from "@/components/story/reading-progress";
 import { ShareControls } from "@/components/story/share-controls";
 import { StoryCard } from "@/components/story/story-card";
+import { CameraIcon } from "@/components/ui/camera-icon";
 import { EditorialImage } from "@/components/ui/editorial-image";
 import { JsonLd, SubmitCta } from "@/components/ui/misc";
 import { countWords, blocksToPlainText } from "@/lib/content/blocks";
@@ -130,7 +131,11 @@ export function StoryView({
             <StoryHeading story={story} onImage />
             {lead.credit ? (
               <p className="mt-10 text-right text-[0.7rem] uppercase tracking-[0.12em] text-paper/65">
-                Photograph: {lead.credit}
+                Photograph:{" "}
+                <span className="inline-flex items-center gap-1.5">
+                  <CameraIcon />
+                  {lead.credit}
+                </span>
               </p>
             ) : null}
           </div>

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { CameraIcon } from "@/components/ui/camera-icon";
 import { EditorialImage } from "@/components/ui/editorial-image";
 import type { MediaImage } from "@/lib/types";
 
@@ -96,7 +97,15 @@ export function HeroCarousel({
         {children}
         <div className="mt-10 flex flex-wrap items-center justify-between gap-x-6 gap-y-4">
           <p className="text-[0.7rem] uppercase tracking-[0.12em] text-paper/60" aria-live="off">
-            {credit ? `Photograph: ${credit}` : null}
+            {credit ? (
+              <>
+                Photograph:{" "}
+                <span className="inline-flex items-center gap-1.5">
+                  <CameraIcon />
+                  {credit}
+                </span>
+              </>
+            ) : null}
           </p>
           {slides.length > 1 ? (
             <div role="group" aria-label="Hero photographs" className="flex items-center gap-3">

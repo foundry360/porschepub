@@ -1,5 +1,6 @@
 import { embedUrl, type Block } from "@/lib/content/blocks";
 import type { MediaImage } from "@/lib/types";
+import { CameraIcon } from "@/components/ui/camera-icon";
 import { EditorialImage } from "@/components/ui/editorial-image";
 import { InlineText } from "@/components/ui/inline-text";
 
@@ -41,7 +42,8 @@ function Figure({
         <figcaption className="mx-auto mt-3 max-w-[44rem] px-5 text-[0.85rem] leading-snug text-stone sm:px-0">
           {caption ? <span>{caption}</span> : null}
           {image.credit ? (
-            <span className="block text-[0.75rem] uppercase tracking-[0.08em] text-stone">
+            <span className="flex items-center gap-1.5 text-[0.75rem] uppercase tracking-[0.08em] text-stone">
+              <CameraIcon />
               {image.credit}
             </span>
           ) : null}
